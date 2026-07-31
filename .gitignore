@@ -1,0 +1,13 @@
+web-qa/images/
+web-qa/images-small/
+web-qa/*.py
+web-qa/*.html
+web-qa/*.js
+*.py
+check_*
+fix_*
+rebuild_*
+find_*
+build_*
+line10_*
+workbuddy-training/
