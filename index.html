@@ -516,7 +516,7 @@ var p={
 "销户":{s:["销户","注销","退出"],a:["开户"]}
 };
 var sc={},best=null,bs=0;
-for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i])>=0)sc[k]+=5;for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i])>=0)sc[k]-=3;if(sc[k]>bs){bs=sc[k];best=k;}}
+for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i].toLowerCase())>=0)sc[k]+=5;for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i].toLowerCase())>=0)sc[k]-=3;if(sc[k]>bs){bs=sc[k];best=k;}}
 return bs>=2?best:null;
 }
 
