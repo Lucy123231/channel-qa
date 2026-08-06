@@ -152,10 +152,29 @@ am('a',ba(K[key]));return;
 }
 // 兜底
 // 元问题：关于对话本身
-if(/几个问题|问了几|刚才问了|聊了什么/.test(q)){
+if(/几个问题|问了几|刚才问了|聊了什么|问了哪些|问过什么|之前问/.test(q)){
 var cnt=recentQA.length;
 var list=recentQA.map(function(x,i){return (i+1)+'. '+x.q;}).join('<br>');
 am('a','你刚才一共问了 <b>'+cnt+'</b> 个问题：<br><br>'+list+'<br><br>有什么需要进一步了解的吗？');return;
+}
+// 匹配知识库
+var key=mq(q);
+if(key&&K[key]){
+am('a',ba(K[key]));return;
+}
+// 多板块匹配：一次问多个主题时全部回答
+var multiKeys=[];
+var allKeys=Object.keys(K);
+for(var i=0;i<allKeys.length;i++){
+var kwds=p[allKeys[i]];if(!kwds)continue;
+for(var j=0;j<kwds.s.length;j++){if(q.indexOf(kwds.s[j])>=0){multiKeys.push(allKeys[i]);break;}}
+}
+if(multiKeys.length>1){
+var multiH='';
+for(var i=0;i<multiKeys.length;i++){
+multiH+=ba(K[multiKeys[i]])+'<hr style="margin:20px 0;border:1px dashed #eee">';
+}
+am('a',multiH);return;
 }
 // 兜底
 am('a',al('关于「'+q+'」：《渠道管理指南》覆盖开户|仓库|合同|库存|交接|飞检|变更|二批|实控人|特约|销户<br>试试更具体的关键词'));
