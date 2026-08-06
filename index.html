@@ -526,7 +526,7 @@ var h='';
 if(e.intro)h+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:12px;border-left:3px solid #1e88e5;font-size:16px">'+e.intro+'</div>';
 h+='<h3 style="color:#c41e2a">'+e.t+'</h3>';
 for(var i=0;i<e.s.length;i++){
-var s=e.s[i];h+='<div class="step">';if(s.title)h+='<h4>'+s.title+'</h4>';
+var s=e.s[i];h+='<div class="step"><h4>步骤'+(i+1)+'：'+s.title+'</h4>';
 var srcs=[];
 if(s.img)srcs.push(s.img);
 if(s.imgs)srcs=srcs.concat(s.imgs);
