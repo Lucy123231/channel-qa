@@ -512,6 +512,7 @@ var K={
   }
 };;
 
+var _lc=null;
 // ===== 匹配 =====
 function mq(q){
 q=q.toLowerCase();
@@ -585,8 +586,11 @@ if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
 }
 // 匹配知识库
+var oq=q;
+if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
 var key=mq(q);
 if(key&&K[key]){
+_lc=key;
 am('a',ba(K[key]));return;
 }
 // 兜底
