@@ -585,6 +585,19 @@ var ms=document.getElementById('msgs');
 if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
 }
+// 多问题拆分
+var subs=q.split(/[？?；;。]/).filter(function(p){return p.trim().length>2});
+if(subs.length<=1){subs=q.split(/和|还有|另外|以及|同时|并且/).filter(function(p){return p.trim().length>2});}
+if(subs.length>1){
+var parts=[],keys=[];
+for(var i=0;i<subs.length;i++){
+var sq=subs[i].trim();
+if(_lc&&/[它这那]/.test(sq)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};sq=(cm[_lc]||_lc)+" "+sq;}
+var sk=mq(sq);
+if(sk&&K[sk]){_lc=sk;if(keys.indexOf(sk)<0){keys.push(sk);parts.push('<div style="margin-bottom:12px"><b style="color:#c41e2a">问题'+parts.length+'：'+subs[i].trim()+'</b></div>'+ba(K[sk]));}}
+}
+if(parts.length>1){am('a','<div>'+parts.join('<hr style="margin:12px 0;border:0;border-top:1px dashed #ddd">')+'</div>');return;}
+}
 // 匹配知识库
 var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
