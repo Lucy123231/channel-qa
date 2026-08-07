@@ -513,6 +513,7 @@ var K={
 };;
 
 var _lc=null;
+var _ak='sk-xojvtummkrgddlmzfhrmsfhgprjjleazgxcpvdancbchaexw';
 // ===== 匹配 =====
 function mq(q){
 q=q.toLowerCase();
@@ -615,8 +616,9 @@ if(key&&K[key]){
 _lc=key;
 am('a',ba(K[key]));return;
 }
-// 兜底
-am('a',al('关于「'+q+'」：这个问题暂不在渠道管理指南的范围内哦~ 我是华润雪花渠道管理助手，主要解答开户、销户、变更、交接、合同、库存、仓库、二批、实控人、特约、飞检等相关问题。您可以试试换个渠道管理相关的问题问我！'));
+// 兜底：调用AI回答
+var dt2=document.createElement('div');dt2.className='msg a';dt2.innerHTML='思考中...';dt2.id='think2';ms.appendChild(dt2);
+fetch('https://api.siliconflow.cn/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_ak},body:JSON.stringify({model:'deepseek-ai/DeepSeek-V3',messages:[{role:'system',content:'你是华润雪花啤酒渠道管理助手"小雪花"，友好、简洁、口语化地回答用户问题。如果用户问的是渠道管理相关问题但资料中没有，建议联系渠道管理部。'},{role:'user',content:q}],max_tokens:500})}).then(function(r){return r.json()}).then(function(d){var th2=document.getElementById('think2');if(th2)th2.remove();if(d.choices&&d.choices[0])am('a',d.choices[0].message.content);else am('a','抱歉，暂时无法回答这个问题~');}).catch(function(){var th2=document.getElementById('think2');if(th2)th2.remove();am('a','抱歉，暂时无法回答这个问题，请稍后再试~');});
 },800);
 }
 
