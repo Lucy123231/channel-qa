@@ -516,32 +516,22 @@ var K={
 function mq(q){
 q=q.toLowerCase();
 var p={
-"开户":{s:["开户","新开","新增经销商","开新户头","怎么开户","如何开户","开户流程","新户","开个户","开户需要","开户材料","开户资料","开户附件","设立经销商","新建经销商","创建经销商","注册经销商","申请开户","开户申请"],a:["合同","仓库","库存","二批","销户","注销"]},
-"仓库":{s:["仓库地址","地址新增","拼车","巡送","TMS","车型","地址维护","新增地址","修改地址","地址申请","仓库新增","配送地址"],a:["开户","合同","库存"]},
-"合同":{s:["合同","签署","电子签","润酒购","e签宝","推送函","确认函","合同订立","签合同","怎么签","怎么签署","合同签署","签电子合同","告知函","合同制定"],a:["开户","库存"]},
-"库存":{s:["库存","盘点","调平","CSMS","周转","虚拟终端","盘库","库存管理","怎么盘点","库存提报","借货","库存调整","库存周转","过期酒","临期酒","库存纠错"],a:["开户","合同"]},
-"交接":{s:["交接","渠道调整","A转B","调整报告","经销商交接","怎么交接","如何交接","转给","转让给","移交给","经销商调整"],a:[]},
-"飞检":{s:["飞检","飞行检查","隐藏库","检查备战","抽检","总部抽查","飞检前","怎么备战","检查准备"],a:[]},
-"变更":{s:["信息变更","改工作站","改业务部","组织信息","修改经销商","变更","修改信息","怎么变更","如何变更","经销商变更","变更工作站","变更业务部"],a:["仓库地址"]},
-"二批":{s:["二批","二批商","二批开户","二批命名","二批销户","二批变更","二级经销商","二批怎么","非一批","下级经销商","二批管理"],a:[]},
-"实控人":{s:["实控人","实际控制人","控制人","实控","选不到一批","实控人导入","证照导入","实控人信息"],a:[]},
+"开户":{s:["开户","新开","新增经销商","开新户头","怎么开户","如何开户","开户流程","开户材料","开户资料","开户附件","新建经销商","申请开户"],a:["合同","仓库","库存","二批","销户","注销"]},
+"仓库":{s:["仓库地址","地址新增","拼车","巡送","TMS","车型","地址维护","新增地址","修改地址","地址申请"],a:["开户","合同","库存"]},
+"合同":{s:["合同","签署","电子签","润酒购","e签宝","推送函","确认函","合同订立","签合同","怎么签","告知函"],a:["开户","库存"]},
+"库存":{s:["库存","盘点","调平","CSMS","周转","虚拟终端","盘库","库存管理","怎么盘点","库存提报","借货","过期酒","临期酒"],a:["开户","合同"]},
+"交接":{s:["交接","渠道调整","A转B","调整报告","经销商交接","怎么交接","如何交接","转给","移交给"],a:[]},
+"飞检":{s:["飞检","飞行检查","隐藏库","检查备战","抽检","总部抽查","怎么备战"],a:[]},
+"变更":{s:["信息变更","改工作站","改业务部","组织信息","修改经销商","变更","怎么变更","如何变更","经销商变更"],a:["仓库地址"]},
+"二批":{s:["二批","二批商","二批开户","二批命名","二批销户","二批变更","二级经销商","非一批","下级经销商"],a:[]},
+"实控人":{s:["实控人","实际控制人","控制人","选不到一批","实控人导入","证照导入"],a:[]},
 "特约":{s:["特约","特约经销商","特约销户","特约变更","宋子豪"],a:[]},
-"销户":{s:["销户","注销","退出","关闭账户","怎么销户","如何销户","销户流程","经销商退出","停止合作"],a:["开户"]}
+"销户":{s:["销户","注销","退出","关闭账户","怎么销户","如何销户","经销商退出","停止合作"],a:["开户"]}
 };
-var sc={},best=null,bs=0,all=[];
-for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i].toLowerCase())>=0)sc[k]+=5;for(var i=0;i<pt.s.length;i++){var syn=pt.s[i].toLowerCase();if(syn.length>=3)for(var j=0;j<=syn.length-3;j++)if(q.indexOf(syn.substring(j,j+3))>=0)sc[k]+=1;}for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i].toLowerCase())>=0)sc[k]-=5;if(K[k]&&K[k].kw)for(var i=0;i<K[k].kw.length;i++)if(q.indexOf(K[k].kw[i].toLowerCase())>=0)sc[k]+=3;all.push({key:k,score:sc[k]});if(sc[k]>bs){bs=sc[k];best=k;}}
-mq._all=all.sort(function(a,b){return b.score-a.score});
+var sc={},best=null,bs=0;
+for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i].toLowerCase())>=0)sc[k]+=5;for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i].toLowerCase())>=0)sc[k]-=3;if(sc[k]>bs){bs=sc[k];best=k;}}
 return bs>=2?best:null;
 }
-function sq(q){
-var parts=q.split(/[？?；;。]/).filter(function(p){return p.trim().length>2});
-if(parts.length<=1)return[q];
-var r=[];for(var i=0;i<parts.length;i++){var cs=parts[i].trim().split(/还有|另外|以及|同时|并且|外加|顺便/);for(var j=0;j<cs.length;j++){var s=cs[j].trim();if(s.length>2)r.push(s);}}
-return r.length>1?r:[q];
-}
-var CTX={lastCat:null,lastQ:null,topics:[]};
-function uc(cat,q){CTX.lastCat=cat;CTX.lastQ=q;CTX.topics.push(cat);if(CTX.topics.length>5)CTX.topics.shift();}
-function rp(q){var prs=["它","这个","那个","这方面","上面","前面","刚才","之前","以上","该"];for(var i=0;i<prs.length;i++)if(q.indexOf(prs[i])>=0){var map={"开户":"开户","销户":"销户","变更":"信息变更","交接":"经销商交接","实控人":"实际控制人","二批":"二批商","特约":"特约经销商","合同":"合同","库存":"库存","仓库":"仓库地址","飞检":"飞行检查"};if(CTX.lastCat)return (map[CTX.lastCat]||CTX.lastCat)+" "+q;break;}return q;}
 
 // ===== 回答构建 =====
 function ba(e){
@@ -577,38 +567,30 @@ return '<div class="lnk">e签宝外部登录：<a href="https://snowsign.crb.cn/
 
 // ===== 发送 =====
 function send(){
-var q0=document.getElementById('inp').value.trim();
-if(!q0)return;
+var q=document.getElementById('inp').value.trim();
+if(!q)return;
 document.getElementById('inp').value='';
-am('u',q0);
-// 上下文指代消解
-var q=rp(q0);
+// 用户消息
+am('u',q);
 var ms=document.getElementById('msgs');
+// 思考中
 var dt=document.createElement('div');dt.className='msg a';dt.innerHTML='思考中...';dt.id='think';ms.appendChild(dt);
 setTimeout(function(){ms.scrollTop=999999;},100);
 
 setTimeout(function(){
 var th=document.getElementById('think');if(th)th.remove();
 var ms=document.getElementById('msgs');
-// 链接问题
+// 检测链接问题
 if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
 }
-// 多问题拆分
-var subs=sq(q);
-if(subs.length>1){
-var parts=[],cats=[];
-for(var i=0;i<subs.length;i++){
-var kk=mq(subs[i]);
-if(kk&&K[kk]){cats.push(kk);parts.push('<div style="margin-bottom:14px"><b style="color:#c41e2a">问题'+(i+1)+'：'+subs[i]+'</b></div>'+ba(K[kk]));}
-}
-if(parts.length>0){am('a','<div>'+parts.join('<hr style="margin:14px 0;border:0;border-top:1px dashed #ddd">')+'</div>');uc(cats[0],q0);return;}
-}
-// 单问题匹配
+// 匹配知识库
 var key=mq(q);
-if(key&&K[key]){am('a',ba(K[key]));uc(key,q0);return;}
+if(key&&K[key]){
+am('a',ba(K[key]));return;
+}
 // 兜底
-am('a',al('关于「'+q0+'」暂未找到匹配内容，试试更具体的关键词：<br>开户 | 销户 | 变更 | 交接 | 合同 | 库存 | 仓库 | 二批 | 实控人 | 特约 | 飞检'));
+am('a',al('关于「'+q+'」：《渠道管理指南》覆盖开户|仓库|合同|库存|交接|飞检|变更|二批|实控人|特约|销户<br>试试更具体的关键词'));
 },800);
 }
 
