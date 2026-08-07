@@ -179,7 +179,7 @@ am('a',ba(K[key]));return;
 }
 // 兜底：调用AI回答
 var dt2=document.createElement('div');dt2.className='msg a';dt2.innerHTML='思考中...';dt2.id='think2';ms.appendChild(dt2);
-fetch('https://api.siliconflow.cn/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_ak},body:JSON.stringify({model:'deepseek-ai/DeepSeek-V3',messages:[{role:'system',content:'你是华润雪花啤酒渠道管理助手"小雪花"，友好、简洁、口语化地回答用户问题。如果用户问的是渠道管理相关问题但资料中没有，建议联系渠道管理部。'},{role:'user',content:q}],max_tokens:500})}).then(function(r){return r.json()}).then(function(d){var th2=document.getElementById('think2');if(th2)th2.remove();if(d.choices&&d.choices[0])am('a',d.choices[0].message.content);else am('a','抱歉，暂时无法回答这个问题~');}).catch(function(){var th2=document.getElementById('think2');if(th2)th2.remove();am('a','抱歉，暂时无法回答这个问题，请稍后再试~');});
+fetch('https://api.siliconflow.cn/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_ak},body:JSON.stringify({model:'deepseek-ai/DeepSeek-V3',messages:[{role:'system',content:'你是一个友好、简洁、口语化的智能助手，叫"小雪花"。不论用户问什么，都直接认真回答，不要推脱或转移话题。如果是啤酒或渠道管理相关问题，回答时可以体现专业。'},{role:'user',content:q}],max_tokens:500})}).then(function(r){return r.json()}).then(function(d){var th2=document.getElementById('think2');if(th2)th2.remove();if(d.choices&&d.choices[0])am('a',d.choices[0].message.content);else am('a','抱歉，暂时无法回答这个问题~');}).catch(function(){var th2=document.getElementById('think2');if(th2)th2.remove();am('a','抱歉，暂时无法回答这个问题，请稍后再试~');});
 },800);
 }
 
