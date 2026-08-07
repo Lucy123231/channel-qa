@@ -102,7 +102,7 @@ return r.length>1?r:[q];
 }
 var CTX={lastCat:null,lastQ:null,topics:[]};
 function uc(cat,q){CTX.lastCat=cat;CTX.lastQ=q;CTX.topics.push(cat);if(CTX.topics.length>5)CTX.topics.shift();}
-function rc(q){var prs=["它","这个","那个","这方面","上面","前面","刚才","之前","以上","该"];for(var i=0;i<prs.length;i++)if(q.indexOf(prs[i])>=0){var map={"开户":"开户","销户":"销户","变更":"信息变更","交接":"经销商交接","实控人":"实际控制人","二批":"二批商","特约":"特约经销商","合同":"合同","库存":"库存","仓库":"仓库地址","飞检":"飞行检查"};if(CTX.lastCat)return (map[CTX.lastCat]||CTX.lastCat)+" "+q;break;}return q;}
+function rp(q){var prs=["它","这个","那个","这方面","上面","前面","刚才","之前","以上","该"];for(var i=0;i<prs.length;i++)if(q.indexOf(prs[i])>=0){var map={"开户":"开户","销户":"销户","变更":"信息变更","交接":"经销商交接","实控人":"实际控制人","二批":"二批商","特约":"特约经销商","合同":"合同","库存":"库存","仓库":"仓库地址","飞检":"飞行检查"};if(CTX.lastCat)return (map[CTX.lastCat]||CTX.lastCat)+" "+q;break;}return q;}
 
 // ===== 回答构建 =====
 function ba(e){
@@ -143,7 +143,7 @@ if(!q0)return;
 document.getElementById('inp').value='';
 am('u',q0);
 // 上下文指代消解
-var q=rc(q0);
+var q=rp(q0);
 var ms=document.getElementById('msgs');
 var dt=document.createElement('div');dt.className='msg a';dt.innerHTML='思考中...';dt.id='think';ms.appendChild(dt);
 setTimeout(function(){ms.scrollTop=999999;},100);
