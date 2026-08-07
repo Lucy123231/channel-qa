@@ -1,13 +1,18 @@
-web-qa/images/
-web-qa/images-small/
-web-qa/*.py
-web-qa/*.html
-web-qa/*.js
-*.py
-check_*
-fix_*
-rebuild_*
-find_*
-build_*
-line10_*
-workbuddy-training/
+# 构建产物
+source/index.html
+source/*.html
+!source/template.html
+
+# Python
+__pycache__/
+*.pyc
+
+# 环境变量
+.env
+
+# 临时文件
+*.zip
+test*.js
+test*.html
+.claude/*
+.vscode/*
