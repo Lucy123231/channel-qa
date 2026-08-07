@@ -596,6 +596,12 @@ var key=mq(q);
 if(mq._all){
 var top=mq._all.filter(function(x){return x.score>=2});
 if(top.length>1){
+top.sort(function(a,b){
+var pa=999,pb=999;
+if(K[a.key]&&K[a.key].kw)for(var x=0;x<K[a.key].kw.length;x++){var pos=oq.indexOf(K[a.key].kw[x]);if(pos>=0&&pos<pa)pa=pos;}
+if(K[b.key]&&K[b.key].kw)for(var x=0;x<K[b.key].kw.length;x++){var pos=oq.indexOf(K[b.key].kw[x]);if(pos>=0&&pos<pb)pb=pos;}
+return pa-pb;
+});
 var parts=[],seen={};
 for(var i=0;i<top.length;i++){
 var tk=top[i].key;
