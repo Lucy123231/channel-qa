@@ -1,20 +1,21 @@
 """
 渠道管理智能问答 - 构建脚本
-用法: python build.py
-输出: 渠道管理智能问答-最终版.html 和 index.html（在脚本同目录）
+用法: cd src && python build.py
+输出: ../index.html
 
-维护时只需要编辑 kb.json，然后运行这个脚本即可。
+知识库在 ../kb/ 文件夹，模板在 src/ 同目录。
 """
 
 import json, os, re, base64, io
 from PIL import Image
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR = BASE  # 输出到当前目录（source/）
-IMG_DIR = os.path.join(BASE, 'images')
+ROOT = os.path.dirname(BASE)
+KB_FILE = os.path.join(ROOT, 'kb', 'kb.json')
+IMG_DIR = os.path.join(ROOT, 'kb', 'images')
 
 # ===== 1. 读取知识库 =====
-with open(os.path.join(BASE, 'kb.json'), 'r', encoding='utf-8') as f:
+with open(KB_FILE, 'r', encoding='utf-8') as f:
     kb = json.load(f)
 
 # ===== 2. 读取模板 =====
@@ -125,11 +126,9 @@ body_end = html.rfind('</body>')
 html = html[:body_end] + '\n<!-- 渠道管理指南全部截图 -->\n' + '\n'.join(hidden_tags) + '\n' + html[body_end:]
 
 # ===== 8. 写入输出文件 =====
-parent = os.path.dirname(BASE)
-out_path = os.path.join(parent, 'index.html')
-
+out_path = os.path.join(ROOT, 'index.html')
 with open(out_path, 'w', encoding='utf-8') as f:
     f.write(html)
 print(f"[OK] index.html ({len(html)/1024/1024:.1f}MB)")
 
-print("\nBuild complete! 输出: ../index.html")
+print("\n构建完成！输出: ../index.html")
