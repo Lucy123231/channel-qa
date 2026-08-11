@@ -591,6 +591,7 @@ am('a',rl(q));return;
 // 引导模式：等待用户选择子话题
 if(_gd&&K[_gd]){
   var n=parseInt(q);var sel=null;
+  if(n===0){var fall=ba(K[_gd]);am('a',fall);_gd=null;return;}
   if(n>=1&&n<=K[_gd].s.length){sel=n-1;}
   else{for(var i=0;i<K[_gd].s.length;i++){var st=K[_gd].s[i].title||'';if(st.indexOf(q)>=0){sel=i;break;}}}
   if(sel!==null){var ss=K[_gd].s[sel];var h='<h3 style="color:#c41e2a">'+K[_gd].t+'</h3><div class="step">';if(ss.title)h+='<h4>'+(sel+1)+'. '+ss.title+'</h4>';if(ss.img||ss.imgs){var srcs=[];if(ss.img)srcs.push(ss.img);if(ss.imgs)srcs=srcs.concat(ss.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)h+='<img src="'+src+'" alt="'+(ss.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(ss.tx)h+='<div class="tx">'+ss.tx+'</div>';if(ss.w)h+='<div class="warn">'+ss.w+'</div>';h+='</div><div style="margin-top:12px;color:#888;font-size:14px">输入其他编号继续查看，或输入新问题返回搜索模式</div>';am('a',h);return;}
@@ -626,8 +627,9 @@ _lc=key;
 var e=K[key];var h='';
 if(e.intro)h+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:12px;border-left:3px solid #1e88e5;font-size:16px">'+e.intro+'</div>';
 h+='<h3 style="color:#c41e2a">'+e.t+'</h3>';
-h+='<div style="margin:8px 0;font-size:15px">请选择您想了解的内容，输入编号即可：</div>';
+h+='<div style="margin:8px 0;font-size:15px">关于这个板块，您具体想了解哪部分？输入编号就行：</div>';
 for(var i=0;i<e.s.length;i++){var tt=ct(e.s[i].title);h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
+h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看全部完整内容 | 输入新问题搜索其他板块</div>';
 _gd=key;am('a',h);return;
 }
 // 兜底：调用AI回答
