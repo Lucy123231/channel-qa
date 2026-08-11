@@ -161,11 +161,11 @@ var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
 // 会话记忆
 if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什么|聊过|说过什么/.test(q)){var cv=CVS.find(function(x){return x.id===CID});if(cv){var uqs=cv.msgs.filter(function(m){return m.t==="u"});if(uqs.length>0){var hist=uqs.map(function(m,i){return (i+1)+". "+m.c;}).join("<br>");am('a','您一共问了 <b>'+uqs.length+'</b> 个问题：<br><br>'+hist);return;}}}
-// 多问题检测：全句匹配所有分类
+// 多问题检测：只有多个分类得分相近才分题
 var key=mq(q);
 if(mq._all){
 var top=mq._all.filter(function(x){return x.score>=2});
-if(top.length>1){
+if(top.length>1&&top[1].score>=top[0].score*0.5){
 top.sort(function(a,b){
 var pa=999,pb=999;
 if(K[a.key]&&K[a.key].kw)for(var x=0;x<K[a.key].kw.length;x++){var pos=oq.indexOf(K[a.key].kw[x]);if(pos>=0&&pos<pa)pa=pos;}
@@ -175,9 +175,9 @@ return pa-pb;
 var parts=[],seen={};
 for(var i=0;i<top.length;i++){
 var tk=top[i].key;
-if(K[tk]&&!seen[tk]){seen[tk]=true;_lc=tk;parts.push('<div style="margin-bottom:12px"><b style="color:#c41e2a">问题'+(parts.length+1)+'：</b></div>'+ba(K[tk]));}
+if(K[tk]&&!seen[tk]){seen[tk]=true;_lc=tk;var pe=K[tk];var ph='';if(pe.intro)ph+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:8px;border-left:3px solid #1e88e5;font-size:15px">'+pe.intro+'</div>';ph+='<b style="color:#c41e2a">问题'+(parts.length+1)+'：'+pe.t+'</b>';ph+='<div style="margin:6px 0;font-size:14px">请选择想了解的内容，输入编号：</div>';for(var j=0;j<pe.s.length;j++){var tt=pe.s[j].title||'（查看截图）';ph+='<div style="padding:3px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(j+1)+'\';send()">'+(j+1)+'. '+tt+'</div>';}parts.push('<div style="margin-bottom:12px">'+ph+'</div>');}
 }
-if(parts.length>1){am('a','<div>'+parts.join('<hr style="margin:12px 0;border:0;border-top:1px dashed #ddd">')+'</div>');return;}
+if(parts.length>1){_gd=top[0].key;am('a','<div>'+parts.join('<hr style="margin:10px 0;border:0;border-top:1px dashed #ddd">')+'</div>');return;}
 }
 }
 // 单问题匹配：引导模式
