@@ -518,7 +518,7 @@ var _ak='sk-xojvtummkrgddlmzfhrmsfhgprjjleazgxcpvdancbchaexw';
 function mq(q){
 q=q.toLowerCase();
 var p={
-"开户":{s:["开户","新开","新增经销商","开新户头","怎么开户","如何开户","开户流程","开户材料","开户资料","开户附件","新建经销商","申请开户"],a:["合同","仓库","库存","二批","销户","注销"]},
+"开户":{s:["开户","新开","新增经销商","开新户头","怎么开户","如何开户","开户流程","开户材料","开户资料","开户附件","新建经销商","申请开户","一批商开户","一批商","一批"],a:["合同","仓库","库存","二批","二批商","销户","注销"]},
 "仓库":{s:["仓库地址","地址新增","拼车","巡送","TMS","车型","地址维护","新增地址","修改地址","地址申请"],a:["开户","合同","库存"]},
 "合同":{s:["合同","签署","电子签","润酒购","e签宝","推送函","确认函","合同订立","签合同","怎么签","告知函"],a:["开户","库存"]},
 "库存":{s:["库存","盘点","调平","CSMS","周转","虚拟终端","盘库","库存管理","怎么盘点","库存提报","借货","过期酒","临期酒"],a:["开户","合同"]},
@@ -531,7 +531,7 @@ var p={
 "销户":{s:["销户","注销","退出","关闭账户","怎么销户","如何销户","经销商退出","停止合作"],a:["开户"]}
 };
 var sc={},best=null,bs=0,all=[];
-for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i].toLowerCase())>=0)sc[k]+=5;for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i].toLowerCase())>=0)sc[k]-=3;all.push({key:k,score:sc[k]});if(sc[k]>bs){bs=sc[k];best=k;}}
+for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i].toLowerCase())>=0)sc[k]+=5;for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i].toLowerCase())>=0)sc[k]-=5;all.push({key:k,score:sc[k]});if(sc[k]>bs){bs=sc[k];best=k;}}
 mq._all=all.sort(function(a,b){return b.score-a.score});
 return bs>=2?best:null;
 }
@@ -604,7 +604,7 @@ if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什�
 var key=mq(q);
 if(mq._all){
 var top=mq._all.filter(function(x){return x.score>=2});
-if(top.length>1&&top[1].score>=top[0].score*0.5){
+if(top.length>1){
 top.sort(function(a,b){
 var pa=999,pb=999;
 if(K[a.key]&&K[a.key].kw)for(var x=0;x<K[a.key].kw.length;x++){var pos=oq.indexOf(K[a.key].kw[x]);if(pos>=0&&pos<pa)pa=pos;}
