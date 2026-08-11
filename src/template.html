@@ -69,6 +69,7 @@ function gi(n){var b=n.replace(/\.(png|jpeg|jpg)$/,'');var e=document.getElement
 
 // ===== 自动链接 =====
 function al(t){if(t.indexOf('<a ')>=0)return t;return t.replace(/(https?:\/\/[^\s，。,<>]+)/g,'<a href="$1" target="_blank" style="color:#c41e2a">$1</a>');}
+function ct(t){if(!t)return'（查看截图）';t=t.replace(/^[\(（]?\d+[\)）\.\、]\s*/,'').replace(/^[一二三四五六七八九十]+[\.\、]\s*/,'').replace(/\n.*$/,'');return t||'（无标题）';}
 
 // ===== 知识库（简版） =====
 __KB_PLACEHOLDER__;
@@ -175,7 +176,7 @@ return pa-pb;
 var parts=[],seen={};
 for(var i=0;i<top.length;i++){
 var tk=top[i].key;
-if(K[tk]&&!seen[tk]){seen[tk]=true;_lc=tk;var pe=K[tk];var ph='';if(pe.intro)ph+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:8px;border-left:3px solid #1e88e5;font-size:15px">'+pe.intro+'</div>';ph+='<b style="color:#c41e2a">问题'+(parts.length+1)+'：'+pe.t+'</b>';ph+='<div style="margin:6px 0;font-size:14px">请选择想了解的内容，输入编号：</div>';for(var j=0;j<pe.s.length;j++){var tt=pe.s[j].title||'（查看截图）';ph+='<div style="padding:3px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(j+1)+'\';send()">'+(j+1)+'. '+tt+'</div>';}parts.push('<div style="margin-bottom:12px">'+ph+'</div>');}
+if(K[tk]&&!seen[tk]){seen[tk]=true;_lc=tk;var pe=K[tk];var ph='';if(pe.intro)ph+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:8px;border-left:3px solid #1e88e5;font-size:15px">'+pe.intro+'</div>';ph+='<b style="color:#c41e2a">问题'+(parts.length+1)+'：'+pe.t+'</b>';ph+='<div style="margin:6px 0;font-size:14px">请选择想了解的内容，输入编号：</div>';for(var j=0;j<pe.s.length;j++){var tt=ct(pe.s[j].title);ph+='<div style="padding:3px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(j+1)+'\';send()">'+(j+1)+'. '+tt+'</div>';}parts.push('<div style="margin-bottom:12px">'+ph+'</div>');}
 }
 if(parts.length>1){_gd=top[0].key;am('a','<div>'+parts.join('<hr style="margin:10px 0;border:0;border-top:1px dashed #ddd">')+'</div>');return;}
 }
@@ -187,7 +188,7 @@ var e=K[key];var h='';
 if(e.intro)h+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:12px;border-left:3px solid #1e88e5;font-size:16px">'+e.intro+'</div>';
 h+='<h3 style="color:#c41e2a">'+e.t+'</h3>';
 h+='<div style="margin:8px 0;font-size:15px">请选择您想了解的内容，输入编号即可：</div>';
-for(var i=0;i<e.s.length;i++){var tt=e.s[i].title||'（查看截图）';h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
+for(var i=0;i<e.s.length;i++){var tt=ct(e.s[i].title);h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
 _gd=key;am('a',h);return;
 }
 // 兜底：调用AI回答
