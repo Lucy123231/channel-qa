@@ -73,7 +73,7 @@ function al(t){if(t.indexOf('<a ')>=0)return t;return t.replace(/(https?:\/\/[^\
 // ===== 知识库（简版） =====
 __KB_PLACEHOLDER__;
 
-var _lc=null;
+var _lc=null;var _gd=null;
 var _ak='sk-xojvtummkrgddlmzfhrmsfhgprjjleazgxcpvdancbchaexw';
 // ===== 匹配 =====
 function mq(q){
@@ -148,6 +148,14 @@ var ms=document.getElementById('msgs');
 if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
 }
+// 引导模式：等待用户选择子话题
+if(_gd&&K[_gd]){
+  var n=parseInt(q);var sel=null;
+  if(n>=1&&n<=K[_gd].s.length){sel=n-1;}
+  else{for(var i=0;i<K[_gd].s.length;i++){var st=K[_gd].s[i].title||'';if(st.indexOf(q)>=0){sel=i;break;}}}
+  if(sel!==null){var ss=K[_gd].s[sel];var h='<h3 style="color:#c41e2a">'+K[_gd].t+'</h3><div class="step">';if(ss.title)h+='<h4>'+(sel+1)+'. '+ss.title+'</h4>';if(ss.img||ss.imgs){var srcs=[];if(ss.img)srcs.push(ss.img);if(ss.imgs)srcs=srcs.concat(ss.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)h+='<img src="'+src+'" alt="'+(ss.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(ss.tx)h+='<div class="tx">'+ss.tx+'</div>';if(ss.w)h+='<div class="warn">'+ss.w+'</div>';h+='</div><div style="margin-top:12px;color:#888;font-size:14px">输入其他编号继续查看，或输入新问题返回搜索模式</div>';am('a',h);return;}
+  _gd=null;
+}
 // 代词消解
 var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
@@ -172,10 +180,15 @@ if(K[tk]&&!seen[tk]){seen[tk]=true;_lc=tk;parts.push('<div style="margin-bottom:
 if(parts.length>1){am('a','<div>'+parts.join('<hr style="margin:12px 0;border:0;border-top:1px dashed #ddd">')+'</div>');return;}
 }
 }
-// 单问题匹配
+// 单问题匹配：引导模式
 if(key&&K[key]){
 _lc=key;
-am('a',ba(K[key]));return;
+var e=K[key];var h='';
+if(e.intro)h+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:12px;border-left:3px solid #1e88e5;font-size:16px">'+e.intro+'</div>';
+h+='<h3 style="color:#c41e2a">'+e.t+'</h3>';
+h+='<div style="margin:8px 0;font-size:15px">请选择您想了解的内容，输入编号即可：</div>';
+for(var i=0;i<e.s.length;i++){var tt=e.s[i].title||'（查看截图）';h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
+_gd=key;am('a',h);return;
 }
 // 兜底：调用AI回答
 var dt2=document.createElement('div');dt2.className='msg a';dt2.innerHTML='思考中...';dt2.id='think2';ms.appendChild(dt2);
