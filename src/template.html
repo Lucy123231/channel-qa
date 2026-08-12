@@ -150,7 +150,7 @@ if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
 }
 // 业务规则预判：编号选择处理
-if(_bz){var bn=parseInt(q);if(bn>=1){var ba={};if(_bz==='开户')ba={1:'如何给一批商开户',2:'管理开户',3:'如何给二批商开户'};if(_bz==='盘库')ba={1:'CRM库存录入',2:'CSMS库存提报'};if(_bz==='合同')ba={1:'没收到签署消息',2:'盖章后无法下一步',3:'人脸识别失败',4:'经办人信息错误',5:'合同作废后无法重签'};if(_bz==='变更')ba={1:'修改联系人电话',2:'修改工作站业务部'};if(ba[bn]){_bz=null;q=ba[bn];}else{_bz=null;}}else{_bz=null;}}
+if(_bz){var bn=parseInt(q);if(bn>=1){var ba={};if(_bz==='开户')ba={1:'如何给一批商开户',2:'管理开户',3:'如何给二批商开户'};if(_bz==='盘库')ba={1:'CRM库存录入',2:'CSMS库存提报'};if(_bz==='合同')ba={1:'没收到签署消息',2:'盖章后无法下一步',3:'人脸识别失败',4:'经办人信息错误',5:'合同作废后无法重签'};if(_bz==='变更')ba={1:'修改联系人电话',2:'修改工作站业务部'};if(ba[bn]){_bz=null;var inp=document.getElementById('inp');inp.value=ba[bn];setTimeout(function(){send();},50);}else{_bz=null;am('a','请输入有效编号');}}else{_bz=null;am('a','请输入有效编号');}return;}
 var lq=q.toLowerCase();
 if(/^开户$|^我要开户|^怎么开户|^如何开户|^开户流程|开户怎么弄/.test(lq)&&!/二批|管理开户|分户|特约/.test(lq)){
 _bz='开户';am('a','<h3 style="color:#c41e2a">请选择开户类型</h3><div style="font-size:15px;margin:8px 0">请问您要办理哪种开户？（输入编号或点击）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 一批新渠道开户</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 已有一批开分户（管理开户）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'3\';send()">3. 二批开户</div>');return;
