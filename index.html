@@ -588,6 +588,22 @@ var ms=document.getElementById('msgs');
 if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
 }
+// 业务规则预判：模糊问题先追问再给答案
+var lq=q.toLowerCase();
+if(/^开户$|^我要开户|^怎么开户|^如何开户|^开户流程|开户怎么弄/.test(lq)&&!/二批|管理开户|分户|特约/.test(lq)){
+am('a','<h3 style="color:#c41e2a">请选择开户类型</h3><div style="font-size:15px;margin:8px 0">请问您要办理哪种开户？</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'如何给一批商开户\';send()">1. 一批新渠道开户</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'管理开户\';send()">2. 已有一批开分户（管理开户）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'如何给二批商开户\';send()">3. 二批开户</div>');return;
+}
+if(/^怎么盘库|^如何盘点|^怎么盘点|^库存怎么盘|^盘库/.test(lq)){
+am('a','<h3 style="color:#c41e2a">请选择您的身份</h3><div style="font-size:15px;margin:8px 0">请问您是公司业务员，还是经销商人员？</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'CRM库存录入\';send()">1. 公司业务员（CRM库存录入）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'CSMS库存提报\';send()">2. 经销商人员（CSMS库存提报）</div>');return;
+}
+if(/合同签不了|合同签不上|合同不行|合同有问题|合同签署不了/.test(lq)){
+am('a','<h3 style="color:#c41e2a">请问合同卡在哪一步？</h3><div style="font-size:15px;margin:8px 0">请选择您遇到的问题：</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'没收到签署消息\';send()">1. 没有收到签署消息</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'盖章后无法下一步\';send()">2. 经销商盖章后无法进入下一步</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'人脸识别失败\';send()">3. 人脸识别失败</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'经办人信息错误\';send()">4. 经办人信息错误</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'合同作废后无法重签\';send()">5. 合同作废后无法重新签署</div>');return;
+}
+if(/特约.*开户|特约商.*开户|开户.*特约/.test(lq)){
+am('a','<div style="background:#fff8e1;border-left:3px solid #f5a623;padding:12px 16px;margin:8px 0;font-size:15px"><b>特约开户已取消</b>，请按二批开户流程办理。下面为二批开户图文指引。</div>');q='如何给二批商开户';}
+if(/修改经销商信息|怎么改信息/.test(lq)&&!/工作站|业务部|大区|组织|联系人|电话/.test(lq)){
+am('a','<h3 style="color:#c41e2a">请选择修改类型</h3><div style="font-size:15px;margin:8px 0">请问需要修改哪类信息？</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'修改联系人电话\';send()">1. 基础信息（联系人、电话、地址等）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'修改工作站业务部\';send()">2. 组织信息（工作站、业务部、大区）</div>');return;
+}
 // 引导模式：等待用户选择子话题
 if(_gd&&K[_gd]){
   var n=parseInt(q);var sel=null;
