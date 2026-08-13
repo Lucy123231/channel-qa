@@ -831,6 +831,14 @@ if(e.s.length>6){h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;col
 h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看全部完整内容 | 输入新问题搜索其他板块</div>';
 _gd={k:key,off:5};am('a',h);return;
 }
+// 弱业务信号：引导7大板块缩小范围
+var weakSig=false;
+if(mq._all){for(var x=0;x<mq._all.length;x++){if(mq._all[x].score>=1){weakSig=true;break;}}}
+if(weakSig){
+var gh='<h3 style="color:#c41e2a">未匹配到具体内容，请选择业务大类缩小范围：</h3>';
+for(var x=0;x<TPL.length;x++){gh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+TPL[x].id+'\';send()">'+(x+1)+'. 【'+TPL[x].id+'】</div>';}
+am('a',gh);return;
+}
 // 兜底：调用AI回答
 var dt2=document.createElement('div');dt2.className='msg a';dt2.innerHTML='思考中...';dt2.id='think2';ms.appendChild(dt2);
 fetch('https://api.siliconflow.cn/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_ak},body:JSON.stringify({model:'deepseek-ai/DeepSeek-V3',messages:[{role:'system',content:'你是一个友好、简洁、口语化的智能助手，叫"小雪花"。不论用户问什么，都直接认真回答，不要推脱或转移话题。如果是啤酒或渠道管理相关问题，回答时可以体现专业。'},{role:'user',content:q}],max_tokens:500})}).then(function(r){return r.json()}).then(function(d){var th2=document.getElementById('think2');if(th2)th2.remove();if(d.choices&&d.choices[0])am('a',d.choices[0].message.content);else am('a','抱歉，暂时无法回答这个问题~');}).catch(function(){var th2=document.getElementById('think2');if(th2)th2.remove();am('a','抱歉，暂时无法回答这个问题，请稍后再试~');});
