@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>渠道管理智能问答 v4 纯本地版</title>
+<title>渠道管理智能问答 v5 纯本地版</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -57,7 +57,7 @@ body{font-family:'Microsoft YaHei',sans-serif;background:#e8e8e8;display:flex;ju
 <div id="wrap"><div id="side"><h3>历史会话</h3><button id="nb">+ 新建会话</button><div id="cl"></div></div><div id="app">
 <div id="head">渠道管理智能问答</div>
 <div id="quick"></div>
-<div id="msgs"><div style="text-align:center;color:#bbb;padding:60px 0">你好！输入问题开始对话<br><small style="color:#ccc">v4 · 纯本地版</small></div></div>
+<div id="msgs"><div style="text-align:center;color:#bbb;padding:60px 0">你好！输入问题开始对话<br><small style="color:#ccc">v5 · 纯本地版</small></div></div>
 <div id="bot">
 <input id="inp" placeholder="输入问题，如：如何给一批商开户？">
 <button id="btn">发送</button>
@@ -81,7 +81,7 @@ var TPL=[
 {id:'经销商合同/推送函',k:['合同','电子签','推送函','润酒购','e签宝','签署','签合同','告知函'],sub:['合同']},
 {id:'库存管理',k:['库存','盘点','盘库','调平','周转','借货','CSMS','过期酒','临期酒'],sub:['库存']},
 {id:'仓库地址专项',k:['仓库','地址','拼车','车型','隐藏库','飞检','TMS','巡送'],sub:['仓库','飞检']},
-{id:'一码通办',k:['一码通办','数据驱动','报表'],sub:[]},
+{id:'一码通办',k:['一码通办','数据驱动','数据看板','智慧雪花','渠道数据','数据报表'],sub:[]},
 {id:'其他事项',k:['确权','签收奖励','会谈'],sub:[]}
 ];
 var IDX={
@@ -165,7 +165,10 @@ var IDX={
 {n:13,na:'地址省市区街道重复问题修正',kw:['省市区重复','街道重复'],c:'仓库',s:[32]}
 ],
 '一码通办':[
-{n:1,na:'智慧雪花2.0数据报表介绍',kw:['数据报表','智慧雪花'],c:'',s:[]}
+{n:1,na:'渠道数据导出路径（经销商端）',kw:['数据导出','报表中心','月中盘点','营销数据平台'],c:'库存',s:[2,3]},
+{n:2,na:'业务员CRM提报数据导出路径',kw:['业务员CRM','CRM提报'],c:'库存',s:[5]},
+{n:3,na:'一码通办转移台账（转码/代发/退款/转款）',kw:['转码','代发','退款','转款','台账'],c:'交接',s:[1]},
+{n:4,na:'经销商借货同级签收（一码通办培训材料）',kw:['同级签收培训','签收培训'],c:'库存',s:[9]}
 ],
 '其他事项':[
 {n:1,na:'一批经销商签收奖励规则',kw:['一批签收奖励'],c:'',s:[]},
@@ -316,7 +319,7 @@ else{if(tn===99){var eall='<h3 style="color:#c41e2a">全部条目列表：</h3>'
 var ent2=null;for(var x=0;x<_tp.sub.length;x++){if(_tp.sub[x].n===tn){ent2=_tp.sub[x];break;}}if(!ent2){for(var x=0;x<_tp.sub.length;x++){var en2=_tp.sub[x];var nk2=en2.kw||[];for(var z=0;z<nk2.length;z++){if(q.indexOf(nk2[z])>=0){ent2=en2;break;}}if(ent2)break;}}_tp=null;if(ent2&&K[ent2.c]&&ent2.s&&ent2.s.length>0){_lc=ent2.c;var eh='<h3 style="color:#c41e2a">'+K[ent2.c].t+' — '+ent2.na+'</h3>';for(var x=0;x<ent2.s.length;x++){var sidx=ent2.s[x];var sec=K[ent2.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ent2.na);am('a',eh);return;}else{am('a','该条目暂无内容，请咨询销管人员。');return;}}}
 else{_tp=null;}}
 // 业务规则预判：编号选择处理
-if(_bz){var bn=parseInt(q);if(bn>=1){var ba={};if(_bz==='开户')ba={1:'如何给一批商开户',2:'管理开户',3:'如何给二批商开户'};if(_bz==='盘库')ba={1:'CRM库存录入',2:'CSMS库存提报'};if(_bz==='合同')ba={1:'没收到签署消息',2:'盖章后无法下一步',3:'人脸识别失败',4:'经办人信息错误',5:'合同作废后无法重签'};if(_bz==='变更')ba={1:'修改联系人电话',2:'修改工作站业务部'};if(_bz==='地址')ba={1:'新开户地址',2:'新增非拼车地址',3:'拼车地址',4:'修改详细地址'};if(ba[bn]){_bz=null;var inp=document.getElementById('inp');inp.value=ba[bn];setTimeout(function(){send();},50);}else{_bz=null;am('a','请输入有效编号');}}else{_bz=null;am('a','请输入有效编号');}return;}
+if(_bz){var bn=parseInt(q);if(bn>=1){var ba={};if(_bz==='开户')ba={1:'如何给一批商开户',2:'管理开户',3:'如何给二批商开户'};if(_bz==='盘库')ba={1:'CRM库存录入',2:'CSMS库存提报'};if(_bz==='合同')ba={1:'没收到签署消息',2:'盖章后无法下一步',3:'人脸识别失败',4:'经办人信息错误',5:'合同作废后无法重签'};if(_bz==='变更')ba={1:'修改联系人电话',2:'修改工作站业务部'};if(_bz==='地址')ba={1:'新开户地址',2:'新增非拼车地址',3:'拼车地址',4:'修改详细地址'};if(ba[bn]){_bz=null;var inp=document.getElementById('inp');inp.value=ba[bn];setTimeout(function(){send();},50);return;}else{_bz=null;am('a','请输入有效编号');return;}}else if(/^\d+$/.test(q)){_bz=null;am('a','请输入有效编号');return;}else{_bz=null;}}
 var lq=q.toLowerCase();
 if(/^开户$|^我要开户|^怎么开户|^如何开户|^开户流程|开户怎么弄/.test(lq)&&!/二批|管理开户|分户|特约/.test(lq)){
 _bz='开户';am('a','<h3 style="color:#c41e2a">请选择开户类型</h3><div style="font-size:15px;margin:8px 0">请问您要办理哪种开户？（输入编号或点击）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 一批新渠道开户</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 已有一批开分户（管理开户）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'3\';send()">3. 二批开户</div>');return;
@@ -324,12 +327,12 @@ _bz='开户';am('a','<h3 style="color:#c41e2a">请选择开户类型</h3><div st
 if(/^怎么盘库|^如何盘点|^怎么盘点|^库存怎么盘|^盘库/.test(lq)){
 _bz='盘库';am('a','<h3 style="color:#c41e2a">请选择您的身份</h3><div style="font-size:15px;margin:8px 0">请问您是公司业务员，还是经销商人员？（输入编号或点击）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 公司业务员（CRM库存录入）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 经销商人员（CSMS库存提报）</div>');return;
 }
-if(/合同签不了|合同签不上|合同不行|合同有问题|合同签署不了/.test(lq)){
+if(/合同签不了|合同签不上|合同不行|合同有问题|合同签署不了|合同报错/.test(lq)){
 _bz='合同';am('a','<h3 style="color:#c41e2a">请问合同卡在哪一步？</h3><div style="font-size:15px;margin:8px 0">请选择您遇到的问题（输入编号或点击）：</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 没有收到签署消息</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 经销商盖章后无法进入下一步</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'3\';send()">3. 人脸识别失败</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'4\';send()">4. 经办人信息错误</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'5\';send()">5. 合同作废后无法重新签署</div>');return;
 }
 if(/特约.*开户|特约商.*开户|开户.*特约/.test(lq)){
 am('a','<div style="background:#fff8e1;border-left:3px solid #f5a623;padding:12px 16px;margin:8px 0;font-size:15px"><b>特约开户已取消</b>，请按二批开户流程办理。下面为二批开户图文指引。</div>');q='如何给二批商开户';}
-if(/修改经销商信息|怎么改信息/.test(lq)&&!/工作站|业务部|大区|组织|联系人|电话/.test(lq)){
+if(/修改经销商信息|怎么改信息|信息变更/.test(lq)&&!/工作站|业务部|大区|组织|联系人|电话/.test(lq)){
 _bz='变更';am('a','<h3 style="color:#c41e2a">请选择修改类型</h3><div style="font-size:15px;margin:8px 0">请问需要修改哪类信息？（输入编号或点击）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 基础信息（联系人、电话、地址等）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 组织信息（工作站、业务部、大区）</div>');return;
 }
 if(/^新增地址|^我要新增地址|^怎么新增地址|^如何新增地址/.test(lq)){
@@ -349,6 +352,19 @@ if(K[gk]){
   _gd=null;
 }
 }
+// 【强制检索】一码通办渠道数据驱动：命中关键词必须调取该章节，禁止落入无匹配话术
+if(!_tp&&!_bz&&!_gd&&/一码通办|智慧雪花|数据看板|渠道数据|数据驱动|数据大盘|数据报表/.test(q)){
+var ymkb=['数据导出','报表中心','月中盘点','营销数据平台','转码','代发','退款','转款','台账','业务员CRM','CRM提报','签收培训'];
+var ymHit=false;for(var x=0;x<ymkb.length;x++){if(q.indexOf(ymkb[x])>=0){ymHit=true;break;}}
+if(!ymHit){
+var ents=IDX['一码通办']||[];
+if(ents.length>0){
+var ymh='<h3 style="color:#c41e2a">【一码通办】渠道数据驱动</h3>';
+ymh+='<div style="font-size:15px;margin:8px 0">《渠道管理指南》中一码通办/渠道数据相关指引如下，请选择查看：</div>';
+for(var x=0;x<ents.length;x++){ymh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(x+1)+'\';send()">'+(x+1)+'. '+ents[x].na+'</div>';}
+ymh+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号或条目名查看 | 输入新问题返回搜索模式</div>'+cnt(q,'一码通办');
+_tp={sub:ents,isSub:true};am('a',ymh);return;
+}}}
 // 代词消解
 var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
@@ -412,7 +428,7 @@ for(var x=0;x<TPL.length;x++){gh+='<div style="padding:5px 0;font-size:15px;curs
 gh+='<div style="margin-top:10px;font-size:14px;color:#666">如仍无法定位您的问题，请联系销管<b>吴宜谦</b>。</div>';am('a',gh);return;
 }
 // 兜底：无API密钥时不调用AI，友好引导
-am('a','这个问题暂不在渠道管理指南范围内哦～您可以问我：一批商/二批商管理、电子合同、库存管理、仓库地址等相关问题。'+cnt(q,''));
+am('a','这个问题暂不在渠道管理指南范围内哦~您可以问我：一批商/二批商管理、电子合同、库存管理、仓库地址、一码通办数据报表等相关问题。'+cnt(q,''));
 },800);
 }
 
