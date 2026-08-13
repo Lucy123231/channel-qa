@@ -106,8 +106,8 @@ var IDX={
 {n:18,na:'一批商销户流程',kw:['销户','财务对接'],c:'销户',s:[0,1]},
 {n:19,na:'一批基础信息变更',kw:['基础信息变更','改联系人','改电话','改地址'],c:'变更',s:[0]},
 {n:20,na:'一批组织信息批量变更',kw:['组织信息','改工作站','改业务部','大区'],c:'变更',s:[1,2,3,4,5]},
-{n:21,na:'经销商渠道交接全流程',kw:['渠道交接','调整报告','A转B'],c:'交接',s:[0,1,2]},
-{n:22,na:'实控人导入关联操作',kw:['实控人导入','实控人录不进去'],c:'实控人',s:[0]},
+{n:21,na:'经销商渠道交接全流程',kw:['渠道交接','调整报告','A转B','箱码','奖盖'],c:'交接',s:[0,1,2]},
+{n:22,na:'实控人导入关联操作',kw:['实控人导入','实控人录不进去','实控人信息'],c:'实控人',s:[0]},
 {n:23,na:'证照信息批量导入TPM操作',kw:['证照导入','证照批量'],c:'实控人',s:[1,2,3,4]}
 ],
 '二批商管理':[
@@ -162,7 +162,8 @@ var IDX={
 {n:10,na:'飞行检查前仓库地址类型核对',kw:['飞检地址','地址类型'],c:'飞检',s:[0]},
 {n:11,na:'巡送巡收专用地址维护',kw:['巡送','巡收','80KM'],c:'仓库',s:[30]},
 {n:12,na:'修改经销商提货/自提承运方式',kw:['交付方式','自提','承运商'],c:'仓库',s:[31]},
-{n:13,na:'地址省市区街道重复问题修正',kw:['省市区重复','街道重复'],c:'仓库',s:[32]}
+{n:13,na:'地址省市区街道重复问题修正',kw:['省市区重复','街道重复'],c:'仓库',s:[32]},
+{n:14,na:'飞检核心要求（隐藏库认定与考核）',kw:['隐藏库','隐藏库是什么','飞检核心'],c:'飞检',s:[1]}
 ],
 '一码通办':[
 {n:1,na:'渠道数据导出路径（经销商端）',kw:['数据导出','报表中心','月中盘点','营销数据平台'],c:'库存',s:[2,3]},
@@ -173,7 +174,7 @@ var IDX={
 '其他事项':[
 {n:1,na:'一批经销商签收奖励规则',kw:['一批签收奖励','签收奖励'],c:'',s:[]},
 {n:2,na:'二批经销商签收奖励规则',kw:['二批签收奖励'],c:'',s:[]},
-{n:3,na:'经销商会谈相关规范',kw:['会谈','奖励会谈','经销商会谈'],c:'',s:[]}
+{n:3,na:'经销商会谈相关规范',kw:['会谈','奖励会谈','经销商会谈','渠道激励'],c:'',s:[]}
 ]
 };
 var ATT=[
@@ -196,7 +197,8 @@ var RED=[{k:['预包装'],m:'<b style="color:#c41e2a">⚠️ 合规红线：预�
 {k:['海南'],m:'<b style="color:#c41e2a">⚠️ 合规红线：海南营销中心合同甲方需改为华润雪花啤酒（中国）有限公司海南销售分公司！</b>'},
 {k:['三批'],m:'<b style="color:#c41e2a">⚠️ 合规红线：三批及以下层级客户名称必须以"P"字样结尾！</b>'},
 {k:['临期','过期酒'],m:'<b style="color:#c41e2a">⚠️ 合规红线：临期过期酒必须CRM录入，不录入公司不协助处理！</b>'},
-{k:['渠道调整'],m:'<b style="color:#c41e2a">⚠️ 合规红线：渠道调整必须先上传调整报告才可做经销商交接！</b>'}];
+{k:['渠道调整'],m:'<b style="color:#c41e2a">⚠️ 合规红线：渠道调整必须先上传调整报告才可做经销商交接！</b>'},
+{k:['隐藏库'],m:'<b style="color:#c41e2a">⚠️ 合规红线：凡未报备仓库或隐瞒库存均认定为"隐藏库"，事业部抽检涉及人员考核，总部抽查涉及人员任免！</b>'}];
 function cnt(q,c){var r='';var cq=(q||'')+(c||'');
 if(cq.indexOf('合同')>=0||cq.indexOf('签署')>=0)r='若图文指引仍无法解决，请联系销管<b>吴宜谦</b>。';
 else if(cq.indexOf('虚拟终端')>=0||cq.indexOf('录量')>=0||cq.indexOf('调平')>=0)r='涉及虚拟终端标签或录量权限配置，请联系销管<b>唐鉴均</b>。';
@@ -219,7 +221,7 @@ var p={
 "二批":{s:["二批","二批商","二批开户","二批命名","二批销户","二批变更","二级经销商","非一批","下级经销商"],a:["一批","一批商","实控人"]},
 "实控人":{s:["实控人","实际控制人","控制人","选不到一批","实控人导入","证照导入"],a:[]},
 "特约":{s:["特约","特约经销商","特约销户","特约变更","宋子豪"],a:[]},
-"销户":{s:["销户","注销","退出","关闭账户","怎么销户","如何销户","经销商退出","停止合作"],a:["开户"]}
+"销户":{s:["销户","注销","退出","关闭账户","怎么销户","如何销户","经销商退出","停止合作","失效"],a:["开户"]}
 };
 var sc={},best=null,bs=0,all=[];
 for(var k in p){sc[k]=0;var pt=p[k];for(var i=0;i<pt.s.length;i++)if(q.indexOf(pt.s[i].toLowerCase())>=0)sc[k]+=5;for(var i=0;i<pt.a.length;i++)if(q.indexOf(pt.a[i].toLowerCase())>=0)sc[k]-=5;if(K[k]&&K[k].kw)for(var i=0;i<K[k].kw.length;i++)if(q.indexOf(K[k].kw[i].toLowerCase())>=0)sc[k]+=3;all.push({key:k,score:sc[k]});if(sc[k]>bs){bs=sc[k];best=k;}}
@@ -316,7 +318,7 @@ if(_tp){var tn=parseInt(q);if(tn>=1&&tn<=_tp.sub.length){
 if(!_tp.isSub){var seld=_tp.sub[tn-1];var entries=IDX[seld.id]||[];if(entries.length>0){var mxp=entries.length>6?5:entries.length;var th2='<h3 style="color:#c41e2a">【'+seld.id+'】细分业务如下：</h3>';for(var x=0;x<mxp;x++){th2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+entries[x].n+'\';send()">'+entries[x].n+'. '+entries[x].na+'</div>';}if(entries.length>6){th2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'99\';send()">查看更多条目（'+(entries.length-5)+'项）</div>';}th2+='<div style="margin-top:8px;font-size:14px;color:#888">输入编号或条目名即可查看</div>';_tp={sub:entries,isSub:true};am('a',th2);return;}
 else{_tp=null;am('a','该板块暂无详细内容，请咨询销管人员。');return;}}
 else{if(tn===99){var eall='<h3 style="color:#c41e2a">全部条目列表：</h3>';for(var x=0;x<_tp.sub.length;x++){eall+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+_tp.sub[x].n+'\';send()">'+_tp.sub[x].n+'. '+_tp.sub[x].na+'</div>';}am('a',eall);return;}
-var ent2=null;for(var x=0;x<_tp.sub.length;x++){if(_tp.sub[x].n===tn){ent2=_tp.sub[x];break;}}if(!ent2){for(var x=0;x<_tp.sub.length;x++){var en2=_tp.sub[x];var nk2=en2.kw||[];for(var z=0;z<nk2.length;z++){if(q.indexOf(nk2[z])>=0){ent2=en2;break;}}if(ent2)break;}}_tp=null;if(ent2&&K[ent2.c]&&ent2.s&&ent2.s.length>0){_lc=ent2.c;var eh='<h3 style="color:#c41e2a">'+K[ent2.c].t+' — '+ent2.na+'</h3>';for(var x=0;x<ent2.s.length;x++){var sidx=ent2.s[x];var sec=K[ent2.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ent2.na);am('a',eh);return;}else{am('a','该条目暂无内容，请咨询销管人员。');return;}}}
+var ent2=null;for(var x=0;x<_tp.sub.length;x++){if(_tp.sub[x].n===tn){ent2=_tp.sub[x];break;}}if(!ent2){for(var x=0;x<_tp.sub.length;x++){var en2=_tp.sub[x];var nk2=en2.kw||[];for(var z=0;z<nk2.length;z++){if(q.indexOf(nk2[z])>=0){ent2=en2;break;}}if(ent2)break;}}_tp=null;if(ent2&&K[ent2.c]&&ent2.s&&ent2.s.length>0){_lc=ent2.c;var eh='<h3 style="color:#c41e2a">'+K[ent2.c].t+' — '+ent2.na+'</h3>';for(var x=0;x<ent2.s.length;x++){var sidx=ent2.s[x];var sec=K[ent2.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ent2.na);am('a',eh);return;}else{am('a','该板块在《渠道管理指南》中暂无详细操作内容（仅收录标题）。如需最新指引，请联系销管<b>吴宜谦</b>，或输入其他问题继续查询。');return;}}}
 else{_tp=null;}}
 // 业务规则预判：编号选择处理
 if(_bz){var bn=parseInt(q);if(bn>=1){var ba={};if(_bz==='开户')ba={1:'如何给一批商开户',2:'管理开户',3:'如何给二批商开户'};if(_bz==='盘库')ba={1:'CRM库存录入',2:'CSMS库存提报'};if(_bz==='合同')ba={1:'没收到签署消息',2:'盖章后无法下一步',3:'人脸识别失败',4:'经办人信息错误',5:'合同作废后无法重签'};if(_bz==='变更')ba={1:'修改联系人电话',2:'修改工作站业务部'};if(_bz==='地址')ba={1:'新开户地址',2:'新增非拼车地址',3:'拼车地址',4:'修改详细地址'};if(ba[bn]){_bz=null;var inp=document.getElementById('inp');inp.value=ba[bn];setTimeout(function(){send();},50);return;}else{_bz=null;am('a','请输入有效编号');return;}}else if(/^\d+$/.test(q)){_bz=null;am('a','请输入有效编号');return;}else{_bz=null;}}
@@ -352,6 +354,17 @@ if(K[gk]){
   _gd=null;
 }
 }
+// 【开户附件直达】问开户资料/附件 → 直接列附件1-10清单+合规红线高亮
+if(!_tp&&!_bz&&!_gd&&/(开户|一批|新经销商|新渠道)/.test(q)&&/(附件|资料|材料|清单|必备|要准备|需要准备|要哪些|需要哪些)/.test(q)&&!/(二批|特约|管理开户|分户|销户|注销|填写|上传|交接|变更)/.test(q)){
+var fh='<h3 style="color:#c41e2a">开户必传附件清单（附件1-附件10）</h3>';
+fh+='<div style="font-size:15px;margin:8px 0">共10项必传附件，点击或输入「附件N」查看单项要求：</div>';
+for(var x=0;x<ATT.length;x++){fh+='<div style="padding:4px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'附件'+ATT[x].n+'\';send()">'+ATT[x].n+'. '+ATT[x].na+'</div>';}
+fh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+RED[1].m+'</div>';
+fh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+RED[0].m+'</div>';
+fh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+RED[2].m+'</div>';
+fh+='<div style="margin-top:10px;font-size:14px;color:#888">需要开户操作流程请回复「如何开户」</div>'+cnt(q,'开户');
+am('a',fh);return;
+}
 // 【强制检索】一码通办渠道数据驱动：命中关键词必须调取该章节，禁止落入无匹配话术
 if(!_tp&&!_bz&&!_gd&&/一码通办|智慧雪花|数据看板|渠道数据|数据驱动|数据大盘|数据报表/.test(q)){
 var ymkb=['数据导出','报表中心','月中盘点','营销数据平台','转码','代发','退款','转款','台账','业务员CRM','CRM提报','签收培训'];
@@ -366,11 +379,12 @@ ymh+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号或条�
 _tp={sub:ents,isSub:true};am('a',ymh);return;
 }}}
 // 【强制检索】经销商奖励会谈：命中关键词必须调取该章节，禁止落入无匹配话术
-if(!_tp&&!_bz&&!_gd&&/奖励会谈|经销商会谈|签收奖励|会谈|奖励/.test(q)){
+if(!_tp&&!_bz&&!_gd&&/奖励会谈|经销商会谈|签收奖励|会谈|奖励|渠道激励/.test(q)){
 var ents=IDX['其他事项']||[];
 if(ents.length>0){
 var jlh='<h3 style="color:#c41e2a">【经销商奖励会谈】</h3>';
 jlh+='<div style="font-size:15px;margin:8px 0">《渠道管理指南》中奖励会谈相关条目如下，请选择查看：</div>';
+jlh+='<div style="background:#fff8e1;border-left:3px solid #f5a623;padding:10px 14px;margin:8px 0;font-size:14px">⚠️ 该板块在《渠道管理指南》中暂无详细操作内容（仅收录标题）。如需最新指引，请联系销管<b>吴宜谦</b>。</div>';
 for(var x=0;x<ents.length;x++){jlh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(x+1)+'\';send()">'+(x+1)+'. '+ents[x].na+'</div>';}
 jlh+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看 | 输入新问题返回搜索模式</div>'+cnt(q,'其他事项');
 _tp={sub:ents,isSub:true};am('a',jlh);return;
@@ -454,7 +468,8 @@ function sc(){localStorage.setItem("qa_cvs",JSON.stringify(CVS));}
 function nc(){var c={id:"c"+Date.now(),title:"新会话",msgs:[],tm:new Date().toISOString()};CVS.unshift(c);sc();sw(c.id);rc();}
 function sw(id){CID=id;var c=CVS.find(function(x){return x.id===id});if(!c)return;document.getElementById("msgs").innerHTML="";if(c.msgs.length===0)document.getElementById("msgs").innerHTML="<div style=\"text-align:center;color:#bbb;padding:60px 0\">输入问题开始对话</div>";else for(var i=0;i<c.msgs.length;i++)am(c.msgs[i].t,c.msgs[i].c,true);rc();}
 function dc(id){if(!confirm('确认删除该会话吗？删除后无法恢复。'))return;CVS=CVS.filter(function(c){return c.id!==id});sc();if(CID===id){CID=CVS.length?CVS[0].id:null;CID?sw(CID):nc();}rc();} function rc(){var l=document.getElementById("cl");l.innerHTML=CVS.map(function(c){var on=c.id===CID?" on":"";var t=c.title||"新会话";var d=new Date(c.tm).toLocaleDateString("zh-CN",{month:"short",day:"numeric"});return "<div class=\"cv"+on+"\" onclick=\"sw('"+c.id+"')\"><div>"+t+"<br><small>"+d+" "+c.msgs.length+"条</small></div><span class=\"x\" onclick=\"event.stopPropagation();dc('"+c.id+"')\">&times;</span></div>";}).join("");}
-function av(t,c){var cv=CVS.find(function(x){return x.id===CID});if(!cv)return;cv.msgs.push({t:t,c:c,tm:new Date().toISOString()});if(cv.title==="新会话"&&cv.msgs.length===1&&t==="u"){cv.title=c.substring(0,25);}sc();rc();}
+var LASTQ='';
+function av(t,c){var cv=CVS.find(function(x){return x.id===CID});if(!cv)return;cv.msgs.push({t:t,c:c,tm:new Date().toISOString()});if(cv.title==="新会话"&&cv.msgs.length===1&&t==="u"){cv.title=c.substring(0,25);}if(t==="u"){LASTQ=c;}else{try{var lg=JSON.parse(localStorage.getItem("qa_log")||"[]");lg.push({q:LASTQ,fb:c.indexOf("暂不在渠道管理指南范围内")>=0,ts:new Date().toISOString()});if(lg.length>300)lg=lg.slice(-300);localStorage.setItem("qa_log",JSON.stringify(lg));}catch(e){}}sc();rc();}
 function am(t,c,nosave){var ms=document.getElementById("msgs");var d=document.createElement("div");d.className="msg "+(t==="u"?"u":"a");d.innerHTML=t==="u"?"<div>"+c+"</div>":c;ms.appendChild(d);setTimeout(function(){ms.scrollTop=999999;},100);if(!nosave)av(t,c);}
 if(CVS.length===0)nc();else sw(CVS[0].id);
 document.getElementById("nb").onclick=nc;

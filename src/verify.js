@@ -170,11 +170,58 @@ check('会谈→章节目录', r.includes('经销商会谈相关规范'), r.slic
 // 29. 奖励会谈章节内数字导航（条目暂无图文内容时应提示销管，绝不落入无匹配话术）
 ask('奖励会谈');
 r = ask('1');
-check('章节内选1→提示暂无内容+销管', r.includes('暂无内容') && r.includes('销管人员') && !r.includes('渠道管理指南范围内'), r.slice(0, 160));
+check('章节内选1→空壳话术+销管', r.includes('暂无详细操作内容') && r.includes('吴宜谦') && !r.includes('渠道管理指南范围内'), r.slice(0, 160));
 
 // 30. 无匹配话术含经销商奖励会谈
 r = ask('今天中午吃什么');
 check('无匹配话术→含奖励会谈', r.includes('经销商奖励会谈'), r.slice(0, 200));
+
+// ===== 指令文档第7节：12条验收用例 =====
+r = ask('开户需要准备哪些附件？');
+check('验收1 开户附件→清单1-10+高亮', r.includes('附件1') && r.includes('附件10') && r.includes('骑缝章') && r.includes('预包装'), r.slice(0, 200));
+
+r = ask('附件2是什么？');
+check('验收2 附件2→营业执照', r.includes('营业执照'), r.slice(0, 120));
+
+r = ask('附件9是什么？');
+check('验收3 附件9→实际经营人情况说明', r.includes('实际经营人情况说明'), r.slice(0, 120));
+
+r = ask('一码通办怎么用？');
+check('验收4 一码通办→板块内容(非兜底)', r.includes('一码通办') && !r.includes('渠道管理指南范围内'), r.slice(0, 160));
+
+r = ask('奖励会谈怎么操作？');
+check('验收5 奖励会谈→空壳话术+转人工', r.includes('暂无详细操作内容') && r.includes('吴宜谦'), r.slice(0, 200));
+
+r = ask('实控人信息怎么导入？');
+check('验收6 实控人导入→TPM实控人档案', r.includes('实控人档案管理'), r.slice(0, 160));
+
+r = ask('库存怎么调平？');
+check('验收7 库存调平→虚拟终端方案', r.includes('虚拟终端'), r.slice(0, 160));
+
+r = ask('合同签不了怎么办？');
+check('验收8 合同签不了→常见问题五选', r.includes('没有收到签署消息') && r.includes('人脸识别失败'), r.slice(0, 200));
+
+r = ask('拼车地址怎么申请？');
+check('验收9 拼车地址→仓库专项指引', r.includes('拼车'), r.slice(0, 160));
+
+r = ask('隐藏库是什么？');
+check('验收10 隐藏库→飞检核心+考核高亮', r.includes('隐藏库') && r.includes('考核'), r.slice(0, 200));
+
+r = ask('营业执照找不到了帮我看下');
+check('验收11 同义词执照→附件2', r.includes('营业执照'), r.slice(0, 160));
+
+r = ask('老板和法人不是同一个人，身份证要几张？');
+check('验收12 附件3→两人身份证均需提供', r.includes('两人身份证均需提供'), r.slice(0, 200));
+
+// 路由表补充：箱码/奖盖→交接，渠道激励→奖励会谈，失效→销户
+r = ask('箱码转移怎么办');
+check('路由 箱码→交接流程', r.includes('箱码'), r.slice(0, 160));
+r = ask('渠道激励会谈');
+check('路由 渠道激励→奖励会谈目录', r.includes('经销商奖励会谈'), r.slice(0, 160));
+r = ask('经销商失效怎么操作');
+check('路由 失效→销户', r.includes('销户'), r.slice(0, 160));
+r = ask('一批商交接需要哪些资料');
+check('路由 交接资料→不被开户附件劫持', r.includes('渠道调整报告') && !r.includes('开户必传附件清单'), r.slice(0, 200));
 
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
