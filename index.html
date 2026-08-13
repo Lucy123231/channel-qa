@@ -703,6 +703,11 @@ setTimeout(function(){ms.scrollTop=999999;},100);
 setTimeout(function(){
 var th=document.getElementById('think');if(th)th.remove();
 var ms=document.getElementById('msgs');
+// 同义替换词转换
+for(var sk in SYN){if(q.indexOf(sk)>=0)q=q.replace(sk,SYN[sk]);}
+// 合规红线检测
+var redHits=[];
+for(var ri=0;ri<RED.length;ri++){for(var rj=0;rj<RED[ri].k.length;rj++){if(q.indexOf(RED[ri].k[rj])>=0){redHits.push(RED[ri].m);break;}}}
 // 【最高优先级】附件专属检索：附件X只查附件库
 var attM=/附件\s*(\d+)/.exec(q);var attMC=/附件\s*([一二三四五六七八九十]+)/.exec(q);
 if((attM||attMC)&&!q.match(/附件填写|附件上传|附件总|附件要求/)){
@@ -731,11 +736,6 @@ var tpsel=tpname;var ents0=IDX[tpsel.id]||[];
 if(ents0.length>0){var mx0=ents0.length>6?5:ents0.length;var h0='<h3 style="color:#c41e2a">【'+tpsel.id+'】细分业务如下：</h3>';for(var x=0;x<mx0;x++){h0+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+ents0[x].n+'\';send()">'+ents0[x].n+'. '+ents0[x].na+'</div>';}if(ents0.length>6){h0+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'99\';send()">查看更多条目（'+(ents0.length-5)+'项）</div>';}h0+='<div style="margin-top:8px;font-size:14px;color:#888">输入编号或条目名即可查看</div>';_tp={sub:ents0,isSub:true};am('a',h0);return;}
 am('a','该板块暂无内容，请咨询销管人员。');return;
 }
-// 同义替换词转换
-for(var sk in SYN){if(q.indexOf(sk)>=0)q=q.replace(sk,SYN[sk]);}
-// 合规红线检测
-var redHits=[];
-for(var ri=0;ri<RED.length;ri++){for(var rj=0;rj<RED[ri].k.length;rj++){if(q.indexOf(RED[ri].k[rj])>=0){redHits.push(RED[ri].m);break;}}}
 // 检测链接问题
 if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
