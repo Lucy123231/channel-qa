@@ -612,6 +612,15 @@ var IDX={
 {n:3,na:'经销商会谈相关规范',kw:['会谈'],c:'',s:[]}
 ]
 };
+var SYN={开店:'开户',销户:'销户',改资料:'信息变更',签合同:'合同签署',签不了:'合同报错',货对不上:'库存调平',仓库改地址:'仓库地址',提货车型:'车型维护',盘库:'盘点',开户材料:'开户附件',经营人证明:'实际经营人情况说明'};
+var RED=[{k:['预包装'],m:'<b style="color:#c41e2a">⚠️ 合规红线：预包装食品备案为开户前置必备资料，不可后补！</b>'},
+{k:['骑缝章'],m:'<b style="color:#c41e2a">⚠️ 合规红线：经销商账户开设申请书3页全套必须盖骑缝章！</b>'},
+{k:['签字','按手印'],m:'<b style="color:#c41e2a">⚠️ 合规红线：所有开户附件必须盖公章、法人签字按手印！</b>'},
+{k:['张雅寒'],m:'<b style="color:#c41e2a">⚠️ 合规红线：深圳/广州印章管理员为张雅寒的未生效合同必须作废重签！</b>'},
+{k:['海南'],m:'<b style="color:#c41e2a">⚠️ 合规红线：海南营销中心合同甲方需改为华润雪花啤酒（中国）有限公司海南销售分公司！</b>'},
+{k:['三批'],m:'<b style="color:#c41e2a">⚠️ 合规红线：三批及以下层级客户名称必须以"P"字样结尾！</b>'},
+{k:['临期','过期酒'],m:'<b style="color:#c41e2a">⚠️ 合规红线：临期过期酒必须CRM录入，不录入公司不协助处理！</b>'},
+{k:['渠道调整'],m:'<b style="color:#c41e2a">⚠️ 合规红线：渠道调整必须先上传调整报告才可做经销商交接！</b>'}];
 var _ak='sk-xojvtummkrgddlmzfhrmsfhgprjjleazgxcpvdancbchaexw';
 // ===== 匹配 =====
 function mq(q){
@@ -682,6 +691,18 @@ setTimeout(function(){ms.scrollTop=999999;},100);
 setTimeout(function(){
 var th=document.getElementById('think');if(th)th.remove();
 var ms=document.getElementById('msgs');
+// 首页快捷导航：输入1-7直达板块
+var qn=parseInt(q);
+if(!_tp&&!_bz&&!_gd&&qn>=1&&qn<=7&&q.length<=2){
+var tpsel=TPL[qn-1];var ents0=IDX[tpsel.id]||[];
+if(ents0.length>0){var mx0=ents0.length>6?5:ents0.length;var h0='<h3 style="color:#c41e2a">【'+tpsel.id+'】细分业务如下：</h3>';for(var x=0;x<mx0;x++){h0+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+ents0[x].n+'\';send()">'+ents0[x].n+'. '+ents0[x].na+'</div>';}if(ents0.length>6){h0+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'99\';send()">查看更多条目（'+(ents0.length-5)+'项）</div>';}h0+='<div style="margin-top:8px;font-size:14px;color:#888">输入编号或条目名即可查看</div>';_tp={sub:ents0,isSub:true};am('a',h0);return;}
+am('a','该板块暂无内容，请咨询销管人员。');return;
+}
+// 同义替换词转换
+for(var sk in SYN){if(q.indexOf(sk)>=0)q=q.replace(sk,SYN[sk]);}
+// 合规红线检测
+var redHits=[];
+for(var ri=0;ri<RED.length;ri++){for(var rj=0;rj<RED[ri].k.length;rj++){if(q.indexOf(RED[ri].k[rj])>=0){redHits.push(RED[ri].m);break;}}}
 // 检测链接问题
 if(/链接|网址|url|入口.*在哪/.test(q)&&!/怎么|流程|步骤/.test(q)){
 am('a',rl(q));return;
@@ -729,10 +750,13 @@ var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
 // 会话记忆
 if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什么|聊过|说过什么/.test(q)){var cv=CVS.find(function(x){return x.id===CID});if(cv){var uqs=cv.msgs.filter(function(m){return m.t==="u"});if(uqs.length>0){var hist=uqs.map(function(m,i){return (i+1)+". "+m.c;}).join("<br>");am('a','您一共问了 <b>'+uqs.length+'</b> 个问题：<br><br>'+hist);return;}}}
-// IDX双检索：关键词直接命中细分条目
+if(/上一个问题|上一条|刚才的回答|刚才问的/.test(q)){var cv2=CVS.find(function(x){return x.id===CID});if(cv2){var uq2=cv2.msgs.filter(function(m){return m.t==="u"});var aq2=cv2.msgs.filter(function(m){return m.t==="a"});if(uq2.length>0){var lastQ=uq2[uq2.length-1].c;var lastA=aq2.length>0?aq2[aq2.length-1].c:'';am('a','您上一个问题是：<b>'+lastQ+'</b><br><br>'+lastA);return;}}}
+// IDX双检索：关键词+碎片词双向命中细分条目
 var idxhits=[];
-for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0){idxhits.push(ent[y]);break;}}}}
-if(idxhits.length===1&&q.length<20){var hd=idxhits[0];if(K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+K[hd.c].t+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>';_lc=hd.c;am('a',eh);return;}}
+for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0){idxhits.push(ent[y]);break;}}if(!idxhits.length||idxhits[idxhits.length-1]!==ent[y]){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2){idxhits.push(ent[y]);break;}}}}}
+if(idxhits.length===1&&q.length<20){var hd=idxhits[0];if(K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+K[hd.c].t+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>';
+if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)eh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
+_lc=hd.c;am('a',eh);return;}}
 if(idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].na+'\';send()">'+(x+1)+'. '+idxhits[x].na+'</div>';}am('a',ih);return;}
 // 一级板块判断：模糊提问先分层
 var tlhits=[];
@@ -784,7 +808,7 @@ fetch('https://api.siliconflow.cn/v1/chat/completions',{method:'POST',headers:{'
 // ===== 初始化 =====
 document.getElementById('btn').onclick=send;
 document.getElementById('inp').onkeydown=function(e){if(e.key==='Enter')send();};
-var qs=[['开户','如何给一批商开户？'],['仓库','仓库地址怎么新增？'],['合同','电子签合同怎么签？'],['库存','库存怎么盘点调平？'],['交接','经销商A转B怎么交接？'],['飞检','飞检前要准备什么？'],['变更','怎么修改经销商组织信息？'],['二批','二批商怎么开户？']];
+var qs=[['1.一批商全业务','1'],['2.二批商全业务','2'],['3.电子合同&推送函','3'],['4.库存管理','4'],['5.仓库地址维护','5'],['6.一码通办报表','6'],['7.奖励/会谈','7']];
 var qb=document.getElementById('quick');
 
 var CVS=JSON.parse(localStorage.getItem("qa_cvs")||"[]");
