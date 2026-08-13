@@ -151,5 +151,30 @@ check('特约开户→转二批指引', r.includes('特约开户已取消'), r.s
 r = ask('骑缝章');
 check('骑缝章→附件1+红线', r.includes('骑缝章'), r.slice(0, 120));
 
+// 25. 奖励会谈强制检索：不得落入无匹配话术
+r = ask('奖励会谈');
+check('奖励会谈→章节目录', r.includes('经销商奖励会谈') && r.includes('签收奖励规则'), r.slice(0, 160));
+
+// 26. 经销商会谈
+r = ask('经销商会谈');
+check('经销商会谈→章节目录', r.includes('经销商奖励会谈'), r.slice(0, 160));
+
+// 27. 签收奖励
+r = ask('签收奖励');
+check('签收奖励→章节目录', r.includes('经销商奖励会谈'), r.slice(0, 160));
+
+// 28. 会谈
+r = ask('会谈');
+check('会谈→章节目录', r.includes('经销商会谈相关规范'), r.slice(0, 160));
+
+// 29. 奖励会谈章节内数字导航（条目暂无图文内容时应提示销管，绝不落入无匹配话术）
+ask('奖励会谈');
+r = ask('1');
+check('章节内选1→提示暂无内容+销管', r.includes('暂无内容') && r.includes('销管人员') && !r.includes('渠道管理指南范围内'), r.slice(0, 160));
+
+// 30. 无匹配话术含经销商奖励会谈
+r = ask('今天中午吃什么');
+check('无匹配话术→含奖励会谈', r.includes('经销商奖励会谈'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);

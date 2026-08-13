@@ -171,9 +171,9 @@ var IDX={
 {n:4,na:'经销商借货同级签收（一码通办培训材料）',kw:['同级签收培训','签收培训'],c:'库存',s:[9]}
 ],
 '其他事项':[
-{n:1,na:'一批经销商签收奖励规则',kw:['一批签收奖励'],c:'',s:[]},
+{n:1,na:'一批经销商签收奖励规则',kw:['一批签收奖励','签收奖励'],c:'',s:[]},
 {n:2,na:'二批经销商签收奖励规则',kw:['二批签收奖励'],c:'',s:[]},
-{n:3,na:'经销商会谈相关规范',kw:['会谈'],c:'',s:[]}
+{n:3,na:'经销商会谈相关规范',kw:['会谈','奖励会谈','经销商会谈'],c:'',s:[]}
 ]
 };
 var ATT=[
@@ -365,6 +365,16 @@ for(var x=0;x<ents.length;x++){ymh+='<div style="padding:5px 0;font-size:15px;cu
 ymh+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号或条目名查看 | 输入新问题返回搜索模式</div>'+cnt(q,'一码通办');
 _tp={sub:ents,isSub:true};am('a',ymh);return;
 }}}
+// 【强制检索】经销商奖励会谈：命中关键词必须调取该章节，禁止落入无匹配话术
+if(!_tp&&!_bz&&!_gd&&/奖励会谈|经销商会谈|签收奖励|会谈|奖励/.test(q)){
+var ents=IDX['其他事项']||[];
+if(ents.length>0){
+var jlh='<h3 style="color:#c41e2a">【经销商奖励会谈】</h3>';
+jlh+='<div style="font-size:15px;margin:8px 0">《渠道管理指南》中奖励会谈相关条目如下，请选择查看：</div>';
+for(var x=0;x<ents.length;x++){jlh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(x+1)+'\';send()">'+(x+1)+'. '+ents[x].na+'</div>';}
+jlh+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看 | 输入新问题返回搜索模式</div>'+cnt(q,'其他事项');
+_tp={sub:ents,isSub:true};am('a',jlh);return;
+}}
 // 代词消解
 var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
@@ -428,7 +438,7 @@ for(var x=0;x<TPL.length;x++){gh+='<div style="padding:5px 0;font-size:15px;curs
 gh+='<div style="margin-top:10px;font-size:14px;color:#666">如仍无法定位您的问题，请联系销管<b>吴宜谦</b>。</div>';am('a',gh);return;
 }
 // 兜底：无API密钥时不调用AI，友好引导
-am('a','这个问题暂不在渠道管理指南范围内哦~您可以问我：一批商/二批商管理、电子合同、库存管理、仓库地址、一码通办数据报表等相关问题。'+cnt(q,''));
+am('a','这个问题暂不在渠道管理指南范围内哦~您可以问我：一批商/二批商管理、电子合同、库存管理、仓库地址、一码通办数据报表、经销商奖励会谈等相关问题。'+cnt(q,''));
 },800);
 }
 
