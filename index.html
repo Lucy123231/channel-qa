@@ -633,7 +633,7 @@ var RED=[{k:['预包装'],m:'<b style="color:#c41e2a">⚠️ 合规红线：预�
 {k:['三批'],m:'<b style="color:#c41e2a">⚠️ 合规红线：三批及以下层级客户名称必须以"P"字样结尾！</b>'},
 {k:['临期','过期酒'],m:'<b style="color:#c41e2a">⚠️ 合规红线：临期过期酒必须CRM录入，不录入公司不协助处理！</b>'},
 {k:['渠道调整'],m:'<b style="color:#c41e2a">⚠️ 合规红线：渠道调整必须先上传调整报告才可做经销商交接！</b>'}];
-var _ak='sk-xojvtummkrgddlmzfhrmsfhgprjjleazgxcpvdancbchaexw';
+var _ak='';
 // ===== 匹配 =====
 function mq(q){
 q=q.toLowerCase();
@@ -840,9 +840,8 @@ var gh='<h3 style="color:#c41e2a">未匹配到具体内容，请选择业务大�
 for(var x=0;x<TPL.length;x++){gh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+TPL[x].id+'\';send()">'+(x+1)+'. 【'+TPL[x].id+'】</div>';}
 am('a',gh);return;
 }
-// 兜底：调用AI回答
-var dt2=document.createElement('div');dt2.className='msg a';dt2.innerHTML='思考中...';dt2.id='think2';ms.appendChild(dt2);
-fetch('https://api.siliconflow.cn/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_ak},body:JSON.stringify({model:'deepseek-ai/DeepSeek-V3',messages:[{role:'system',content:'你是一个友好、简洁、口语化的智能助手，叫"小雪花"。不论用户问什么，都直接认真回答，不要推脱或转移话题。如果是啤酒或渠道管理相关问题，回答时可以体现专业。'},{role:'user',content:q}],max_tokens:500})}).then(function(r){return r.json()}).then(function(d){var th2=document.getElementById('think2');if(th2)th2.remove();if(d.choices&&d.choices[0])am('a',d.choices[0].message.content);else am('a','抱歉，暂时无法回答这个问题~');}).catch(function(){var th2=document.getElementById('think2');if(th2)th2.remove();am('a','抱歉，暂时无法回答这个问题，请稍后再试~');});
+// 兜底：无API密钥时不调用AI，友好引导
+am('a','这个问题暂不在渠道管理指南范围内哦～您可以问我：一批商/二批商管理、电子合同、库存管理、仓库地址等相关问题。');
 },800);
 }
 
