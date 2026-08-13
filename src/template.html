@@ -96,7 +96,7 @@ var p={
 "交接":{s:["交接","渠道调整","A转B","调整报告","经销商交接","怎么交接","如何交接","转给","移交给"],a:[]},
 "飞检":{s:["飞检","飞行检查","隐藏库","检查备战","抽检","总部抽查","怎么备战"],a:[]},
 "变更":{s:["信息变更","改工作站","改业务部","组织信息","修改经销商","变更","怎么变更","如何变更","经销商变更"],a:["仓库地址"]},
-"二批":{s:["二批","二批商","二批开户","二批命名","二批销户","二批变更","二级经销商","非一批","下级经销商"],a:[]},
+"二批":{s:["二批","二批商","二批开户","二批命名","二批销户","二批变更","二级经销商","非一批","下级经销商"],a:["一批","一批商","实控人"]},
 "实控人":{s:["实控人","实际控制人","控制人","选不到一批","实控人导入","证照导入"],a:[]},
 "特约":{s:["特约","特约经销商","特约销户","特约变更","宋子豪"],a:[]},
 "销户":{s:["销户","注销","退出","关闭账户","怎么销户","如何销户","经销商退出","停止合作"],a:["开户"]}
@@ -182,13 +182,18 @@ if(/修改经销商信息|怎么改信息/.test(lq)&&!/工作站|业务部|大�
 _bz='变更';am('a','<h3 style="color:#c41e2a">请选择修改类型</h3><div style="font-size:15px;margin:8px 0">请问需要修改哪类信息？（输入编号或点击）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 基础信息（联系人、电话、地址等）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 组织信息（工作站、业务部、大区）</div>');return;
 }
 // 引导模式：等待用户选择子话题
-if(_gd&&K[_gd]){
+if(_gd){
+var gk=typeof _gd==='object'?_gd.k:_gd;
+if(K[gk]){
   var n=parseInt(q);var sel=null;
-  if(n===0){var fall=ba(K[_gd]);am('a',fall);_gd=null;return;}
-  if(n>=1&&n<=K[_gd].s.length){sel=n-1;}
-  else{for(var i=0;i<K[_gd].s.length;i++){var st=K[_gd].s[i].title||'';if(st.indexOf(q)>=0){sel=i;break;}}}
-  if(sel!==null){var ss=K[_gd].s[sel];var h='<h3 style="color:#c41e2a">'+K[_gd].t+'</h3><div class="step">';if(ss.title)h+='<h4>'+(sel+1)+'. '+ss.title+'</h4>';if(ss.img||ss.imgs){var srcs=[];if(ss.img)srcs.push(ss.img);if(ss.imgs)srcs=srcs.concat(ss.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)h+='<img src="'+src+'" alt="'+(ss.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(ss.tx)h+='<div class="tx">'+ss.tx+'</div>';if(ss.w)h+='<div class="warn">'+ss.w+'</div>';h+='</div><div style="margin-top:12px;color:#888;font-size:14px">输入其他编号继续查看，或输入新问题返回搜索模式</div>';am('a',h);return;}
+  if(n===0){var fall=ba(K[gk]);am('a',fall);_gd=null;return;}
+  if(n===6&&typeof _gd==='object'&&_gd.off===5){var ee2=K[gk];var hh2='<h3 style="color:#c41e2a">'+ee2.t+' — 附件及补充说明</h3>';for(var i2=5;i2<ee2.s.length;i2++){var tt2=ct(ee2.s[i2].title);hh2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i2+1)+'\';send()">'+(i2-4)+'. '+tt2+'</div>';}hh2+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看对应附件 | 输入 <b>0</b> 查看全部</div>';_gd={k:gk,off:5};am('a',hh2);return;}
+  if(typeof _gd==='object'&&_gd.off===5&&n>=1&&n<=K[gk].s.length-5){sel=n+4;}
+  else if(n>=1&&n<=K[gk].s.length){sel=n-1;}
+  else{for(var i=0;i<K[gk].s.length;i++){var st=K[gk].s[i].title||'';if(st.indexOf(q)>=0){sel=i;break;}}}
+  if(sel!==null){var ss=K[gk].s[sel];var h='<h3 style="color:#c41e2a">'+K[gk].t+'</h3><div class="step">';if(ss.title)h+='<h4>'+(sel+1)+'. '+ss.title+'</h4>';if(ss.img||ss.imgs){var srcs=[];if(ss.img)srcs.push(ss.img);if(ss.imgs)srcs=srcs.concat(ss.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)h+='<img src="'+src+'" alt="'+(ss.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(ss.tx)h+='<div class="tx">'+ss.tx+'</div>';if(ss.w)h+='<div class="warn">'+ss.w+'</div>';h+='</div><div style="margin-top:12px;color:#888;font-size:14px">输入其他编号继续查看，或输入新问题返回搜索模式</div>';am('a',h);return;}
   _gd=null;
+}
 }
 // 代词消解
 var oq=q;
@@ -229,9 +234,11 @@ var e=K[key];var h='';
 if(e.intro)h+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:12px;border-left:3px solid #1e88e5;font-size:16px">'+e.intro+'</div>';
 h+='<h3 style="color:#c41e2a">'+e.t+'</h3>';
 h+='<div style="margin:8px 0;font-size:15px">关于这个板块，您具体想了解哪部分？输入编号就行：</div>';
-for(var i=0;i<e.s.length;i++){var tt=ct(e.s[i].title);h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
+var mx=e.s.length>6?5:e.s.length;
+for(var i=0;i<mx;i++){var tt=ct(e.s[i].title);h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
+if(e.s.length>6){h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'6\';send()">6. 查看其余'+(e.s.length-5)+'项（附件明细、补充说明等）</div>';}
 h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看全部完整内容 | 输入新问题搜索其他板块</div>';
-_gd=key;am('a',h);return;
+_gd={k:key,off:5};am('a',h);return;
 }
 // 兜底：调用AI回答
 var dt2=document.createElement('div');dt2.className='msg a';dt2.innerHTML='思考中...';dt2.id='think2';ms.appendChild(dt2);
