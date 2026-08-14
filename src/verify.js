@@ -37,6 +37,8 @@ function ask(q) {
   return captured.map(x => x.c).join('\n===MSG===\n');
 }
 
+function reset() { _lc = null; _gd = null; _bz = null; _tp = null; }
+
 let pass = 0, fail = 0;
 function check(name, cond, detail) {
   if (cond) { pass++; console.log('PASS ' + name); }
@@ -97,7 +99,8 @@ check('台账→交接内容直达', r.includes('箱码转移') || r.includes('�
 r = ask('数据导出');
 check('数据导出→库存报表路径', r.includes('数据导出路径'), r.slice(0, 120));
 
-// 14. 无匹配新话术模板
+// 14. 无匹配新话术模板（无板块锁定前提）
+reset();
 r = ask('今天中午吃什么');
 check('无匹配→新统一话术', r.includes('这个问题暂不在渠道管理指南范围内哦~') && r.includes('一码通办数据报表'), r.slice(0, 160));
 
@@ -172,7 +175,8 @@ ask('奖励会谈');
 r = ask('1');
 check('章节内选1→空壳话术+销管', r.includes('暂无详细操作内容') && r.includes('吴宜谦') && !r.includes('渠道管理指南范围内'), r.slice(0, 160));
 
-// 30. 无匹配话术含经销商奖励会谈
+// 30. 无匹配话术含经销商奖励会谈（无板块锁定前提）
+reset();
 r = ask('今天中午吃什么');
 check('无匹配话术→含奖励会谈', r.includes('经销商奖励会谈'), r.slice(0, 200));
 
@@ -240,7 +244,8 @@ check('模糊 同音字库存吊平→库存板块路由', r.includes('库存管
 r = ask('我要消户');
 check('模糊 同音字消户→销户', r.includes('销户') || (r.includes('您是不是想问') && r.includes('销户')), r.slice(0, 200));
 
-// 模糊层不得劫持无匹配兜底
+// 模糊层不得劫持无匹配兜底（无板块锁定前提）
+reset();
 r = ask('今天中午吃什么');
 check('模糊 不劫持无匹配兜底', r.includes('这个问题暂不在渠道管理指南范围内哦~'), r.slice(0, 160));
 
@@ -262,6 +267,51 @@ check('隔离 经销商会谈→不含开户内容', !r.includes('开户必传�
 
 r = ask('智慧雪花2.0');
 check('隔离 智慧雪花→不含开户内容', !r.includes('开户必传附件清单') && !r.includes('骑缝章'), r.slice(0, 200));
+
+// ===== 上下文记忆：锁定板块时"整个流程"类话术直接输出当前板块整套流程 =====
+reset();
+r = ask('户头类型');
+r = ask('整个流程');
+check('上下文 开户板块→整个流程输出整套', r.includes('根户头') && r.includes('经办人承诺书'), r.slice(0, 200));
+
+reset();
+r = ask('我要开户');
+r = ask('全部流程');
+check('上下文 开户三选→全部流程输出整套', r.includes('根户头') && r.includes('营业执照'), r.slice(0, 200));
+
+reset();
+r = ask('附件9');
+r = ask('完整流程给我说一下');
+check('上下文 附件后→完整流程输出开户整套', r.includes('根户头') && r.includes('经办人承诺书'), r.slice(0, 200));
+
+reset();
+r = ask('怎么盘库');
+r = ask('整个流程给我说一下');
+check('上下文 盘库菜单→库存整套流程', r.includes('CSMS') && r.includes('CRM'), r.slice(0, 200));
+
+reset();
+r = ask('二批开户');
+r = ask('完整流程');
+check('上下文 二批板块→二批整套流程', r.includes('CRM') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('奖励会谈');
+r = ask('整个流程');
+check('上下文 奖励会谈→回板块目录(不抛兜底)', r.includes('经销商奖励会谈') && !r.includes('渠道管理指南范围内'), r.slice(0, 200));
+
+reset();
+r = ask('一码通办');
+r = ask('整个流程');
+check('上下文 一码通办→回板块目录(不抛兜底)', r.includes('一码通办') && !r.includes('渠道管理指南范围内'), r.slice(0, 200));
+
+reset();
+r = ask('户头类型');
+r = ask('下午茶点什么');
+check('上下文 锁定板块无命中→板块内检索不抛兜底', r.includes('未在其中找到') && !r.includes('渠道管理指南范围内'), r.slice(0, 200));
+
+reset();
+r = ask('整个流程');
+check('上下文 无板块锁定→不输出整套流程', !r.includes('根户头'), r.slice(0, 160));
 
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
