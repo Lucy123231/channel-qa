@@ -401,5 +401,36 @@ r = ask('一码通办');
 r = ask('9');
 check('编号 一码通办越界→提示有效编号', r.includes('请输入菜单中的有效编号'), r.slice(0, 160));
 
+// ===== 6域21场景：风险点高亮 + 检索标签补漏 =====
+r = ask('拼车地址怎么申请');
+check('风险 拼车→信息一致红线高亮', r.includes('营运无法维护'), r.slice(0, 200));
+
+r = ask('特约转库存');
+check('风险 特约转→取消标签红线高亮', r.includes('奖盖核销'), r.slice(0, 200));
+
+r = ask('推送函怎么制作');
+check('风险 推送函→法务审核红线高亮', r.includes('法务审核'), r.slice(0, 200));
+
+r = ask('企业认证');
+check('标签 企业认证→专属条目直达', r.includes('企业认证'), r.slice(0, 160));
+
+r = ask('CSMS没有产品条码');
+check('标签 产品条码→营销中心手动添加', r.includes('营销中心'), r.slice(0, 200));
+
+r = ask('经销商往来');
+check('标签 经销商往来→销户文件清单', r.includes('销户') && r.includes('经销商往来附件清单'), r.slice(0, 200));
+
+r = ask('照片导入');
+check('标签 照片导入→证照批量导入', r.includes('照片导入'), r.slice(0, 160));
+
+r = ask('上下级');
+check('标签 上下级→挂靠关系', r.includes('挂靠'), r.slice(0, 160));
+
+r = ask('特约审批流');
+check('标签 特约审批流→特约TPM审批', r.includes('特约审批流'), r.slice(0, 160));
+
+r = ask('推送函');
+check('标签 推送函→适用场景(第21节)', r.includes('适用场景') && r.includes('法务审核'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
