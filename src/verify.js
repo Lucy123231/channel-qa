@@ -344,5 +344,62 @@ r = ask('如何给一批商开户');
 r = ask('0');
 check('上下文 菜单输入0→开户整套(与泛化语句等价)', r.includes('根户头') && r.includes('经办人承诺书'), r.slice(0, 200));
 
+// ===== 编号精准匹配：菜单数字一一绑定条目，严禁泛语义/附件乱调 =====
+reset();
+r = ask('如何给一批商开户');
+r = ask('1');
+check('编号 菜单输1→仅户头类型介绍', r.includes('户头类型介绍') && r.includes('根户头') && !r.includes('骑缝章') && !r.includes('承诺书'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('1.户头类型介绍');
+check('编号 文字+编号→同数字精准', r.includes('户头类型介绍') && r.includes('根户头') && !r.includes('骑缝章'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('2');
+check('编号 菜单输2→仅常规开户', r.includes('常规开户') && !r.includes('骑缝章') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('3');
+check('编号 菜单输3→仅操作步骤', r.includes('操作步骤') && !r.includes('骑缝章') && !r.includes('承诺书'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('4');
+check('编号 菜单输4→仅信息录入', r.includes('录入') && !r.includes('骑缝章') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('5');
+check('编号 菜单输5→仅附件填写要求', r.includes('附件填写要求') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('6');
+r = ask('1');
+check('编号 分页后输1→附件1(第6节)', r.includes('附件1') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('6');
+check('编号 菜单输6→其余条目分页', r.includes('附件及补充说明'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('20');
+check('编号 越界数字→提示有效编号不落语义', r.includes('请输入有效编号') && !r.includes('根户头') && !r.includes('骑缝章'), r.slice(0, 200));
+
+reset();
+r = ask('一码通办');
+r = ask('1');
+check('编号 一码通办输1→仅数据导出路径', r.includes('数据导出路径') && !r.includes('转码'), r.slice(0, 200));
+
+reset();
+r = ask('一码通办');
+r = ask('9');
+check('编号 一码通办越界→提示有效编号', r.includes('请输入菜单中的有效编号'), r.slice(0, 160));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
