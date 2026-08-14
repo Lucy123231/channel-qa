@@ -223,5 +223,26 @@ check('路由 失效→销户', r.includes('销户'), r.slice(0, 160));
 r = ask('一批商交接需要哪些资料');
 check('路由 交接资料→不被开户附件劫持', r.includes('渠道调整报告') && !r.includes('开户必传附件清单'), r.slice(0, 200));
 
+// ===== 模糊匹配引擎（错别字/同音字，L3编辑距离+L4拼音） =====
+// 结果二选一均算通过：HIGH直接命中 或 MEDIUM候选确认框
+r = ask('一码通版怎么用');
+check('模糊 同音字一码通版→一码通办', r.includes('一码通办') && (r.includes('渠道数据导出路径') || r.includes('您是不是想问')), r.slice(0, 200));
+
+r = ask('营业直照在不在');
+check('模糊 错别字营业直照→营业执照', r.includes('营业执照') && r.includes('附件2'), r.slice(0, 200));
+
+r = ask('奖励会弹怎么操作');
+check('模糊 同音字奖励会弹→奖励会谈', r.includes('经销商奖励会谈') || (r.includes('您是不是想问') && r.includes('奖励会谈')), r.slice(0, 200));
+
+r = ask('库存吊平');
+check('模糊 同音字库存吊平→库存板块路由', r.includes('库存管理') || r.includes('虚拟终端') || (r.includes('您是不是想问') && r.includes('调平')), r.slice(0, 200));
+
+r = ask('我要消户');
+check('模糊 同音字消户→销户', r.includes('销户') || (r.includes('您是不是想问') && r.includes('销户')), r.slice(0, 200));
+
+// 模糊层不得劫持无匹配兜底
+r = ask('今天中午吃什么');
+check('模糊 不劫持无匹配兜底', r.includes('这个问题暂不在渠道管理指南范围内哦~'), r.slice(0, 160));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);

@@ -9,6 +9,12 @@
 import json, os, re, base64, io
 from PIL import Image
 
+try:
+    from pypinyin import lazy_pinyin
+    PYPY_AVAILABLE = True
+except ImportError:
+    PYPY_AVAILABLE = False
+
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(BASE)
 KB_FILE = os.path.join(ROOT, 'kb', 'kb.json')
@@ -117,9 +123,28 @@ for key in kb:
 
 kb_block = 'var K={\n' + ',\n'.join(kb_js_lines) + '\n};'
 
+# ===== 6.5 生成拼音表（模糊匹配用，pypinyin 未安装时降级为空表） =====
+def build_pymap(template_text, kb_obj):
+    if not PYPY_AVAILABLE:
+        print("  pypinyin not installed -> pinyin fuzzy disabled (edit-distance only)")
+        return 'var PYMAP={};'
+    chars = set(re.findall(r'[一-鿿]', template_text))
+    chars.update(re.findall(r'[一-鿿]', json.dumps(kb_obj, ensure_ascii=False)))
+    entries = []
+    for ch in sorted(chars):
+        try:
+            py = lazy_pinyin(ch)[0]
+        except Exception:
+            continue
+        if py:
+            entries.append('"%s":"%s"' % (ch, py))
+    print(f"Pinyin map: {len(entries)} chars")
+    return 'var PYMAP={' + ','.join(entries) + '};'
+
 # ===== 7. 组装最终HTML =====
 # 替换占位符
 html = template.replace('__KB_PLACEHOLDER__', kb_block)
+html = html.replace('__PYMAP_PLACEHOLDER__', build_pymap(template, kb))
 
 # 插入 hidden img 标签
 body_end = html.rfind('</body>')
