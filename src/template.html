@@ -368,16 +368,17 @@ _bz='变更';_lc='变更';am('a','<h3 style="color:#c41e2a">请选择修改类�
 if(/^新增地址|^我要新增地址|^怎么新增地址|^如何新增地址/.test(lq)){
 _bz='地址';_lc='仓库';am('a','<h3 style="color:#c41e2a">请选择地址业务</h3><div style="font-size:15px;margin:8px 0">请问您属于哪种情况？（输入编号或点击）</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'新开户地址\';send()">1. 新开户维护首个地址</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'新增非拼车地址\';send()">2. 现有经销商新增普通地址</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'拼车地址\';send()">3. 新增拼车地址</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'修改详细地址\';send()">4. 修改已有地址</div>');return;
 }
-// 【上下文记忆】锁定板块时"整个流程/全部流程/完整流程/流程汇总" → 直接输出当前板块整套流程
-if(!_tp&&!/^\d/.test(q)&&/(^(整个|全部|完整)(操作)?流程|^流程汇总|流程给我|给我(说|讲)(一下|下)?(整个|全部|完整)?流程|流程(.{0,4})?汇总)/.test(q)){
+// 【上下文记忆】锁定板块时"整个流程/全部流程/完整流程/流程汇总/查看全部内容" → 直接输出当前板块整套流程（等价于菜单中输入0）
+// 显式板块词优先于上下文；上下文作为纯泛化语句的默认指代
+if(!_tp&&!/^\d/.test(q)&&/(整个|全部|完整)(操作)?流程|^流程汇总|流程给我|给我(说|讲)(一下|下)?(整个|全部|完整)?流程|流程(.{0,4})?汇总|查看全部|看全部|全部内容|我想要?全部/.test(q)){
 var ctxc=null;
-if(_gd){ctxc=typeof _gd==='object'?_gd.k:_gd;}
-if(!ctxc&&_lc)ctxc=_lc;
-if(!ctxc&&/二批|特约/.test(q))ctxc='二批';
+if(/二批|特约/.test(q))ctxc='二批';
 if(!ctxc&&/开户/.test(q))ctxc='开户';
 if(!ctxc&&/合同|签署/.test(q))ctxc='合同';
 if(!ctxc&&/库存|盘库|盘点/.test(q))ctxc='库存';
 if(!ctxc&&/仓库|地址|拼车/.test(q))ctxc='仓库';
+if(!ctxc&&_gd){ctxc=typeof _gd==='object'?_gd.k:_gd;}
+if(!ctxc&&_lc)ctxc=_lc;
 if(ctxc==='其他事项'||ctxc==='一码通办'){var i5=document.getElementById('inp');i5.value=ctxc==='其他事项'?'奖励会谈':'一码通办';setTimeout(function(){send();},50);return;}
 if(ctxc&&K[ctxc]){am('a',ba(K[ctxc])+'<div style="margin-top:12px;font-size:14px;color:#888">以上为【'+K[ctxc].t+'】完整流程内容，输入其他问题继续</div>'+cnt(q,ctxc));return;}
 }

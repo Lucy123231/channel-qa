@@ -313,5 +313,36 @@ reset();
 r = ask('整个流程');
 check('上下文 无板块锁定→不输出整套流程', !r.includes('根户头'), r.slice(0, 160));
 
+// ===== 上下文记忆扩展：泛化语句变体 + 0等价 + 显式板块词覆盖 =====
+reset();
+r = ask('我要开户');
+r = ask('我想了解全部流程');
+check('上下文 我想了解全部流程→开户整套', r.includes('根户头') && r.includes('营业执照'), r.slice(0, 200));
+
+reset();
+r = ask('户头类型');
+r = ask('查看全部内容');
+check('上下文 查看全部内容→开户整套', r.includes('根户头') && r.includes('经办人承诺书'), r.slice(0, 200));
+
+reset();
+r = ask('怎么盘库');
+r = ask('查看全部完整内容');
+check('上下文 查看全部完整内容→库存整套', r.includes('CSMS') && r.includes('CRM'), r.slice(0, 200));
+
+reset();
+r = ask('二批开户');
+r = ask('全部内容');
+check('上下文 全部内容→二批整套', r.includes('CRM') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('户头类型');
+r = ask('合同的全部内容');
+check('上下文 显式板块词覆盖→合同整套', r.includes('签署') && !r.includes('根户头'), r.slice(0, 200));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('0');
+check('上下文 菜单输入0→开户整套(与泛化语句等价)', r.includes('根户头') && r.includes('经办人承诺书'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
