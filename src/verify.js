@@ -244,5 +244,24 @@ check('模糊 同音字消户→销户', r.includes('销户') || (r.includes('�
 r = ask('今天中午吃什么');
 check('模糊 不劫持无匹配兜底', r.includes('这个问题暂不在渠道管理指南范围内哦~'), r.slice(0, 160));
 
+// ===== 板块强制隔离：其他事项/一码通办 严禁调出开户附件内容 =====
+r = ask('一批签收奖励需要哪些资料');
+check('隔离 签收奖励资料→奖励会谈板块', r.includes('经销商奖励会谈') && !r.includes('开户必传附件清单') && !r.includes('骑缝章'), r.slice(0, 200));
+
+r = ask('签收奖励的附件');
+check('隔离 签收奖励的附件→不调开户附件', !r.includes('开户必传附件清单') && !r.includes('骑缝章'), r.slice(0, 200));
+
+r = ask('一批商仓库需要哪些资料');
+check('隔离 仓库资料→不调开户附件', !r.includes('开户必传附件清单'), r.slice(0, 200));
+
+r = ask('数据看板需要什么资料');
+check('隔离 数据看板资料→一码通办板块', r.includes('一码通办') && !r.includes('开户必传附件清单'), r.slice(0, 200));
+
+r = ask('经销商会谈');
+check('隔离 经销商会谈→不含开户内容', !r.includes('开户必传附件清单') && !r.includes('骑缝章') && !r.includes('一批商管理'), r.slice(0, 200));
+
+r = ask('智慧雪花2.0');
+check('隔离 智慧雪花→不含开户内容', !r.includes('开户必传附件清单') && !r.includes('骑缝章'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
