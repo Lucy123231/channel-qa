@@ -70,6 +70,7 @@ function gi(n){var b=n.replace(/\.(png|jpeg|jpg)$/,'');var e=document.getElement
 // ===== 自动链接 =====
 function al(t){if(t.indexOf('<a ')>=0)return t;return t.replace(/(https?:\/\/[^\s，。,<>]+)/g,'<a href="$1" target="_blank" style="color:#c41e2a">$1</a>');}
 function ct(t){if(!t)return'（查看截图）';t=t.replace(/^[\(（]?\d+[\)）\.\、]\s*/,'').replace(/^[一二三四五六七八九十]+[\.\、]\s*/,'').replace(/\n.*$/,'');return t||'（无标题）';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
 // ===== 知识库（简版） =====
 __KB_PLACEHOLDER__;
@@ -96,7 +97,7 @@ var IDX={
 {n:8,na:'附件2营业执照提交要求',kw:['营业执照','复印件'],c:'开户',s:[6]},
 {n:9,na:'附件3法人/老板身份证材料',kw:['身份证','法人','老板'],c:'开户',s:[7]},
 {n:10,na:'附件4预包装食品备案',kw:['预包装','食品经营备案','前置'],c:'开户',s:[8]},
-{n:11,na:'预包装食品备案完整办理流程',kw:['备案流程','海南办理'],c:'开户',s:[9,10]},
+{n:11,na:'预包装食品备案完整办理流程',kw:['备案流程','海南办理','备案','海南'],c:'开户',s:[9,10]},
 {n:12,na:'附件5经销商开设分析报告',kw:['分析报告','附件5'],c:'开户',s:[11]},
 {n:13,na:'附件6印章印模模板填写',kw:['印章','印模'],c:'开户',s:[12]},
 {n:14,na:'附件7对公基本账户银行卡资料',kw:['银行卡','对公账户'],c:'开户',s:[13]},
@@ -194,9 +195,9 @@ var ATT=[
 var SYN={开店:'开户',销户:'销户',改资料:'信息变更',签合同:'合同签署',签不了:'合同报错',货对不上:'库存调平',仓库改地址:'仓库地址',提货车型:'车型维护',盘库:'盘点',开户材料:'开户附件',经营人证明:'实际经营人情况说明'};
 var RED=[{k:['预包装'],m:'<b style="color:#c41e2a">⚠️ 合规红线：预包装食品备案为开户前置必备资料，不可后补！</b>'},
 {k:['骑缝章'],m:'<b style="color:#c41e2a">⚠️ 合规红线：经销商账户开设申请书3页全套必须盖骑缝章！</b>'},
-{k:['签字','按手印'],m:'<b style="color:#c41e2a">⚠️ 合规红线：所有开户附件必须盖公章、法人签字按手印！</b>'},
+{k:['签字按手印','按手印'],m:'<b style="color:#c41e2a">⚠️ 合规红线：所有开户附件必须盖公章、法人签字按手印！</b>'},
 {k:['张雅寒'],m:'<b style="color:#c41e2a">⚠️ 合规红线：深圳/广州印章管理员为张雅寒的未生效合同必须作废重签！</b>'},
-{k:['海南'],m:'<b style="color:#c41e2a">⚠️ 合规红线：海南营销中心合同甲方需改为华润雪花啤酒（中国）有限公司海南销售分公司！</b>'},
+{k:['海南合同','海南甲方','海南销售分公司'],m:'<b style="color:#c41e2a">⚠️ 合规红线：海南营销中心合同甲方需改为华润雪花啤酒（中国）有限公司海南销售分公司！</b>'},
 {k:['三批'],m:'<b style="color:#c41e2a">⚠️ 合规红线：三批及以下层级客户名称必须以"P"字样结尾！</b>'},
 {k:['临期','过期酒'],m:'<b style="color:#c41e2a">⚠️ 合规红线：临期过期酒必须CRM录入，不录入公司不协助处理！</b>'},
 {k:['渠道调整'],m:'<b style="color:#c41e2a">⚠️ 合规红线：渠道调整必须先上传调整报告才可做经销商交接！</b>'},
@@ -445,8 +446,8 @@ am('a',fh);return;
 var oq=q;
 if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"信息变更",交接:"经销商交接",实控人:"实际控制人",二批:"二批商",特约:"特约经销商",合同:"合同",库存:"库存",仓库:"仓库地址",飞检:"飞行检查"};q=(cm[_lc]||_lc)+" "+q;}
 // 会话记忆
-if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什么|聊过|说过什么/.test(q)){var cv=CVS.find(function(x){return x.id===CID});if(cv){var uqs=cv.msgs.filter(function(m){return m.t==="u"});if(uqs.length>0){var hist=uqs.map(function(m,i){return (i+1)+". "+m.c;}).join("<br>");am('a','您一共问了 <b>'+uqs.length+'</b> 个问题：<br><br>'+hist);return;}}}
-if(/上一个问题|上一条|刚才的回答|刚才问的/.test(q)){var cv2=CVS.find(function(x){return x.id===CID});if(cv2){var uq2=cv2.msgs.filter(function(m){return m.t==="u"});var aq2=cv2.msgs.filter(function(m){return m.t==="a"});if(uq2.length>0){var lastQ=uq2[uq2.length-1].c;var lastA=aq2.length>0?aq2[aq2.length-1].c:'';am('a','您上一个问题是：<b>'+lastQ+'</b><br><br>'+lastA);return;}}}
+if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什么|聊过|说过什么/.test(q)){var cv=CVS.find(function(x){return x.id===CID});if(cv){var uqs=cv.msgs.filter(function(m){return m.t==="u"});if(uqs.length>0){var hist=uqs.map(function(m,i){return (i+1)+". "+esc(m.c);}).join("<br>");am('a','您一共问了 <b>'+uqs.length+'</b> 个问题：<br><br>'+hist);return;}}}
+if(/上一个问题|上一条|刚才的回答|刚才问的/.test(q)){var cv2=CVS.find(function(x){return x.id===CID});if(cv2){var uq2=cv2.msgs.filter(function(m){return m.t==="u"});var aq2=cv2.msgs.filter(function(m){return m.t==="a"});if(uq2.length>0){var lastQ=uq2[uq2.length-1].c;var lastA=aq2.length>0?aq2[aq2.length-1].c:'';am('a','您上一个问题是：<b>'+esc(lastQ)+'</b><br><br>'+lastA);return;}}}
 // IDX双检索：关键词+碎片词双向命中细分条目
 var idxhits=[];
 for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0){idxhits.push(ent[y]);break;}}if(!idxhits.length||idxhits[idxhits.length-1]!==ent[y]){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2){idxhits.push(ent[y]);break;}}}}}
@@ -521,7 +522,7 @@ else if(_lc==='一码通办')ctxk='一码通办';
 if(ctxk==='其他事项'||ctxk==='一码通办'){var i7=document.getElementById('inp');i7.value=ctxk==='其他事项'?'奖励会谈':'一码通办';setTimeout(function(){send();},50);return;}
 if(ctxk){
 var ch='<h3 style="color:#c41e2a">'+K[ctxk].t+'</h3>';
-ch+='<div style="margin:8px 0;font-size:15px">您当前位于【'+K[ctxk].t+'】板块，未在其中找到与「'+q+'」完全对应的内容。该板块包含以下条目（输入编号查看）：</div>';
+ch+='<div style="margin:8px 0;font-size:15px">您当前位于【'+K[ctxk].t+'】板块，未在其中找到与「'+esc(q)+'」完全对应的内容。该板块包含以下条目（输入编号查看）：</div>';
 var mx2=K[ctxk].s.length>6?5:K[ctxk].s.length;
 for(var i=0;i<mx2;i++){var tt3=ct(K[ctxk].s[i].title);ch+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt3+'</div>';}
 if(K[ctxk].s.length>6){ch+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'6\';send()">6. 查看其余'+(K[ctxk].s.length-5)+'项</div>';}
@@ -552,10 +553,10 @@ var CID=null;
 function sc(){localStorage.setItem("qa_cvs",JSON.stringify(CVS));}
 function nc(){var c={id:"c"+Date.now(),title:"新会话",msgs:[],tm:new Date().toISOString()};CVS.unshift(c);sc();sw(c.id);rc();}
 function sw(id){CID=id;var c=CVS.find(function(x){return x.id===id});if(!c)return;document.getElementById("msgs").innerHTML="";if(c.msgs.length===0)document.getElementById("msgs").innerHTML="<div style=\"text-align:center;color:#bbb;padding:60px 0\">输入问题开始对话</div>";else for(var i=0;i<c.msgs.length;i++)am(c.msgs[i].t,c.msgs[i].c,true);rc();}
-function dc(id){if(!confirm('确认删除该会话吗？删除后无法恢复。'))return;CVS=CVS.filter(function(c){return c.id!==id});sc();if(CID===id){CID=CVS.length?CVS[0].id:null;CID?sw(CID):nc();}rc();} function rc(){var l=document.getElementById("cl");l.innerHTML=CVS.map(function(c){var on=c.id===CID?" on":"";var t=c.title||"新会话";var d=new Date(c.tm).toLocaleDateString("zh-CN",{month:"short",day:"numeric"});return "<div class=\"cv"+on+"\" onclick=\"sw('"+c.id+"')\"><div>"+t+"<br><small>"+d+" "+c.msgs.length+"条</small></div><span class=\"x\" onclick=\"event.stopPropagation();dc('"+c.id+"')\">&times;</span></div>";}).join("");}
+function dc(id){if(!confirm('确认删除该会话吗？删除后无法恢复。'))return;CVS=CVS.filter(function(c){return c.id!==id});sc();if(CID===id){CID=CVS.length?CVS[0].id:null;CID?sw(CID):nc();}rc();} function rc(){var l=document.getElementById("cl");l.innerHTML=CVS.map(function(c){var on=c.id===CID?" on":"";var t=c.title||"新会话";var d=new Date(c.tm).toLocaleDateString("zh-CN",{month:"short",day:"numeric"});return "<div class=\"cv"+on+"\" onclick=\"sw('"+c.id+"')\"><div>"+esc(t)+"<br><small>"+d+" "+c.msgs.length+"条</small></div><span class=\"x\" onclick=\"event.stopPropagation();dc('"+c.id+"')\">&times;</span></div>";}).join("");}
 var LASTQ='';
 function av(t,c){var cv=CVS.find(function(x){return x.id===CID});if(!cv)return;cv.msgs.push({t:t,c:c,tm:new Date().toISOString()});if(cv.title==="新会话"&&cv.msgs.length===1&&t==="u"){cv.title=c.substring(0,25);}if(t==="u"){LASTQ=c;}else{try{var lg=JSON.parse(localStorage.getItem("qa_log")||"[]");lg.push({q:LASTQ,fb:c.indexOf("暂不在渠道管理指南范围内")>=0,ts:new Date().toISOString()});if(lg.length>300)lg=lg.slice(-300);localStorage.setItem("qa_log",JSON.stringify(lg));}catch(e){}}sc();rc();}
-function am(t,c,nosave){var ms=document.getElementById("msgs");var d=document.createElement("div");d.className="msg "+(t==="u"?"u":"a");d.innerHTML=t==="u"?"<div>"+c+"</div>":c;ms.appendChild(d);setTimeout(function(){ms.scrollTop=999999;},100);if(!nosave)av(t,c);}
+function am(t,c,nosave){var ms=document.getElementById("msgs");var d=document.createElement("div");d.className="msg "+(t==="u"?"u":"a");d.innerHTML=t==="u"?"<div>"+esc(c)+"</div>":c;ms.appendChild(d);setTimeout(function(){ms.scrollTop=999999;},100);if(!nosave)av(t,c);}
 if(CVS.length===0)nc();else sw(CVS[0].id);
 document.getElementById("nb").onclick=nc;
 for(var i=0;i<qs.length;i++){(function(q){

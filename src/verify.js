@@ -26,9 +26,9 @@ global.alert = () => {};
 
 vm.runInThisContext(code);
 
-// 拦截 am() 捕获 AI 回复
+// 拦截 am() 捕获 AI 回复（同时调用原函数，让会话存储 av/rc 真实运行）
 const origAm = global.am;
-global.am = function (t, c) { captured.push({ t, c }); };
+global.am = function (t, c, n) { captured.push({ t, c }); origAm(t, c, n); };
 
 function ask(q) {
   captured.length = 0;
@@ -131,7 +131,7 @@ check('一批开户→开户板块', r.includes('一批商管理') || r.includes
 // 21. 会话记忆
 ask('我要开户');
 r = ask('我刚才问了几个问题');
-check('会话记忆→历史问题数', r.includes('问了'), r.slice(0, 120));
+check('会话记忆→历史问题数', r.includes('您一共问了') && r.includes('我要开户'), r.slice(0, 160));
 
 // 22. 合同关键词→吴宜谦联系人兜底
 r = ask('人脸识别失败怎么办');
@@ -431,6 +431,22 @@ check('标签 特约审批流→特约TPM审批', r.includes('特约审批流'),
 
 r = ask('推送函');
 check('标签 推送函→适用场景(第21节)', r.includes('适用场景') && r.includes('法务审核'), r.slice(0, 200));
+
+// ===== 企业级体检修复：XSS转义 + 红线不误伤 + 备案直连 =====
+check('安全 esc转义函数', typeof esc === 'function' && esc('<b>') === '&lt;b&gt;', '');
+
+reset();
+r = ask('<img src=x onerror=alert(1)>');
+r = ask('我刚才问了什么');
+check('安全 历史回显XSS已转义', r.includes('&lt;img'), r.slice(0, 200));
+
+reset();
+r = ask('海南怎么备案');
+check('红线 海南备案→不误伤合同甲方红线', r.includes('备案') && !r.includes('合同甲方'), r.slice(0, 200));
+
+reset();
+r = ask('合同怎么签字');
+check('红线 合同签字→不误伤开户附件红线', !r.includes('所有开户附件必须盖公章'), r.slice(0, 200));
 
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
