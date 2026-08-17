@@ -103,13 +103,15 @@ var IDX={
 {n:14,na:'附件7对公基本账户银行卡资料',kw:['银行卡','对公账户'],c:'开户',s:[13]},
 {n:15,na:'附件8客户基本资料登记表',kw:['登记表','旺诚'],c:'开户',s:[14]},
 {n:16,na:'附件9实际经营人情况说明',kw:['经营人说明','实际经营人'],c:'开户',s:[15]},
-{n:17,na:'附件10经办人承诺书',kw:['承诺书','经办人'],c:'开户',s:[16]},
+{n:17,na:'附件10经办人承诺书',kw:['承诺书'],c:'开户',s:[16]},
 {n:18,na:'一批商销户流程',kw:['销户','财务对接','经销商往来','关户'],c:'销户',s:[0,1]},
+{n:25,na:'常规开户与管理开户的区别',kw:['常规开户和管理开户','开户的区别','管理开户的区别','常规开户的区别','开户分几种'],c:'开户',s:[1]},
 {n:19,na:'一批基础信息变更',kw:['基础信息变更','改联系人','改电话','改地址'],c:'变更',s:[0]},
 {n:20,na:'一批组织信息批量变更',kw:['组织信息','改工作站','改业务部','大区'],c:'变更',s:[1,2,3,4,5]},
 {n:21,na:'经销商渠道交接全流程',kw:['渠道交接','调整报告','A转B','箱码','奖盖'],c:'交接',s:[0,1,2]},
 {n:22,na:'实控人导入关联操作',kw:['实控人导入','实控人录不进去','实控人信息'],c:'实控人',s:[0]},
-{n:23,na:'证照信息批量导入TPM操作',kw:['证照导入','证照批量','照片导入'],c:'实控人',s:[1,2,3,4]}
+{n:23,na:'证照信息批量导入TPM操作',kw:['证照导入','证照批量','照片导入'],c:'实控人',s:[1,2,3,4]},
+{n:24,na:'系统选不到一批的原因',kw:['选不到一批','一批找不到'],c:'实控人',s:[5]}
 ],
 '二批商管理':[
 {n:1,na:'特约经销商说明',kw:['系统归属','特约审批流'],c:'特约',s:[0]},
@@ -122,7 +124,7 @@ var IDX={
 ],
 '经销商合同/推送函':[
 {n:1,na:'25年老合同订立入口+填写指引',kw:['25年合同','老合同'],c:'合同',s:[0,1,2,3]},
-{n:2,na:'26年经销商新合同完整订立全流程',kw:['26年合同','新合同','合同订立'],c:'合同',s:[4,5]},
+{n:2,na:'26年经销商新合同完整订立全流程',kw:['26年合同','新合同','合同订立'],c:'合同',s:[4,5,6,7,8]},
 {n:3,na:'26合同附件：销售补充协议',kw:['补充协议','劳动合同','附件上传'],c:'合同',s:[6]},
 {n:4,na:'合同提交审批操作',kw:['提交审批','审批人'],c:'合同',s:[7]},
 {n:5,na:'经销商润酒购/短信签署方式',kw:['怎么签署','签署二维码'],c:'合同',s:[8]},
@@ -138,13 +140,14 @@ var IDX={
 {n:9.6,na:'收不到签署短信/润酒购消息',kw:['收不到消息','没收到签署','签署短信'],c:'合同',s:[18]},
 {n:9.7,na:'企业认证问题处理',kw:['企业认证'],c:'合同',s:[20]},
 {n:9.8,na:'合同其他问题指南入口',kw:['其他问题','合同管理模块'],c:'合同',s:[21]},
-{n:10,na:'电子推送函适用业务场景',kw:['推送函','适用场景'],c:'合同',s:[22]},
+{n:9.9,na:'经办人信息录错/号码变更处理',kw:['经办人录错','号码变更','经办人信息'],c:'合同',s:[19]},
+{n:10,na:'电子推送函适用场景及完整流程',kw:['推送函','适用场景'],c:'合同',s:[22,23,24,25,26,27]},
 {n:11,na:'推送函AISM提工单配置模板流程',kw:['提工单','AISM'],c:'合同',s:[25]},
 {n:12,na:'TPM批量下发告知函操作步骤',kw:['批量下发','告知函'],c:'合同',s:[26]},
 {n:13,na:'经销商润酒购确认函签署操作',kw:['确认函','润酒购确认'],c:'合同',s:[27]}
 ],
 '库存管理':[
-{n:1,na:'CSMS经销商库存提报盘点步骤',kw:['CSMS提报','手机盘点','电脑盘点'],c:'库存',s:[0,1]},
+{n:1,na:'CSMS经销商库存提报盘点步骤',kw:['CSMS提报','手机盘点','电脑盘点','库存提报'],c:'库存',s:[0,1,6]},
 {n:2,na:'临期过期酒CRM录入强制要求',kw:['过期酒','临期酒','CRM录入'],c:'库存',s:[4]},
 {n:3,na:'库存调平操作流程',kw:['调平','虚拟终端'],c:'库存',s:[7]},
 {n:4,na:'库存周转计算规则',kw:['周转','动销计算'],c:'库存',s:[8]},
@@ -154,19 +157,19 @@ var IDX={
 {n:8,na:'CSMS产品条码缺失处理及提报范围',kw:['条码','产品条码','没有条码','提报范围'],c:'库存',s:[6]}
 ],
 '仓库地址专项':[
-{n:1,na:'新开户仓库地址、提货车型维护',kw:['新开户地址','提货车型'],c:'仓库',s:[4,5,6,7,8,9,10,11,12,13,14,15,16]},
-{n:2,na:'新增非拼车仓库地址申请',kw:['新增地址','非拼车'],c:'仓库',s:[17,18,19,20,21]},
-{n:3,na:'新增拼车配送仓库地址',kw:['拼车地址','借仓库'],c:'仓库',s:[22]},
-{n:4,na:'修改已有仓库详细地址描述',kw:['修改详细地址','地址描述'],c:'仓库',s:[23]},
-{n:5,na:'修改仓库其他基础信息',kw:['改定位','改工厂','改属性'],c:'仓库',s:[24]},
-{n:6,na:'失效/关闭仓库地址流程',kw:['关闭地址','失效地址'],c:'仓库',s:[25]},
-{n:7,na:'修改客户默认提货仓库',kw:['默认地址','默认仓库'],c:'仓库',s:[26]},
-{n:8,na:'仓库配送车型修改、新增辅助车型',kw:['改车型','辅助车型'],c:'仓库',s:[27,28]},
-{n:9,na:'仓库地址批量处理注意事项',kw:['批量地址','批量处理'],c:'仓库',s:[29]},
+{n:1,na:'新开户仓库地址、提货车型维护',kw:['新开户地址','提货车型'],c:'仓库',s:[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]},
+{n:2,na:'新增非拼车仓库地址申请',kw:['新增地址','非拼车'],c:'仓库',s:[19,20,21,22,23]},
+{n:3,na:'新增拼车配送仓库地址',kw:['拼车地址','借仓库'],c:'仓库',s:[24]},
+{n:4,na:'修改已有仓库详细地址描述',kw:['修改详细地址','地址描述'],c:'仓库',s:[25]},
+{n:5,na:'修改仓库其他基础信息',kw:['改定位','改工厂','改属性'],c:'仓库',s:[26]},
+{n:6,na:'失效/关闭仓库地址流程',kw:['关闭地址','失效地址'],c:'仓库',s:[27]},
+{n:7,na:'修改客户默认提货仓库',kw:['默认地址','默认仓库'],c:'仓库',s:[28]},
+{n:8,na:'仓库配送车型修改、新增辅助车型',kw:['改车型','辅助车型'],c:'仓库',s:[29,30]},
+{n:9,na:'仓库地址批量处理注意事项',kw:['批量地址','批量处理'],c:'仓库',s:[31]},
 {n:10,na:'飞行检查前仓库地址类型核对',kw:['飞检地址','地址类型'],c:'飞检',s:[0]},
-{n:11,na:'巡送巡收专用地址维护',kw:['巡送','巡收','80KM'],c:'仓库',s:[30]},
-{n:12,na:'修改经销商提货/自提承运方式',kw:['交付方式','自提','承运商'],c:'仓库',s:[31]},
-{n:13,na:'地址省市区街道重复问题修正',kw:['省市区重复','街道重复'],c:'仓库',s:[32]},
+{n:11,na:'巡送巡收专用地址维护',kw:['巡送','巡收','80KM'],c:'仓库',s:[32]},
+{n:12,na:'修改经销商提货/自提承运方式',kw:['交付方式','自提','承运商'],c:'仓库',s:[33]},
+{n:13,na:'地址省市区街道重复问题修正',kw:['省市区重复','街道重复'],c:'仓库',s:[34]},
 {n:14,na:'飞检核心要求（隐藏库认定与考核）',kw:['隐藏库','隐藏库是什么','飞检核心'],c:'飞检',s:[1]}
 ],
 '一码通办':[
@@ -436,6 +439,7 @@ if(!_tp&&!_bz&&!_gd&&/(开户|一批|新经销商|新渠道)/.test(q)&&/(附件|
 _lc='开户';
 var fh='<h3 style="color:#c41e2a">开户必传附件清单（附件1-附件10）</h3>';
 fh+='<div style="font-size:15px;margin:8px 0">共10项必传附件，点击或输入「附件N」查看单项要求：</div>';
+fh+='<div style="background:#f0f7ff;border-left:3px solid #1e88e5;padding:8px 14px;margin:8px 0;font-size:14px">📌 另需上传<b>「渠道调整/新增/规划报告」原文及审批单</b>。</div>';
 for(var x=0;x<ATT.length;x++){fh+='<div style="padding:4px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'附件'+ATT[x].n+'\';send()">'+ATT[x].n+'. '+ATT[x].na+'</div>';}
 fh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+RED[1].m+'</div>';
 fh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+RED[0].m+'</div>';
@@ -449,13 +453,16 @@ if(_lc&&/[它这那]/.test(q)){var cm={开户:"开户",销户:"销户",变更:"�
 // 会话记忆
 if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什么|聊过|说过什么/.test(q)){var cv=CVS.find(function(x){return x.id===CID});if(cv){var uqs=cv.msgs.filter(function(m){return m.t==="u"});if(uqs.length>0){var hist=uqs.map(function(m,i){return (i+1)+". "+esc(m.c);}).join("<br>");am('a','您一共问了 <b>'+uqs.length+'</b> 个问题：<br><br>'+hist);return;}}}
 if(/上一个问题|上一条|刚才的回答|刚才问的/.test(q)){var cv2=CVS.find(function(x){return x.id===CID});if(cv2){var uq2=cv2.msgs.filter(function(m){return m.t==="u"});var aq2=cv2.msgs.filter(function(m){return m.t==="a"});if(uq2.length>0){var lastQ=uq2[uq2.length-1].c;var lastA=aq2.length>0?aq2[aq2.length-1].c:'';am('a','您上一个问题是：<b>'+esc(lastQ)+'</b><br><br>'+lastA);return;}}}
-// IDX双检索：关键词+碎片词双向命中细分条目
+// IDX双检索：关键词+碎片词双向命中细分条目（记录命中词长，长词优先）
 var idxhits=[];
-for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0){idxhits.push(ent[y]);break;}}if(!idxhits.length||idxhits[idxhits.length-1]!==ent[y]){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2){idxhits.push(ent[y]);break;}}}}}
-if(idxhits.length===1&&q.length<20){var hd=idxhits[0];if(K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+K[hd.c].t+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>'+cnt(q,hd.na);
+for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];var mkl=0;for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0&&ek[z].length>mkl)mkl=ek[z].length;}if(!mkl){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2){mkl=ek[z].length;break;}}}if(mkl)idxhits.push({en:ent[y],mkl:mkl});}}
+var hd=null;
+if(idxhits.length===1&&q.length<20){hd=idxhits[0].en;}
+else if(idxhits.length>1&&q.length<20){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}if(topn===1&&mxx>=6)hd=idxhits[topi].en;}
+if(hd&&K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+K[hd.c].t+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>'+cnt(q,hd.na);
 if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)eh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
-_lc=hd.c;am('a',eh);return;}}
-if(idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].na+'\';send()">'+(x+1)+'. '+idxhits[x].na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
+_lc=hd.c;am('a',eh);return;}
+if(idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
 // 一级板块判断：模糊提问先分层
 var tlhits=[];
 for(var x=0;x<TPL.length;x++){var hit=false;for(var y=0;y<TPL[x].k.length;y++){if(q.indexOf(TPL[x].k[y])>=0){hit=true;break;}}if(hit)tlhits.push(TPL[x]);}

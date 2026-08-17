@@ -458,5 +458,48 @@ check('内容 合同其他问题→模块指南入口', r.includes('合同管理
 r = ask('总对总大合同');
 check('内容 总对总→库存纠错路径', r.includes('总对总') && r.includes('库存纠错'), r.slice(0, 200));
 
+// ===== FAQ精校：35条标准问答逐项校准 =====
+r = ask('26年合同怎么签');
+check('FAQ14 26年合同→5步全流程', r.includes('附件上传') && r.includes('提交审批') && r.includes('签署'), r.slice(0, 200));
+
+r = ask('经办人信息录错了');
+check('FAQ19 经办人录错→作废重制直达', r.includes('作废') && r.includes('重新制定'), r.slice(0, 200));
+
+r = ask('选不到一批');
+check('FAQ5 选不到一批→两大原因直达', r.includes('组织关系没挂到业务部') && r.includes('失效'), r.slice(0, 200));
+
+r = ask('库存提报');
+check('FAQ23 库存提报→含条码/范围', r.includes('条码') && r.includes('营销中心'), r.slice(0, 200));
+
+r = ask('拼车地址怎么申请');
+check('FAQ28 拼车→场景三全文+审批流', r.includes('拼车审批流') && r.includes('营运'), r.slice(0, 200));
+
+r = ask('修改详细地址');
+check('FAQ29 改详细地址→新增后失效旧地址', r.includes('路线作废') && r.includes('新增'), r.slice(0, 200));
+
+r = ask('修改默认地址');
+check('FAQ30 默认地址→先取消默认', r.includes('取消默认'), r.slice(0, 200));
+
+r = ask('辅助车型');
+check('FAQ-辅助车型→邮件申请', r.includes('邮件'), r.slice(0, 200));
+
+r = ask('批量处理地址');
+check('FAQ-批量处理→sheet导入规则', r.includes('批量'), r.slice(0, 200));
+
+r = ask('交付方式');
+check('FAQ32 交付方式→自提/承运商', r.includes('自提') && r.includes('承运商'), r.slice(0, 200));
+
+r = ask('巡送巡收');
+check('FAQ31 巡送巡收→≤80km+李艺航', r.includes('80') && r.includes('李艺航'), r.slice(0, 200));
+
+r = ask('开户需要哪些附件');
+check('FAQ1 开户附件→含渠道调整报告', r.includes('渠道调整'), r.slice(0, 200));
+
+r = ask('常规开户和管理开户的区别');
+check('FAQ3 常规vs管理开户→文字自足', r.includes('存量经销商变更营业执照号') && r.includes('管理开户'), r.slice(0, 200));
+
+r = ask('二批批量失效');
+check('FAQ10 二批批量失效→Excel表渠道管理岗', r.includes('渠道管理岗') && r.includes('Excel'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
