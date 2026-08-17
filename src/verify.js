@@ -448,5 +448,15 @@ reset();
 r = ask('合同怎么签字');
 check('红线 合同签字→不误伤开户附件红线', !r.includes('所有开户附件必须盖公章'), r.slice(0, 200));
 
+// ===== 指南更新内容映射 =====
+r = ask('特约转库存');
+check('内容 特约转库存→退货+同级签收+取消标签', r.includes('退货') && r.includes('奖盖核销'), r.slice(0, 200));
+
+r = ask('合同其他问题');
+check('内容 合同其他问题→模块指南入口', r.includes('合同管理模块问题指南') || r.includes('doxk9ASnhVapvbpKaOKcUuJMjFc'), r.slice(0, 200));
+
+r = ask('总对总大合同');
+check('内容 总对总→库存纠错路径', r.includes('总对总') && r.includes('库存纠错'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
