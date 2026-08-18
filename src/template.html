@@ -359,6 +359,19 @@ var atf3=null;for(var x=0;x<ATT.length;x++){if(ATT[x].n===qn2){atf3=ATT[x];break
 if(flw.length>0&&atf3){var dq='<h3 style="color:#c41e2a">数字'+qn2+'匹配到两类内容，请选择：</h3>';dq+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+flw[0].en.na+'\';send()">① 流程'+qn2+'：'+flw[0].en.na+'（'+flw[0].tp+'）</div>';dq+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'附件'+atf3.n+'\';send()">② '+atf3.na+'</div>';am('a',dq);return;}
 if(atf3&&flw.length===0){var inp2=document.getElementById('inp');inp2.value='附件'+qn2;setTimeout(function(){send();},50);return;}
 }}
+// 【场景编号直达】明确携带"场景（X）/场景X"→ 精准定位该场景，直接输出完整流程，跳过菜单
+var scnHit=null;
+var scnM=/场景\s*[（(]?\s*([一二三四五六七八九十]+|\d+)\s*[）)]?/.exec(q);
+if(scnM){
+var CN2=['一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九'];
+var cnX={一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,十:10};
+var scnN=/^\d+$/.test(scnM[1])?parseInt(scnM[1]):null;
+if(scnN===null){var s1=scnM[1];if(cnX[s1])scnN=cnX[s1];else if(s1.length===2&&s1[0]==='十')scnN=10+(cnX[s1[1]]||0);}
+if(scnN&&scnN>=1&&scnN<=19){
+var scnT='场景（'+CN2[scnN-1]+'）';
+var scnM2=[];for(var x=0;x<WM.length;x++){if(WM[x].na.indexOf(scnT)>=0)scnM2.push(WM[x]);}
+if(scnM2.length>0){var bs2=-1;for(var x=0;x<scnM2.length;x++){var ti2=sim(q,scnM2[x].na);if(ti2>bs2){bs2=ti2;scnHit=scnM2[x];}}}
+}}
 // 首页快捷导航：板块名直达
 var tpname=null;
 for(var x=0;x<TPL.length;x++){if(q.indexOf(TPL[x].id)>=0){tpname=TPL[x];break;}}
@@ -481,16 +494,16 @@ if(/上一个问题|上一条|刚才的回答|刚才问的/.test(q)){var cv2=CVS
 // IDX双检索：关键词+碎片词双向命中细分条目（记录命中词长，长词优先）
 var idxhits=[];
 for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];var mkl=0;for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0&&ek[z].length>mkl)mkl=ek[z].length;}if(!mkl){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2){mkl=ek[z].length;break;}}}if(mkl)idxhits.push({en:ent[y],mkl:mkl});}}
-var hd=null;
-if(idxhits.length===1&&q.length<20){hd=idxhits[0].en;}
-else if(idxhits.length>1&&q.length<20){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}
+var hd=scnHit?scnHit:null;
+if(!hd&&idxhits.length===1&&q.length<20){hd=idxhits[0].en;}
+else if(!hd&&idxhits.length>1&&q.length<20){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}
 var fault=/重复|报错|异常|失败|无法|收不到|选不到|作废|录错|找不到/.test(q);
 if(topn===1&&(mxx>=6||(fault&&mxx>=4)))hd=idxhits[topi].en;
 else if(fault){var bts=-1,bti=-1,btTie=false;for(var x=0;x<idxhits.length;x++){var ti=sim(q,idxhits[x].en.na);if(ti>bts){bts=ti;bti=x;btTie=false;}else if(ti===bts&&ti>0){btTie=true;}}if(!btTie&&bts>=0.55&&idxhits[bti].mkl===mxx)hd=idxhits[bti].en;}}
 if(hd&&K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+K[hd.c].t+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+sec.title+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>'+cnt(q,hd.na);
 if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)eh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
 _lc=hd.c;am('a',eh);return;}
-if(idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
+if(!hd&&idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
 // 【歧义问句定向】同时含"开户"+"地址维护/仓库地址/新增地址"类关键词：地址诉求优先，一律归入仓库地址专项，严禁落入一批商开户板块
 if(!_tp&&!_bz&&!_gd&&/开户/.test(q)&&/(地址维护|仓库地址|新增地址|地址新增|地址导入|地址修改|地图选址|维护地址|开户地址|收货地址|提货地址|地址信息)/.test(q)){
 var i8=document.getElementById('inp');i8.value='仓库地址';setTimeout(function(){send();},50);return;
@@ -528,9 +541,8 @@ if(key&&K[key]){
 _lc=key;
 if(key==='仓库'){
 var wmh='<h3 style="color:#c41e2a">'+K[key].t+'</h3>';
-wmh+='<div style="margin:8px 0;font-size:15px">仓库地址全部场景如下，输入编号一次性查看该场景完整流程：</div>';
-for(var x=0;x<Math.min(WM.length,6);x++){wmh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+WM[x].n+'\';send()">'+WM[x].n+'. '+WM[x].na+'</div>';}
-wmh+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'99\';send()">99. 查看其余'+(WM.length-6)+'项</div>';
+wmh+='<div style="margin:8px 0;font-size:15px">仓库地址全部场景如下（统一全量展开），输入编号一次性查看该场景完整流程：</div>';
+for(var x=0;x<WM.length;x++){wmh+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+WM[x].n+'\';send()">'+WM[x].n+'. '+WM[x].na+'</div>';}
 wmh+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看仓库地址专项全部完整内容 | 输入新问题搜索其他板块</div>'+cnt(q,key);
 _tp={sub:WM,isSub:true};am('a',wmh);return;
 }

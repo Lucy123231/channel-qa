@@ -577,5 +577,25 @@ check('故障直达 没收到签署消息→直接催办方案', r.includes('催
 r = ask('地址重复怎么解决');
 check('故障直达 地址重复→直接省市区重复方案', r.includes('唯一不重复') && !r.includes('找到以下相关条目'), r.slice(0, 300));
 
+// ===== 场景编号直达：明确携带场景（X）→直接输出，跳过菜单/列表 =====
+r = ask('场景（十三）详细地址描述中的省/市/区/街道重复');
+check('场景直达 场景十三全称→直接方案', r.includes('唯一不重复') && !r.includes('仓库地址全部场景') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
+r = ask('场景十三详细地址描述中的省市区街道重复');
+check('场景直达 场景十三无括号→直接方案', r.includes('唯一不重复') && !r.includes('仓库地址全部场景'), r.slice(0, 300));
+
+r = ask('场景（八）需要修改车型');
+check('场景直达 场景八→仅修改车型', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
+
+r = ask('场景（三）地址申请新增（拼车地址）');
+check('场景直达 场景三→仅拼车流程', r.includes('拼车审批流'), r.slice(0, 300));
+
+r = ask('场景（一）提货仓车型维护');
+check('场景直达 场景一车型→仅车型维护', r.includes('模糊搜索') && !r.includes('地图选址'), r.slice(0, 300));
+
+reset();
+r = ask('仓库地址');
+check('菜单排版 全部场景统一展开无99折叠', r.includes('场景（十三）') && !r.includes('查看其余'), r.slice(0, 400));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
