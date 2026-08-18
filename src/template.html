@@ -204,6 +204,18 @@ var ATT=[
 {n:10,na:'附件10：经办人承诺书',kw:['承诺书','经办人'],c:'开户',s:[16]}
 ];
 var SYN={开店:'开户',销户:'销户',改资料:'信息变更',签合同:'合同签署',签不了:'合同报错',货对不上:'库存调平',仓库改地址:'仓库地址',盘库:'盘点',开户材料:'开户附件',经营人证明:'实际经营人情况说明'};
+// 【26年合同5子项输出强制过滤】标题清单：单点输出必须含目标标题，一旦出现其他子项标题立即截断丢弃
+var HT26T=['1、合同订立入口','2、合同内容填写','3、附件上传','4、提交审批','5、提交后经销商怎么去签署'];
+var HT26KW=[['订立入口'],['内容填写'],['附件上传'],['提交审批']];
+var HT26NAM=['合同订立入口','合同内容填写','附件上传','提交审批'];
+var HT26SUB=[2.1,2.2,3,4];
+function cut26(h,k){
+if(!h)return null;
+if(h.indexOf(HT26T[k])<0)return null;
+var pos=h.length;
+for(var x=0;x<HT26T.length;x++){if(x===k)continue;var i1=h.indexOf(HT26T[x]);if(i1>=0&&i1<pos)pos=i1;}
+return pos<h.length?h.substring(0,pos):h;
+}
 // 仓库地址专项：场景级菜单（编号与指南结构一致，每项完整输出全部步骤）
 var WM=[
 {n:1,na:'模式的改变',c:'仓库',s:[0]},
@@ -499,7 +511,7 @@ if(cc2&&K[cc2])_lc=cc2;else if(seld.id==='一码通办')_lc='一码通办';else 
 var mxp=entries.length>6?5:entries.length;var th2='<h3 style="color:#c41e2a">【'+seld.id+'】细分业务如下：</h3>';for(var x=0;x<mxp;x++){th2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+entries[x].n+'\';send()">'+entries[x].n+'. '+entries[x].na+'</div>';}if(entries.length>6){th2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'99\';send()">查看'+seld.id+'其余条目（'+(entries.length-5)+'项：'+entries[5].na+'等）</div>';}th2+='<div style="margin-top:8px;font-size:14px;color:#888">输入编号或条目名即可查看</div>';_tp={sub:entries,isSub:true};am('a',th2);return;}
 else{_tp=null;am('a','该板块暂无详细内容，请咨询销管人员。');return;}}
 else{if(tn===99){var eall='<h3 style="color:#c41e2a">全部条目列表：</h3>';for(var x=0;x<_tp.sub.length;x++){eall+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+_tp.sub[x].n+'\';send()">'+_tp.sub[x].n+'. '+_tp.sub[x].na+'</div>';}am('a',eall);return;}
-var ent2=null;for(var x=0;x<_tp.sub.length;x++){if(_tp.sub[x].n===tn){ent2=_tp.sub[x];break;}}if(!ent2){for(var x=0;x<_tp.sub.length;x++){var en2=_tp.sub[x];var nk2=en2.kw||[];for(var z=0;z<nk2.length;z++){if(q.indexOf(nk2[z])>=0){ent2=en2;break;}}if(ent2)break;}}_tp=null;if(ent2&&K[ent2.c]&&ent2.s&&ent2.s.length>0){_lc=ent2.c;var eh='<h3 style="color:#c41e2a">'+ct(K[ent2.c].t)+' — '+ct(ent2.na)+'</h3>';for(var x=0;x<ent2.s.length;x++){var sidx=ent2.s[x];var sec=K[ent2.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+ctd(sec.title)+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+ctd(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ent2.na);am('a',eh);return;}else{am('a','该板块在《渠道管理指南》中暂无详细操作内容（仅收录标题）。如需最新指引，请联系销管<b>吴宜谦</b>，或输入其他问题继续查询。');return;}}}
+var ent2=null;for(var x=0;x<_tp.sub.length;x++){if(_tp.sub[x].n===tn){ent2=_tp.sub[x];break;}}if(!ent2){for(var x=0;x<_tp.sub.length;x++){var en2=_tp.sub[x];var nk2=en2.kw||[];for(var z=0;z<nk2.length;z++){if(q.indexOf(nk2[z])>=0){ent2=en2;break;}}if(ent2)break;}}_tp=null;if(ent2&&K[ent2.c]&&ent2.s&&ent2.s.length>0){_lc=ent2.c;var eh='<h3 style="color:#c41e2a">'+ct(K[ent2.c].t)+' — '+ct(ent2.na)+'</h3>';for(var x=0;x<ent2.s.length;x++){var sidx=ent2.s[x];var sec=K[ent2.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+ctd(sec.title)+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+ctd(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}if(ent2.c==='合同'&&ent2.s.length===1&&ent2.s[0]>=4&&ent2.s[0]<=8){var c26b=cut26(eh,ent2.s[0]-4);if(c26b===null){am('a','请重新提问，我将为您单独调取该条目');return;}eh=c26b;}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ent2.na);am('a',eh);return;}else{am('a','该板块在《渠道管理指南》中暂无详细操作内容（仅收录标题）。如需最新指引，请联系销管<b>吴宜谦</b>，或输入其他问题继续查询。');return;}}}
 else if(tn===0&&_tp.isSub){var cs=[],seen2={};for(var x=0;x<_tp.sub.length;x++){var cc=_tp.sub[x].c;if(cc&&!seen2[cc]){seen2[cc]=1;cs.push(cc);}}if(cs.length>0){var fh0='';for(var x=0;x<cs.length;x++){if(K[cs[x]])fh0+=ba(K[cs[x]]);}fh0+='<div style="margin-top:12px;font-size:14px;color:#888">以上为当前板块全部完整内容，输入其他问题继续</div>';_tp=null;am('a',fh0);return;}else{am('a','请输入有效编号');return;}}
 else if(/^\d+$/.test(q)){am('a','请输入菜单中的有效编号（1-'+_tp.sub.length+'），或输入新问题重新搜索');return;}else{_tp=null;}}
 // 业务规则预判：编号选择处理
@@ -534,6 +546,12 @@ if(!ctxc&&/仓库|地址|拼车/.test(q))ctxc='仓库';
 if(!ctxc&&_gd){ctxc=typeof _gd==='object'?_gd.k:_gd;}
 if(!ctxc&&_lc)ctxc=_lc;
 if(ctxc==='其他事项'||ctxc==='一码通办'){var i5=document.getElementById('inp');i5.value=ctxc==='其他事项'?'奖励会谈':'一码通办';setTimeout(function(){send();},50);return;}
+// 【26年合同5子项】明确完整诉求且点名26年/新合同：仅输出26年合同5个子项，禁止夹带25年合同及其他板块
+if(ctxc==='合同'&&/(26年|新合同)/.test(q)){
+var e26='<h3 style="color:#c41e2a">'+ct(K['合同'].t)+' — 26年经销商合同订立（完整5步）</h3>';
+for(var x26=4;x26<=8;x26++){var s26=K['合同'].s[x26];if(!s26)continue;e26+='<div class="step">';if(s26.title)e26+='<h4>'+ctd(s26.title)+'</h4>';if(s26.img||s26.imgs){var srcs26=[];if(s26.img)srcs26.push(s26.img);if(s26.imgs)srcs26=srcs26.concat(s26.imgs);for(var si26=0;si26<srcs26.length;si26++){var src26=gi(srcs26[si26]);if(src26)e26+='<img src="'+src26+'" alt="'+ctd(s26.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(s26.tx)e26+='<div class="tx">'+s26.tx+'</div>';if(s26.w)e26+='<div class="warn">'+s26.w+'</div>';e26+='</div>';}
+am('a',e26+'<div style="margin-top:12px;font-size:14px;color:#888">以上为【26年经销商合同订立】完整5步流程，输入其他问题继续</div>'+cnt(q,'26年经销商合同订立'));return;
+}
 if(ctxc&&K[ctxc]){am('a',ba(K[ctxc])+'<div style="margin-top:12px;font-size:14px;color:#888">以上为【'+K[ctxc].t+'】完整流程内容，输入其他问题继续</div>'+cnt(q,ctxc));return;}
 }
 // 引导模式：等待用户选择子话题
@@ -614,12 +632,20 @@ else if(/详细地址描述|省市区/.test(q))cls='重复';
 if(cls){var fh2=[];for(var x=0;x<idxhits.length;x++){var nn=idxhits[x].en.na;if(cls==='拼车'){if(nn.indexOf('拼车')>=0&&nn.indexOf('非拼车')<0)fh2.push(idxhits[x]);}else{if(nn.indexOf(cls)>=0)fh2.push(idxhits[x]);}}if(fh2.length>0)idxhits=fh2;}
 }
 var hd=scnHit?scnHit:(_bizHit?_bizHit:null);
+// 【26年合同5子项强制路由】点名子项→强制该子项专属条目，即使问句同时含"26年合同"也禁止整块5项拼接；25年/老合同/地区专项不劫持
+var ht26i=-1;
+for(var x=0;x<HT26KW.length;x++){for(var z=0;z<HT26KW[x].length;z++){if(q.indexOf(HT26KW[x][z])>=0){ht26i=x;break;}}if(ht26i>=0)break;}
+if(!hd&&ht26i>=0&&(/26年|新合同/.test(q)||q.indexOf(HT26NAM[ht26i])>=0)&&!/(全部流程|完整流程|全部步骤|全部5项|全部五项|整个流程|所有步骤|25年|老合同|海南|广州)/.test(q)){
+var htEnt=null,htIDX=IDX['经销商合同/推送函']||[];
+for(var x=0;x<htIDX.length;x++){if(htIDX[x].n===HT26SUB[ht26i]){htEnt=htIDX[x];break;}}
+if(htEnt)hd=htEnt;
+}
 if(!hd&&idxhits.length===1&&q.length<40){hd=idxhits[0].en;}
 else if(!hd&&idxhits.length>1&&q.length<40){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}
 var fault=/重复|报错|异常|失败|无法|收不到|选不到|作废|录错|找不到/.test(q);
 if(topn===1&&(mxx>=6||(fault&&mxx>=4)))hd=idxhits[topi].en;
 else if(fault){var bts=-1,bti=-1,btTie=false;for(var x=0;x<idxhits.length;x++){var ti=sim(q,idxhits[x].en.na);if(ti>bts){bts=ti;bti=x;btTie=false;}else if(ti===bts&&ti>0){btTie=true;}}if(!btTie&&bts>=0.55&&idxhits[bti].mkl===mxx)hd=idxhits[bti].en;}}
-if(hd&&K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+ct(K[hd.c].t)+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+ctd(sec.title)+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+ctd(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>'+cnt(q,hd.na);
+if(hd&&K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+ct(K[hd.c].t)+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+ctd(sec.title)+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+ctd(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}if(hd.c==='合同'&&hd.s.length===1&&hd.s[0]>=4&&hd.s[0]<=8){var c26a=cut26(eh,hd.s[0]-4);if(c26a===null){am('a','请重新提问，我将为您单独调取该条目');return;}eh=c26a;}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>'+cnt(q,hd.na);
 if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)eh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
 _lc=hd.c;am('a',eh);return;}
 if(!hd&&idxhits.length>1&&q.length<40){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
