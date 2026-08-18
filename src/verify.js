@@ -612,10 +612,32 @@ check('分类 无分类词→弹拼车非拼车两条候选', r.includes('找到
 
 // ===== 板块目录分层：库存菜单按业务场景分组，命名统一 =====
 r = ask('库存管理');
-check('分层 库存菜单→四组归类非平铺', r.includes('（一）库存盘点') && r.includes('（二）库存调平') && r.includes('（三）库存周转计算') && r.includes('（四）库存调整') && !r.includes('查看更多条目'), r.slice(0, 400));
+check('分层 库存菜单→四组归类非平铺', r.includes('库存盘点') && r.includes('库存调平') && r.includes('库存周转计算') && r.includes('库存调整') && !r.includes('查看更多条目'), r.slice(0, 400));
 
 r = ask('库存盘点');
-check('分层 库存盘点→分组菜单', r.includes('（一）库存盘点') && r.includes('（二）库存调平'), r.slice(0, 400));
+check('分层 库存盘点→分组菜单', r.includes('库存盘点') && r.includes('库存调平'), r.slice(0, 400));
+
+// ===== 合同分组菜单：25/26年合同相邻，地区专项归组，无嵌套编号 =====
+reset();
+r = ask('合同');
+check('分组 合同菜单→25/26年相邻不拆散', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立') && r.includes('常见问题答疑') && r.includes('电子签/推送函') && r.includes('地区专项') && !r.includes('查看更多条目'), r.slice(0, 500));
+
+reset();
+r = ask('经销商合同/推送函');
+check('分组 合同板块名→同一分组菜单', r.includes('25年经销商合同订立') && r.includes('地区专项'), r.slice(0, 500));
+
+reset();
+r = ask('合同');
+r = ask('2');
+check('分组 合同菜单输2→海南地区专项', r.includes('海南营销中心'), r.slice(0, 300));
+
+reset();
+r = ask('合同');
+r = ask('0');
+check('分组 合同菜单0→合同全量', r.includes('企业认证') && r.includes('推送函'), r.slice(0, 300));
+
+r = ask('如何给一批商开户');
+check('分组 开户菜单查看其余文字贴合板块', r.includes('查看其余12项（附件1'), r.slice(0, 400));
 
 reset();
 r = ask('库存管理');
