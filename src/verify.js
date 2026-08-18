@@ -665,6 +665,27 @@ check('编号冲突 分页后输7→分页内条目正常', !r.includes('请输�
 r = ask('人脸识别失败怎么办');
 check('编号冲突 故障条目走关键词→正常直达', r.includes('人脸识别') && !r.includes('请输入有效编号'), r.slice(0, 300));
 
+// ===== 内部索引ID：bizXX/errXX 文本直查，纯数字不触发 =====
+reset();
+r = ask('err006');
+check('索引ID err006→人脸识别故障直达', r.includes('人脸识别') && r.includes('cookie'), r.slice(0, 300));
+
+reset();
+r = ask('ERR009');
+check('索引ID err009大小写→企业认证', r.includes('企业认证'), r.slice(0, 300));
+
+reset();
+r = ask('biz001');
+check('索引ID biz001→开户入口', r.includes('开户入口') || r.includes('经销商开户管理'), r.slice(0, 300));
+
+reset();
+r = ask('biz015');
+check('索引ID biz015→海南电子签指引', r.includes('海南营销中心'), r.slice(0, 300));
+
+reset();
+r = ask('6');
+check('索引ID 纯数字6→不触发故障索引err006', !r.includes('人脸识别'), r.slice(0, 200));
+
 reset();
 r = ask('库存管理');
 r = ask('7');

@@ -83,6 +83,15 @@ kb.json 顶部 `_meta` 记录知识库版本（`ver`），政策变更时更新�
 
 新增业务：在对应域的分类下加 section + 关键词（kw）；新增风险点加 RED；政策变更更新 `_meta.ver`。
 
+## 内部索引 ID（biz / err）
+
+《渠道管理指南》修订版为业务子标题标了【内部索引 ID:bizXX】、合同故障标了【内部索引 ID:errXX】，
+映射表维护在 `src/template.html` 的 `BIZ` / `ERR` 对象（ID → 分类+章节）：
+
+- 用户输入完整 ID 文本（如 `biz001`、`err006`，大小写均可）→ 直达对应章节
+- 纯数字**不会**触发 err 故障索引（故障仅走关键词）
+- 文档新增 ID 时，同步加进 `BIZ`/`ERR` 即可，无需改检索逻辑
+
 ## 依赖
 
 Python 3 + Pillow + pypinyin：`pip install Pillow pypinyin`

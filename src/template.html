@@ -290,6 +290,10 @@ for(var g=0;g<CM.length;g++){h+='<div style="margin:10px 0 4px;font-size:15px;co
 h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看合同板块全部完整内容 | 输入新问题搜索其他板块</div>'+cnt('合同','合同');
 _lc='合同';_tp={sub:flat,isSub:true};am('a',h);return;
 }
+// 内部索引：biz=业务索引，err=故障索引（仅响应完整ID文本查询；纯数字不触发）
+var BIZ={biz001:{c:'开户',s:[2]},biz002:{c:'开户',s:[3]},biz003:{c:'开户',s:[4]},biz004:{c:'变更',s:[1]},biz005:{c:'变更',s:[3]},biz006:{c:'变更',s:[4]},biz007:{c:'变更',s:[5]},biz008:{c:'实控人',s:[2]},biz009:{c:'实控人',s:[3]},biz010:{c:'实控人',s:[4]},biz011:{c:'二批',s:[1]},biz012:{c:'二批',s:[2]},biz013:{c:'二批',s:[3]},biz014:{c:'合同',s:[1]},biz015:{c:'合同',s:[2]},biz016:{c:'合同',s:[3]},biz017:{c:'合同',s:[25]},biz018:{c:'合同',s:[26]},biz019:{c:'合同',s:[27]},biz020:{c:'实控人',s:[0]},biz021:{c:'实控人',s:[0]}};
+var ERR={err001:{c:'合同',s:[13]},err002:{c:'合同',s:[14]},err004:{c:'合同',s:[15]},err005:{c:'合同',s:[16]},err006:{c:'合同',s:[17]},err007:{c:'合同',s:[18]},err008:{c:'合同',s:[19]},err009:{c:'合同',s:[20]},err010:{c:'合同',s:[21]}};
+var _bizHit=null;
 function wmBoard(){
 var wmh='<h3 style="color:#c41e2a">五、仓库地址专项</h3>';
 wmh+='<div style="margin:8px 0;font-size:15px">仓库地址全部场景如下（统一全量展开），输入编号一次性查看该场景完整流程：</div>';
@@ -455,6 +459,9 @@ var scnT='场景（'+CN2[scnN-1]+'）';
 var scnM2=[];for(var x=0;x<WM.length;x++){if(WM[x].na.indexOf(scnT)>=0)scnM2.push(WM[x]);}
 if(scnM2.length>0){var bs2=-1;for(var x=0;x<scnM2.length;x++){var ti2=sim(q,scnM2[x].na);if(ti2>bs2){bs2=ti2;scnHit=scnM2[x];}}}
 }}
+// 【内部索引直达】bizXX/errXX 完整ID文本可检索（纯数字不触发故障索引）
+_bizHit=null;
+if(/^(biz\d+|err\d+)$/i.test(q)){var idk=q.toLowerCase();var idt=BIZ[idk]||ERR[idk];if(idt){_bizHit={c:idt.c,s:idt.s,na:idk.toUpperCase()};}}
 // 首页快捷导航：板块名直达
 var tpname=null;
 for(var x=0;x<TPL.length;x++){if(q.indexOf(TPL[x].id)>=0){tpname=TPL[x];break;}}
@@ -594,7 +601,7 @@ else if(/自提|承运|交付方式/.test(q))cls='自提';
 else if(/详细地址描述|省市区/.test(q))cls='重复';
 if(cls){var fh2=[];for(var x=0;x<idxhits.length;x++){var nn=idxhits[x].en.na;if(cls==='拼车'){if(nn.indexOf('拼车')>=0&&nn.indexOf('非拼车')<0)fh2.push(idxhits[x]);}else{if(nn.indexOf(cls)>=0)fh2.push(idxhits[x]);}}if(fh2.length>0)idxhits=fh2;}
 }
-var hd=scnHit?scnHit:null;
+var hd=scnHit?scnHit:(_bizHit?_bizHit:null);
 if(!hd&&idxhits.length===1&&q.length<20){hd=idxhits[0].en;}
 else if(!hd&&idxhits.length>1&&q.length<20){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}
 var fault=/重复|报错|异常|失败|无法|收不到|选不到|作废|录错|找不到/.test(q);
