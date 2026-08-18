@@ -871,6 +871,23 @@ reset();
 r = askA('合同签署失败');
 check('组内编号 故障菜单→组内从1编号', r.includes('1. 乙方银行账户报错') && r.includes('9. 其他问题指南入口') && !r.includes('12. 乙方银行账户报错'), r.slice(0, 300));
 
+// ===== 细分直达：问具体细分直接给细分，不倾倒整块 =====
+reset();
+r = askA('广州电子签怎么填写');
+check('细分直达 广州电子签→仅广州填写指引', r.includes('广州电子签填写指引') && !r.includes('海南营销中心') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务') && !r.includes('合同订立入口'), r.slice(0, 300));
+
+reset();
+r = askA('海南电子签怎么填写');
+check('细分直达 海南电子签→仅海南填写指引', r.includes('海南营销中心') && !r.includes('广州') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('海南备案');
+check('细分直达 海南备案→不受影响仍开户备案', r.includes('备案') && !r.includes('电子签填写'), r.slice(0, 300));
+
+reset();
+r = askA('广州填写指引');
+check('细分直达 广州填写指引→直达广州条目', r.includes('广州电子签填写指引') && !r.includes('海南营销中心'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
