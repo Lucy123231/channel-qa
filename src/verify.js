@@ -818,6 +818,23 @@ reset();
 r = askA('推送函怎么发');
 check('导航自检 推送函条目→保留业务正文不被自检误杀', r.includes('适用场景') && !r.includes('合同板块全部业务'), r.slice(0, 300));
 
+// ===== 裸块名查询：只报块名不点名子项/完整诉求→引导点名，严禁一次性倒出全部子项 =====
+reset();
+r = askA('26年合同订立');
+check('裸块名 26年合同订立→引导点名不列全部', !r.includes('<img') && !r.includes('合同板块全部业务') && !r.includes('26年经销商合同订立') && r.includes('您想了解哪一步'), r.slice(0, 400));
+
+reset();
+r = askA('26年合同');
+check('裸块名 26年合同→引导点名不列全部', !r.includes('<img') && !r.includes('26年经销商合同订立') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('25年合同');
+check('裸块名 25年合同→引导点名不列全部', !r.includes('<img') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('26年合同怎么签');
+check('裸块名 明确完整诉求→仍5项全量含截图', r.includes('合同订立入口') && r.includes('附件上传') && r.includes('<img'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
