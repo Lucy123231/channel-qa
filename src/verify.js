@@ -501,5 +501,27 @@ check('FAQ3 常规vs管理开户→文字自足', r.includes('存量经销商变
 r = ask('二批批量失效');
 check('FAQ10 二批批量失效→Excel表渠道管理岗', r.includes('渠道管理岗') && r.includes('Excel'), r.slice(0, 200));
 
+// ===== 完整输出硬性要求：菜单条目一次输出全部流程+全部注意事项 =====
+r = ask('地址信息怎么维护');
+check('完整输出 地址信息维护→全流程一次输出', r.includes('地图选址') && r.includes('百度地图') && r.includes('默认地址') && r.includes('批量导入') && r.includes('字典') && r.includes('保存'), r.slice(0, 300));
+
+reset();
+r = ask('仓库地址');
+r = ask('5');
+check('完整输出 仓库菜单输5→场景一完整流程', r.includes('地图选址') && r.includes('字典') && r.includes('保存'), r.slice(0, 300));
+
+reset();
+r = ask('仓库地址');
+r = ask('99');
+check('完整输出 仓库菜单99→全部场景列表', r.includes('场景（十三）'), r.slice(0, 200));
+
+reset();
+r = ask('仓库地址');
+r = ask('0');
+check('完整输出 仓库菜单0→仓库地址专项全量', r.includes('隐藏库') && r.includes('巡送巡收'), r.slice(0, 300));
+
+r = ask('提货车型怎么维护');
+check('完整输出 提货车型维护→完整流程', r.includes('添加') && r.includes('模糊搜索'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
