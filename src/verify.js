@@ -703,6 +703,20 @@ reset();
 r = ask('合同怎么签');
 check('故障强制 模糊合同提问→仍出分组菜单', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立'), r.slice(0, 300));
 
+// ===== 全局条目边界隔离：单点查询严格单条目截断 =====
+reset();
+r = ask('如何给一批商开户');
+r = ask('2');
+check('条目隔离 查常规开户→不带出管理开户', r.includes('常规开户') && !r.includes('管理开户'), r.slice(0, 300));
+
+r = ask('附件9');
+check('条目隔离 查附件9→不带出附件8/附件10', r.includes('实际经营人情况说明') && !r.includes('附件8') && !r.includes('附件10'), r.slice(0, 300));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('1');
+check('条目隔离 查户头类型→不带出常规开户', r.includes('户头类型介绍') && !r.includes('常规开户') && !r.includes('管理开户'), r.slice(0, 300));
+
 reset();
 r = ask('库存管理');
 r = ask('7');
