@@ -839,6 +839,23 @@ reset();
 r = askA('26年合同怎么签');
 check('分组名 完整诉求26年合同怎么签→仍5项全量含截图', r.includes('合同订立入口') && r.includes('附件上传') && r.includes('<img'), r.slice(0, 300));
 
+// ===== 分组名变体与尾标点容忍 =====
+reset();
+r = askA('26年经销商合同订立。');
+check('分组名 尾标点容忍→仍仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('25年经销商合同订立') && !r.includes('<img'), r.slice(0, 400));
+
+reset();
+r = askA('什么是26年合同订立');
+check('分组名 前置问法→仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('合同板块全部业务') && !r.includes('<img'), r.slice(0, 400));
+
+reset();
+r = askA('26年经销商合同');
+check('分组名 26年经销商合同→仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('25年经销商合同订立') && !r.includes('<img'), r.slice(0, 300));
+
+reset();
+r = askA('26年合同签署方式');
+check('分组名 签署方式→仅8号签署子项', r.includes('提交后经销商怎么去签署') && !r.includes('附件上传') && !r.includes('合同订立入口'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
