@@ -523,5 +523,30 @@ check('完整输出 仓库菜单0→仓库地址专项全量', r.includes('隐�
 r = ask('提货车型怎么维护');
 check('完整输出 提货车型维护→完整流程', r.includes('添加') && r.includes('模糊搜索'), r.slice(0, 200));
 
+// ===== 歧义问句定向：开户+地址 → 仓库地址专项，严禁落入开户板块 =====
+reset();
+r = ask('开户地址怎么维护');
+check('歧义 开户地址怎么维护→仓库地址专项', r.includes('仓库地址专项') && !r.includes('一批商管理'), r.slice(0, 200));
+
+reset();
+r = ask('新开户维护地址');
+check('歧义 新开户维护地址→仓库地址专项', r.includes('仓库地址专项') && !r.includes('一批商管理'), r.slice(0, 200));
+
+reset();
+r = ask('开户地址新增');
+check('歧义 开户地址新增→仓库地址专项', r.includes('仓库地址专项') && !r.includes('一批商管理'), r.slice(0, 200));
+
+reset();
+r = ask('新开户地址');
+check('歧义 新开户地址→直连地址信息维护全流程', r.includes('地图选址') && !r.includes('一批商管理'), r.slice(0, 200));
+
+reset();
+r = ask('开户基础信息录入');
+check('歧义 开户信息录入→仍在开户板块', !r.includes('仓库地址专项'), r.slice(0, 200));
+
+reset();
+r = ask('开户需要哪些附件');
+check('歧义 开户附件→仍为附件清单', r.includes('开户必传附件清单'), r.slice(0, 200));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);

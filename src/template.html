@@ -487,6 +487,10 @@ if(hd&&K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+K[hd.c]
 if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)eh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
 _lc=hd.c;am('a',eh);return;}
 if(idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
+// 【歧义问句定向】同时含"开户"+"地址维护/仓库地址/新增地址"类关键词：地址诉求优先，一律归入仓库地址专项，严禁落入一批商开户板块
+if(!_tp&&!_bz&&!_gd&&/开户/.test(q)&&/(地址维护|仓库地址|新增地址|地址新增|地址导入|地址修改|地图选址|维护地址|开户地址|收货地址|提货地址|地址信息)/.test(q)){
+var i8=document.getElementById('inp');i8.value='仓库地址';setTimeout(function(){send();},50);return;
+}
 // 一级板块判断：模糊提问先分层
 var tlhits=[];
 for(var x=0;x<TPL.length;x++){var hit=false;for(var y=0;y<TPL[x].k.length;y++){if(q.indexOf(TPL[x].k[y])>=0){hit=true;break;}}if(hit)tlhits.push(TPL[x]);}
