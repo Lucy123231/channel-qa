@@ -145,6 +145,8 @@ def build_pymap(template_text, kb_obj):
 # 替换占位符
 html = template.replace('__KB_PLACEHOLDER__', kb_block)
 html = html.replace('__PYMAP_PLACEHOLDER__', build_pymap(template, kb))
+from datetime import datetime
+html = html.replace('__BUILD_STAMP__', datetime.now().strftime('%Y-%m-%d %H:%M'))
 
 # 插入 hidden img 标签
 body_end = html.rfind('</body>')
