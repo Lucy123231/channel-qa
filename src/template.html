@@ -83,7 +83,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // ===== 知识库（简版） =====
 __KB_PLACEHOLDER__;
 
-var _lc=null;var _gd=null;var _bz=null;var _tp=null;
+var _lc=null;var _gd=null;var _bz=null;var _tp=null;var _gp=null;
 var TPL=[
 {id:'一批商管理',k:['一批','开户','销户','注销','变更','交接','实控人','控制人','证照','户头','经销商'],sub:['开户','销户','变更','交接','实控人']},
 {id:'二批商管理',k:['二批','特约','二级','挂靠','批量导入','非一批'],sub:['二批','特约']},
@@ -321,10 +321,10 @@ var _bizHit=null;
 function faultMenu(){
 var its=CM[3].items;
 var h='<h3 style="color:#c41e2a">合同常见问题</h3>';
-h+='<div style="margin:8px 0;font-size:15px">请直接描述您遇到的具体问题（如：收不到签署消息、人脸识别失败），即可直接获得解决方案；或从以下常见问题中选择：</div>';
-for(var x=0;x<its.length;x++){h+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+its[x].n+'\';send()">'+its[x].n+'. '+its[x].na+'</div>';}
+h+='<div style="margin:8px 0;font-size:15px">请直接描述您遇到的具体问题（如：收不到签署消息、人脸识别失败），即可直接获得解决方案；或从以下常见问题中选择（组内编号从1开始）：</div>';
+for(var x=0;x<its.length;x++){h+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(x+1)+'\';send()">'+(x+1)+'. '+its[x].na+'</div>';}
 h+='<div style="margin-top:10px;font-size:14px;color:#888">输入完整问题描述可直接获取解决方案 | 输入新问题搜索其他板块</div>'+cnt('合同','合同');
-_lc='合同';_tp={sub:its,isSub:true};am('a',h);return;
+_lc='合同';_gp={items:its};am('a',h);return;
 }
 function wmBoard(){
 var wmh='<h3 style="color:#c41e2a">五、仓库地址专项</h3>';
@@ -482,6 +482,24 @@ am('a','未找到附件'+an+'。附件范围：附件1-附件10（输入「附�
 // 附件碎片关键词：短词直接匹配附件
 if(!_tp&&!_bz&&!_gd&&q.length<=6){var atf2=null;for(var x=0;x<ATT.length;x++){var kw2=ATT[x].kw||[];for(var z=0;z<kw2.length;z++){if(q.indexOf(kw2[z])>=0){atf2=ATT[x];break;}}if(atf2)break;}
 if(atf2&&K[atf2.c]){_lc='开户';var aeh2='<h3 style="color:#c41e2a">'+ct(K[atf2.c].t)+' — '+atf2.na+'</h3>';for(var x=0;x<atf2.s.length;x++){var sidx=atf2.s[x];var sec=K[atf2.c].s[sidx];if(!sec)continue;aeh2+='<div class="step">';if(sec.title)aeh2+='<h4>'+cti(sec.title)+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)aeh2+='<img src="'+src+'" alt="'+cti(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)aeh2+='<div class="tx">'+sec.tx+'</div>';if(sec.w)aeh2+='<div class="warn">'+sec.w+'</div>';aeh2+='</div>';}aeh2+='<div style="margin-top:12px;color:#888;font-size:14px">需要查看其他附件吗？输入「附件N」或附件名即可</div>'+cnt(q,atf2.na);if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)aeh2+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',aeh2);return;}}
+// 【分组内编号】组菜单编号从1开始：纯数字/多编号点名按组内顺序定位条目，退出分组后恢复全局编号
+if(_gp){
+var gq2=q.replace(/[，。！？!?\s]+$/,'');
+var gmn=(gq2.match(/\d+/g)||[]).map(function(s){return parseInt(s);});
+if(/^\d+$/.test(gq2)&&gmn.length===1){
+var gn=gmn[0];
+if(gn>=1&&gn<=_gp.items.length){var ge=_gp.items[gn-1];var geb=re(ge);if(geb===null){am('a','暂时无法获取该条目，请换一种说法重新提问');return;}
+_gp=null;_lc='合同';var gh='<h3 style="color:#c41e2a">'+ct(K[ge.c].t)+' — '+ct(ge.na)+'</h3>'+geb+'<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ge.na);am('a',gh);return;}
+am('a','请输入有效编号（1-'+_gp.items.length+'），或输入新问题重新搜索');return;
+}
+if(gmn.length>=2&&/全部|都要|都给我|都要看|所有|给我/.test(q)){
+var gitems=_gp.items;var mh2='';var hit2=0;
+for(var x=0;x<gmn.length;x++){var gn2=gmn[x];if(gn2>=1&&gn2<=gitems.length){var ge2=gitems[gn2-1];var geb2=re(ge2);if(geb2===null){am('a','暂时无法获取该条目，请换一种说法重新提问');return;}mh2+='<h3 style="color:#c41e2a">'+gn2+'. '+ct(ge2.na)+'</h3>'+geb2;hit2++;}}
+if(hit2>=2){_gp=null;_lc='合同';am('a',mh2+'<div style="margin-top:12px;font-size:14px;color:#888">以上为点名条目内容，输入其他问题继续</div>'+cnt(q,'合同'));return;}
+_gp=null;
+}
+if(!/^\d/.test(q))_gp=null;
+}
 // 纯数字双检：流程+附件并列展示
 if(!_tp&&!_bz&&!_gd){var qn2=parseInt(q);
 if(isNaN(qn2)&&/^[一二三四五六七八九十]+$/.test(q)&&q.length<=2){var cn2={一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,十:10};qn2=cn2[q]||null;}
@@ -700,10 +718,10 @@ if(!hd&&(g2||g25)&&/合同/.test(gq)&&!/订立入口|内容填写|附件上传|�
 gm26=g2?CM[1]:CM[0];
 }
 if(!hd&&gm26){
-_lc='合同';
+_lc='合同';_gp=gm26;
 var gmh='<h3 style="color:#c41e2a">'+gm26.g+'</h3>';
-gmh+='<div style="margin:8px 0;font-size:15px">该分组包含以下条目：</div>';
-for(var x=0;x<gm26.items.length;x++){gmh+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+gm26.items[x].n+'\';send()">'+gm26.items[x].n+'. '+gm26.items[x].na+'</div>';}
+gmh+='<div style="margin:8px 0;font-size:15px">该分组包含以下条目（组内编号从1开始）：</div>';
+for(var x=0;x<gm26.items.length;x++){gmh+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(x+1)+'\';send()">'+(x+1)+'. '+gm26.items[x].na+'</div>';}
 gmh+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号或条目名查看 | 输入新问题搜索其他板块</div>'+cnt(q,'合同');
 am('a',gmh);return;
 }

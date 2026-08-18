@@ -45,7 +45,7 @@ function askA(q) {
   return captured.filter(x => x.t === 'a').map(x => x.c).join('\n===MSG===\n');
 }
 
-function reset() { _lc = null; _gd = null; _bz = null; _tp = null; }
+function reset() { _lc = null; _gd = null; _bz = null; _tp = null; _gp = null; }
 
 let pass = 0, fail = 0;
 function check(name, cond, detail) {
@@ -818,18 +818,18 @@ reset();
 r = askA('推送函怎么发');
 check('导航自检 推送函条目→保留业务正文不被自检误杀', r.includes('适用场景') && !r.includes('合同板块全部业务'), r.slice(0, 300));
 
-// ===== 分组名查询：只输出该组编号菜单（4-9 / 1-3），严禁混入其他分组与整板目录 =====
+// ===== 分组名查询：只输出该组编号菜单（组内从1编号），严禁混入其他分组与整板目录 =====
 reset();
 r = askA('26年经销商合同订立');
-check('分组名 26年经销商合同订立→仅4-9组菜单', r.includes('4. 26年合同订立入口') && r.includes('9. 印章管理员更换作废重签说明') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务') && !r.includes('<img'), r.slice(0, 400));
+check('分组名 26年经销商合同订立→仅4-9组菜单组内从1', r.includes('1. 26年合同订立入口') && r.includes('6. 印章管理员更换作废重签说明') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务') && !r.includes('<img'), r.slice(0, 400));
 
 reset();
 r = askA('26年经销商的合同订立');
-check('分组名 26年经销商的合同订立→仅4-9组菜单', r.includes('4. 26年合同订立入口') && r.includes('8. 提交后经销商签署方式') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务'), r.slice(0, 400));
+check('分组名 26年经销商的合同订立→组内从1', r.includes('1. 26年合同订立入口') && r.includes('5. 提交后经销商签署方式') && !r.includes('25年经销商合同订立') && !r.includes('合同板块全部业务'), r.slice(0, 400));
 
 reset();
 r = askA('26年合同');
-check('分组名 26年合同→仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('合同板块全部业务') && !r.includes('25年经销商合同订立'), r.slice(0, 300));
+check('分组名 26年合同→组内从1', r.includes('1. 26年合同订立入口') && !r.includes('合同板块全部业务') && !r.includes('25年经销商合同订立'), r.slice(0, 300));
 
 reset();
 r = askA('25年合同');
@@ -842,19 +842,34 @@ check('分组名 完整诉求26年合同怎么签→仍5项全量含截图', r.i
 // ===== 分组名变体与尾标点容忍 =====
 reset();
 r = askA('26年经销商合同订立。');
-check('分组名 尾标点容忍→仍仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('25年经销商合同订立') && !r.includes('<img'), r.slice(0, 400));
+check('分组名 尾标点容忍→组内从1', r.includes('1. 26年合同订立入口') && !r.includes('25年经销商合同订立') && !r.includes('<img'), r.slice(0, 400));
 
 reset();
 r = askA('什么是26年合同订立');
-check('分组名 前置问法→仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('合同板块全部业务') && !r.includes('<img'), r.slice(0, 400));
+check('分组名 前置问法→组内从1', r.includes('1. 26年合同订立入口') && !r.includes('合同板块全部业务') && !r.includes('<img'), r.slice(0, 400));
 
 reset();
 r = askA('26年经销商合同');
-check('分组名 26年经销商合同→仅4-9组菜单', r.includes('4. 26年合同订立入口') && !r.includes('25年经销商合同订立') && !r.includes('<img'), r.slice(0, 300));
+check('分组名 26年经销商合同→组内从1', r.includes('1. 26年合同订立入口') && !r.includes('25年经销商合同订立') && !r.includes('<img'), r.slice(0, 300));
 
 reset();
 r = askA('26年合同签署方式');
 check('分组名 签署方式→仅8号签署子项', r.includes('提交后经销商怎么去签署') && !r.includes('附件上传') && !r.includes('合同订立入口'), r.slice(0, 300));
+
+// ===== 组内编号：组菜单输号按组内顺序定位 =====
+reset();
+r = askA('26年经销商合同订立');
+r = askA('3');
+check('组内编号 输3→附件上传子项', r.includes('附件上传') && !r.includes('提交审批') && !r.includes('合同订立入口'), r.slice(0, 300));
+
+reset();
+r = askA('26年经销商合同订立');
+r = askA('6');
+check('组内编号 输6→印章管理员条目', r.includes('印章管理员') && !r.includes('合同内容填写') && !r.includes('合同订立入口'), r.slice(0, 300));
+
+reset();
+r = askA('合同签署失败');
+check('组内编号 故障菜单→组内从1编号', r.includes('1. 乙方银行账户报错') && r.includes('9. 其他问题指南入口') && !r.includes('12. 乙方银行账户报错'), r.slice(0, 300));
 
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
