@@ -749,7 +749,7 @@ r = askA('26年合同全部流程');
 check('26年合同 明确全部流程→仅5子项不夹带25年', r.includes('合同订立入口') && r.includes('提交后经销商怎么去签署') && !r.includes('25年'), r.slice(0, 400));
 
 r = askA('25年合同附件上传');
-check('26年合同 25年组合→不劫持到26年附件', r.includes('25年') && !r.includes('26年'), r.slice(0, 300));
+check('26年合同 25年组合→不劫持到26年附件', r.includes('电子签填写指引') && !r.includes('26年'), r.slice(0, 300));
 
 // ===== 经销商合同/推送函板块全局强制规则：编号直达/多编号点名/菜单请求/年份隔离/0全量 =====
 reset();
@@ -773,7 +773,7 @@ check('合同规则 业务提问→不打印1-26目录', !r.includes('合同板�
 
 reset();
 r = askA('25年合同订立入口');
-check('合同规则 25年订立入口→仅25年不串26年', r.includes('25年') && !r.includes('26年'), r.slice(0, 300));
+check('合同规则 25年订立入口→仅25年不串26年', r.includes('电子签填写指引') && !r.includes('26年'), r.slice(0, 300));
 
 reset();
 r = ask('26年合同怎么签');
@@ -787,7 +787,7 @@ check('合同规则 26年+进度→仅4-9内容不串进度组', r.includes('合
 
 reset();
 r = askA('25年合同签署进度');
-check('合同规则 25年+进度→仅1-3内容不串26年', r.includes('25年') && !r.includes('26年') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+check('合同规则 25年+进度→仅1-3内容不串26年', r.includes('电子签填写指引') && !r.includes('26年') && !r.includes('合同板块全部业务'), r.slice(0, 300));
 
 reset();
 r = askA('签署进度怎么查');
@@ -796,6 +796,27 @@ check('合同规则 纯进度提问→仅10-11不串其他组', (r.includes('业
 reset();
 r = askA('推送函怎么发');
 check('合同规则 推送函→21-26组内容不串其他', r.includes('推送函') && !r.includes('合同板块全部业务') && !r.includes('合同订立入口'), r.slice(0, 300));
+
+// ===== 导航文字零容忍：具体业务回答禁止出现任何导航标志性文字 =====
+reset();
+r = askA('26年合同怎么签');
+check('导航自检 5项全流程→零导航文字', !r.includes('合同板块全部业务') && !r.includes('输入编号一次性查看该条目完整内容') && !r.includes('25年经销商合同订立') && !r.includes('26年经销商合同订立') && !r.includes('查看/推进合同签署进度') && !r.includes('常见问题答疑') && !r.includes('输入 0 查看合同板块全部完整内容'), r.slice(0, 300));
+
+reset();
+r = askA('合同订立入口');
+check('导航自检 4号条目→零导航文字', !r.includes('26年经销商合同订立') && !r.includes('合同板块全部业务') && r.includes('合同订立入口'), r.slice(0, 300));
+
+reset();
+r = askA('签署进度怎么查');
+check('导航自检 进度条目→零导航文字', !r.includes('查看/推进合同签署进度') && r.includes('业务员查看'), r.slice(0, 300));
+
+reset();
+r = askA('合同签署报错怎么办');
+check('导航自检 故障答疑菜单→不含「常见问题答疑」', !r.includes('常见问题答疑') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('推送函怎么发');
+check('导航自检 推送函条目→保留业务正文不被自检误杀', r.includes('适用场景') && !r.includes('合同板块全部业务'), r.slice(0, 300));
 
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
