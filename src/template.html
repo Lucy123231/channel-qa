@@ -92,7 +92,7 @@ var IDX={
 '一批商管理':[
 {n:1,na:'户头类型介绍',kw:['户头','根户头','主户头','子户头','共享资金'],c:'开户',s:[0]},
 {n:2,na:'常规开户场景',kw:['常规开户','新拓','营业执照开户'],c:'开户',s:[1]},
-{n:3,na:'管理开户4类场景',kw:['管理开户','分户','同一营业执照'],c:'开户',s:[17]},
+{n:3,na:'管理开户4类场景',kw:['管理开户','分户','同一营业执照'],c:'开户',s:[1]},
 {n:4,na:'TPM开户完整操作步骤',kw:['开户操作','开户入口','开户步骤'],c:'开户',s:[2]},
 {n:5,na:'开户基础&明细信息录入规范',kw:['信息录入','必填项','实控人信息缺失'],c:'开户',s:[3]},
 {n:6,na:'开户全套附件总要求',kw:['附件填写','附件要求','开户资料清单'],c:'开户',s:[4]},
@@ -108,7 +108,7 @@ var IDX={
 {n:16,na:'附件9实际经营人情况说明',kw:['经营人说明','实际经营人'],c:'开户',s:[15]},
 {n:17,na:'附件10经办人承诺书',kw:['承诺书'],c:'开户',s:[16]},
 {n:18,na:'一批商销户流程',kw:['销户','财务对接','经销商往来','关户'],c:'销户',s:[0,1]},
-{n:25,na:'常规开户与管理开户的区别',kw:['常规开户和管理开户','开户的区别','开户分几种'],c:'开户',s:[1,17]},
+{n:25,na:'常规开户与管理开户的区别',kw:['常规开户和管理开户','开户的区别','管理开户的区别','常规开户的区别','开户分几种'],c:'开户',s:[1]},
 {n:19,na:'一批基础信息变更',kw:['基础信息变更','改联系人','改电话','改地址'],c:'变更',s:[0]},
 {n:20,na:'一批组织信息批量变更',kw:['组织信息','改工作站','改业务部','大区'],c:'变更',s:[1,2,3,4,5]},
 {n:21,na:'经销商渠道交接全流程',kw:['渠道交接','调整报告','A转B','箱码','奖盖'],c:'交接',s:[0,1,2]},
@@ -598,7 +598,7 @@ if(/我问了|我问过|刚才问|几个问题|问了什么|之前问|问过什�
 if(/上一个问题|上一条|刚才的回答|刚才问的/.test(q)){var cv2=CVS.find(function(x){return x.id===CID});if(cv2){var uq2=cv2.msgs.filter(function(m){return m.t==="u"});var aq2=cv2.msgs.filter(function(m){return m.t==="a"});if(uq2.length>0){var lastQ=uq2[uq2.length-1].c;var lastA=aq2.length>0?aq2[aq2.length-1].c:'';am('a','您上一个问题是：<b>'+esc(lastQ)+'</b><br><br>'+lastA);return;}}}
 // IDX双检索：关键词+碎片词双向命中细分条目（记录命中词长，长词优先）
 var idxhits=[];
-for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];var mkl=0;for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0&&ek[z].length>mkl)mkl=ek[z].length;}if(!mkl){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2&&!/([和与及或])/.test(ek[z])){mkl=ek[z].length;break;}}}if(mkl)idxhits.push({en:ent[y],mkl:mkl});}}
+for(var x=0;x<TPL.length;x++){var tpid=TPL[x].id;var ent=IDX[tpid];if(!ent)continue;for(var y=0;y<ent.length;y++){var ek=ent[y].kw||[];var mkl=0;for(var z=0;z<ek.length;z++){if(q.indexOf(ek[z])>=0&&ek[z].length>mkl)mkl=ek[z].length;}if(!mkl){for(var z=0;z<ek.length;z++){if(ek[z].length>=4&&ek[z].indexOf(q)>=0&&q.length>=2){mkl=ek[z].length;break;}}}if(mkl)idxhits.push({en:ent[y],mkl:mkl});}}
 // 互斥分类过滤：问句带明确分类限定词时，仅保留匹配该分类的条目，严禁列出全部同类条目
 if(idxhits.length>1){
 var cls=null;

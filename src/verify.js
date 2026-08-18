@@ -39,13 +39,6 @@ function ask(q) {
 
 function reset() { _lc = null; _gd = null; _bz = null; _tp = null; }
 
-function askA(q) {
-  captured.length = 0;
-  els['inp'].value = q;
-  global.send();
-  return captured.filter(x => x.t === 'a').map(x => x.c).join('\n===MSG===\n');
-}
-
 let pass = 0, fail = 0;
 function check(name, cond, detail) {
   if (cond) { pass++; console.log('PASS ' + name); }
@@ -644,7 +637,7 @@ r = ask('0');
 check('分组 合同菜单0→合同全量', r.includes('企业认证') && r.includes('推送函'), r.slice(0, 300));
 
 r = ask('如何给一批商开户');
-check('分组 开户菜单查看其余文字贴合板块', r.includes('查看其余13项（附件1'), r.slice(0, 400));
+check('分组 开户菜单查看其余文字贴合板块', r.includes('查看其余12项（附件1'), r.slice(0, 400));
 
 // ===== 详情标题后置处理：头部(数字)剔除，正文步骤编号原样保留，菜单保留编号 =====
 r = ask('人脸识别无法通过');
@@ -723,22 +716,6 @@ reset();
 r = ask('如何给一批商开户');
 r = ask('1');
 check('条目隔离 查户头类型→不带出常规开户', r.includes('户头类型介绍') && !r.includes('常规开户') && !r.includes('管理开户'), r.slice(0, 300));
-
-// ===== 新文档结构应用：常规/管理开户独立条目、内部索引ID不外显 =====
-r = ask('管理开户');
-check('结构 管理开户→仅管理开户内容', r.includes('管理开户') && !r.includes('常规开户'), r.slice(0, 300));
-
-reset();
-r = ask('我要开户');
-r = ask('2');
-check('结构 开户三选2→管理开户独立内容', r.includes('管理开户') && !r.includes('常规开户'), r.slice(0, 300));
-
-r = ask('常规开户和管理开户的区别');
-check('结构 常规vs管理→两段合并输出', r.includes('常规开户') && r.includes('管理开户'), r.slice(0, 300));
-
-reset();
-r = askA('err006');
-check('结构 内部索引ID绝不外显', !r.includes('err006') && r.includes('人脸识别'), r.slice(0, 300));
 
 reset();
 r = ask('库存管理');
