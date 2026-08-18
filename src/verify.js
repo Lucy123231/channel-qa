@@ -37,6 +37,14 @@ function ask(q) {
   return captured.map(x => x.c).join('\n===MSG===\n');
 }
 
+// 只看回复、不含用户提问回显（防止回显词掩盖断言）
+function askA(q) {
+  captured.length = 0;
+  els['inp'].value = q;
+  global.send();
+  return captured.filter(x => x.t === 'a').map(x => x.c).join('\n===MSG===\n');
+}
+
 function reset() { _lc = null; _gd = null; _bz = null; _tp = null; }
 
 let pass = 0, fail = 0;
@@ -703,42 +711,74 @@ reset();
 r = ask('合同怎么签');
 check('故障强制 模糊合同提问→仍出分组菜单', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立'), r.slice(0, 300));
 
-// ===== 26年合同5子项强制隔离：单点查询仅输出命中的那一个子项 =====
-r = ask('合同订立入口');
+// ===== 26年合同5子项强制隔离：单点查询仅输出命中的那一个子项（askA只验回复，防回显掩盖） =====
+r = askA('合同订立入口');
 check('26年合同 订立入口→仅入口内容', r.includes('合同订立入口') && !r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
 
-r = ask('合同内容填写');
+r = askA('合同内容填写');
 check('26年合同 内容填写→仅填写内容', r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
+check('26年合同 内容填写→截图保留不丢失', r.includes('<img'), r.slice(0, 300));
 
-r = ask('提交审批');
+r = askA('提交审批');
 check('26年合同 提交审批→仅审批内容', r.includes('提交审批') && !r.includes('附件上传'), r.slice(0, 300));
+check('26年合同 提交审批→截图保留不丢失', r.includes('<img'), r.slice(0, 300));
 
-r = ask('提交后经销商怎么去签署');
+r = askA('提交后经销商怎么去签署');
 check('26年合同 签署子项→仅签署内容', r.includes('提交后经销商怎么去签署') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
+check('26年合同 签署子项→截图保留不丢失', r.includes('<img'), r.slice(0, 300));
 
-r = ask('26年合同怎么签');
+r = askA('26年合同怎么签');
 check('26年合同 完整诉求→5子项合并输出', r.includes('合同订立入口') && r.includes('合同内容填写') && r.includes('附件上传') && r.includes('提交审批') && r.includes('签署'), r.slice(0, 400));
 
 reset();
 r = ask('合同');
-r = ask('4');
+r = askA('4');
 check('26年合同 菜单输4→仅入口子项', r.includes('合同订立入口') && !r.includes('合同内容填写'), r.slice(0, 300));
 
 // ===== 26年合同5子项输出强制过滤：26年+子项组合不拼整块，明确完整诉求才5项 =====
-r = ask('26年合同订立入口');
+r = askA('26年合同订立入口');
 check('26年合同 26年+订立入口→仅入口子项', r.includes('合同订立入口') && !r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
 
-r = ask('26年合同提交审批');
+r = askA('26年合同提交审批');
 check('26年合同 26年+提交审批→仅审批子项', r.includes('提交审批') && !r.includes('附件上传') && !r.includes('合同订立入口') && !r.includes('合同内容填写'), r.slice(0, 300));
 
-r = ask('26年合同附件上传');
+r = askA('26年合同附件上传');
 check('26年合同 26年+附件上传→仅附件子项', r.includes('附件上传') && !r.includes('提交审批') && !r.includes('合同内容填写'), r.slice(0, 300));
 
-r = ask('26年合同全部流程');
+r = askA('26年合同全部流程');
 check('26年合同 明确全部流程→仅5子项不夹带25年', r.includes('合同订立入口') && r.includes('提交后经销商怎么去签署') && !r.includes('25年'), r.slice(0, 400));
 
-r = ask('25年合同附件上传');
+r = askA('25年合同附件上传');
 check('26年合同 25年组合→不劫持到26年附件', r.includes('25年') && !r.includes('26年'), r.slice(0, 300));
+
+// ===== 经销商合同/推送函板块全局强制规则：编号直达/多编号点名/菜单请求/年份隔离/0全量 =====
+reset();
+r = ask('合同');
+r = askA('6');
+check('合同规则 输6→仅附件上传子项', r.includes('附件上传') && !r.includes('提交审批') && !r.includes('合同内容填写'), r.slice(0, 300));
+
+reset();
+r = ask('合同');
+r = askA('4、5、6全部给我');
+check('合同规则 多编号点名→4/5/6三条', r.includes('合同订立入口') && r.includes('合同内容填写') && r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 400));
+
+reset();
+r = ask('合同');
+r = askA('列出所有选项');
+check('合同规则 列出所有选项→1-26完整目录', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立') && r.includes('常见问题答疑') && r.includes('电子签/推送函') && r.includes('26. 经销商润酒购签署'), r.slice(0, 500));
+
+reset();
+r = askA('合同内容填写');
+check('合同规则 业务提问→不打印1-26目录', !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('25年合同订立入口');
+check('合同规则 25年订立入口→仅25年不串26年', r.includes('25年') && !r.includes('26年'), r.slice(0, 300));
+
+reset();
+r = ask('26年合同怎么签');
+r = askA('0');
+check('合同规则 数字0→合同板块全部完整内容', r.includes('25年') && r.includes('经销商合同签署'), r.slice(0, 300));
 
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
