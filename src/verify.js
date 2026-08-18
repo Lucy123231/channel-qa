@@ -703,6 +703,27 @@ reset();
 r = ask('合同怎么签');
 check('故障强制 模糊合同提问→仍出分组菜单', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立'), r.slice(0, 300));
 
+// ===== 26年合同5子项强制隔离：单点查询仅输出命中的那一个子项 =====
+r = ask('合同订立入口');
+check('26年合同 订立入口→仅入口内容', r.includes('合同订立入口') && !r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
+
+r = ask('合同内容填写');
+check('26年合同 内容填写→仅填写内容', r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
+
+r = ask('提交审批');
+check('26年合同 提交审批→仅审批内容', r.includes('提交审批') && !r.includes('附件上传'), r.slice(0, 300));
+
+r = ask('提交后经销商怎么去签署');
+check('26年合同 签署子项→仅签署内容', r.includes('提交后经销商怎么去签署') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
+
+r = ask('26年合同怎么签');
+check('26年合同 完整诉求→5子项合并输出', r.includes('合同订立入口') && r.includes('合同内容填写') && r.includes('附件上传') && r.includes('提交审批') && r.includes('签署'), r.slice(0, 400));
+
+reset();
+r = ask('合同');
+r = ask('4');
+check('26年合同 菜单输4→仅入口子项', r.includes('合同订立入口') && !r.includes('合同内容填写'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
