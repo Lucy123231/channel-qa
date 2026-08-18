@@ -548,5 +548,21 @@ reset();
 r = ask('开户需要哪些附件');
 check('歧义 开户附件→仍为附件清单', r.includes('开户必传附件清单'), r.slice(0, 200));
 
+// ===== 同主题多场景区分：添加辅助车型 ≠ 修改车型，严禁混合输出 =====
+r = ask('添加辅助车型');
+check('车型区分 添加辅助车型→仅辅助车型流程', r.includes('辅助车型') && r.includes('邮件') && !r.includes('场景（八）'), r.slice(0, 300));
+
+r = ask('新增辅助车型');
+check('车型区分 新增辅助车型→仅辅助车型流程', r.includes('邮件') && !r.includes('场景（八）'), r.slice(0, 300));
+
+r = ask('修改车型');
+check('车型区分 修改车型→仅修改车型流程', r.includes('场景（八）') && !r.includes('辅助车型') && !r.includes('邮件'), r.slice(0, 300));
+
+r = ask('车型变更');
+check('车型区分 车型变更→仅修改车型流程', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
+
+r = ask('调整车型');
+check('车型区分 调整车型→仅修改车型流程', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
