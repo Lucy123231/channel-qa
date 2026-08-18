@@ -556,13 +556,13 @@ r = ask('新增辅助车型');
 check('车型区分 新增辅助车型→仅辅助车型流程', r.includes('邮件') && !r.includes('场景（八）'), r.slice(0, 300));
 
 r = ask('修改车型');
-check('车型区分 修改车型→仅修改车型流程', r.includes('场景（八）') && !r.includes('辅助车型') && !r.includes('邮件'), r.slice(0, 300));
+check('车型区分 修改车型→仅修改车型流程', r.includes('修改车型') && !r.includes('辅助车型') && !r.includes('邮件'), r.slice(0, 300));
 
 r = ask('车型变更');
-check('车型区分 车型变更→仅修改车型流程', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
+check('车型区分 车型变更→仅修改车型流程', r.includes('修改车型') && !r.includes('邮件'), r.slice(0, 300));
 
 r = ask('调整车型');
-check('车型区分 调整车型→仅修改车型流程', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
+check('车型区分 调整车型→仅修改车型流程', r.includes('修改车型') && !r.includes('邮件'), r.slice(0, 300));
 
 // ===== 精准故障场景直达：完整复述异常现象→直接方案，禁止候选弹窗 =====
 r = ask('详细地址描述中的省/市/区/街道重复');
@@ -585,7 +585,7 @@ r = ask('场景十三详细地址描述中的省市区街道重复');
 check('场景直达 场景十三无括号→直接方案', r.includes('唯一不重复') && !r.includes('仓库地址全部场景'), r.slice(0, 300));
 
 r = ask('场景（八）需要修改车型');
-check('场景直达 场景八→仅修改车型', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
+check('场景直达 场景八→仅修改车型', r.includes('修改车型') && !r.includes('邮件'), r.slice(0, 300));
 
 r = ask('场景（三）地址申请新增（拼车地址）');
 check('场景直达 场景三→仅拼车流程', r.includes('拼车审批流'), r.slice(0, 300));
