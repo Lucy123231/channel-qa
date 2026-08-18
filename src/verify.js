@@ -780,6 +780,23 @@ r = ask('26年合同怎么签');
 r = askA('0');
 check('合同规则 数字0→合同板块全部完整内容', r.includes('25年') && r.includes('经销商合同签署'), r.slice(0, 300));
 
+// ===== 分组隔离强化：跨分组禁止乱串、普通提问零导航 =====
+reset();
+r = askA('26年合同签署进度');
+check('合同规则 26年+进度→仅4-9内容不串进度组', r.includes('合同订立入口') && !r.includes('业务员查看') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('25年合同签署进度');
+check('合同规则 25年+进度→仅1-3内容不串26年', r.includes('25年') && !r.includes('26年') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+reset();
+r = askA('签署进度怎么查');
+check('合同规则 纯进度提问→仅10-11不串其他组', (r.includes('业务员查看') || r.includes('签署进度')) && !r.includes('合同板块全部业务') && !r.includes('合同订立入口'), r.slice(0, 300));
+
+reset();
+r = askA('推送函怎么发');
+check('合同规则 推送函→21-26组内容不串其他', r.includes('推送函') && !r.includes('合同板块全部业务') && !r.includes('合同订立入口'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
