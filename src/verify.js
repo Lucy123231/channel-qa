@@ -564,5 +564,18 @@ check('车型区分 车型变更→仅修改车型流程', r.includes('场景（
 r = ask('调整车型');
 check('车型区分 调整车型→仅修改车型流程', r.includes('场景（八）') && !r.includes('邮件'), r.slice(0, 300));
 
+// ===== 精准故障场景直达：完整复述异常现象→直接方案，禁止候选弹窗 =====
+r = ask('详细地址描述中的省/市/区/街道重复');
+check('故障直达 省市区街道重复→直接方案不弹候选', r.includes('唯一不重复') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
+r = ask('盖章后无法进入下一步');
+check('故障直达 盖章后无法下一步→直接方案不弹候选', r.includes('合同专用章审批人') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
+r = ask('没有收到签署消息');
+check('故障直达 没收到签署消息→直接催办方案', r.includes('催办') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
+r = ask('地址重复怎么解决');
+check('故障直达 地址重复→直接省市区重复方案', r.includes('唯一不重复') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
