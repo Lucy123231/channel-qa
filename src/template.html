@@ -525,7 +525,8 @@ if(K[gk]){
   if(n===0){var fall=ba(K[gk]);am('a',fall);_gd=null;return;}
   if(n===6&&typeof _gd==='object'&&K[gk].s.length>6&&(_gd.off===5||_gd.off===0)){var ee2=K[gk];var hh2='<h3 style="color:#c41e2a">'+ee2.t+' — 附件及补充说明</h3>';for(var i2=5;i2<ee2.s.length;i2++){var tt2=ct(ee2.s[i2].title);hh2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i2+1)+'\';send()">'+(i2-4)+'. '+tt2+'</div>';}hh2+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看对应附件 | 输入 <b>0</b> 查看全部</div>';_gd={k:gk,off:5};am('a',hh2);return;}
   if(typeof _gd==='object'&&_gd.off===5&&n>=1&&n<=K[gk].s.length-5){sel=n+4;}
-  else if(n>=1&&n<=K[gk].s.length){sel=n-1;}
+  else if(typeof _gd==='object'&&_gd.off===0&&n>=1&&n<=Math.min(5,K[gk].s.length)){sel=n-1;}
+  else if(typeof _gd==='string'&&n>=1&&n<=K[gk].s.length){sel=n-1;}
   else if(/^\d+$/.test(q)){am('a','请输入有效编号（1-'+K[gk].s.length+'，输入0查看全部完整内容），或输入新问题重新搜索');return;}
   else{for(var i=0;i<K[gk].s.length;i++){var st=K[gk].s[i].title||'';if(st.indexOf(q)>=0){sel=i;break;}}}
   if(sel!==null){var ss=K[gk].s[sel];var h='<h3 style="color:#c41e2a">'+ct(K[gk].t)+'</h3><div class="step">';if(ss.title)h+='<h4>'+(sel+1)+'. '+ctd(ss.title)+'</h4>';if(ss.img||ss.imgs){var srcs=[];if(ss.img)srcs.push(ss.img);if(ss.imgs)srcs=srcs.concat(ss.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)h+='<img src="'+src+'" alt="'+(ss.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(ss.tx)h+='<div class="tx">'+ss.tx+'</div>';if(ss.w)h+='<div class="warn">'+ss.w+'</div>';h+='</div><div style="margin-top:12px;color:#888;font-size:14px">输入其他编号继续查看，或输入新问题返回搜索模式</div>';am('a',h);return;}
