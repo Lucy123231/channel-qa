@@ -610,5 +610,25 @@ check('分类 新增地址+拼车→直连拼车不弹四选', r.includes('拼�
 r = ask('地址申请新增');
 check('分类 无分类词→弹拼车非拼车两条候选', r.includes('找到以下相关条目') && r.includes('非拼车') && r.includes('拼车'), r.slice(0, 300));
 
+// ===== 板块目录分层：库存菜单按业务场景分组，命名统一 =====
+r = ask('库存管理');
+check('分层 库存菜单→四组归类非平铺', r.includes('（一）库存盘点') && r.includes('（二）库存调平') && r.includes('（三）库存周转计算') && r.includes('（四）库存调整') && !r.includes('查看更多条目'), r.slice(0, 400));
+
+r = ask('库存盘点');
+check('分层 库存盘点→分组菜单', r.includes('（一）库存盘点') && r.includes('（二）库存调平'), r.slice(0, 400));
+
+reset();
+r = ask('库存管理');
+r = ask('7');
+check('分层 库存菜单输7→调平完整流程', r.includes('虚拟终端') && r.includes('STTS'), r.slice(0, 300));
+
+reset();
+r = ask('库存管理');
+r = ask('0');
+check('分层 库存菜单0→库存全量', r.includes('特约转经销商') && r.includes('周转'), r.slice(0, 300));
+
+r = ask('经销商库存数据导出路径');
+check('完整输出 数据导出→两套流程齐全', r.includes('营销数据平台') && r.includes('报表中心'), r.slice(0, 300));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);

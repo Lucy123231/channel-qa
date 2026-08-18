@@ -221,6 +221,35 @@ var WM=[
 {n:18,na:'场景（十二）修改交付方式（自提/承运商）',c:'仓库',s:[33]},
 {n:19,na:'场景（十三）省市区街道重复修正',c:'仓库',s:[34]}
 ];
+// 库存管理：场景分组菜单（盘点/调平/周转/调整四组，命名统一全量展开）
+var IM=[
+{g:'（一）库存盘点',items:[
+{n:1,na:'库存盘点快速指引',c:'库存',s:[0]},
+{n:2,na:'经销商CSMS库存提报步骤',c:'库存',s:[1]},
+{n:3,na:'经销商库存数据导出路径（营销数据平台+CSMS报表中心两套）',c:'库存',s:[2,3]},
+{n:4,na:'公司业务员CRM库存录入（临期过期酒）',c:'库存',s:[4]},
+{n:5,na:'业务员CRM提报数据导出路径',c:'库存',s:[5]},
+{n:6,na:'盘点总部最新要求（条码/提报范围/不盘库）',c:'库存',s:[6]}
+]},
+{g:'（二）库存调平',items:[
+{n:7,na:'库存调平（虚拟终端）',c:'库存',s:[7]}
+]},
+{g:'（三）库存周转计算',items:[
+{n:8,na:'库存周转计算',c:'库存',s:[8]}
+]},
+{g:'（四）库存调整',items:[
+{n:9,na:'经销商之间借货（同级签收）',c:'库存',s:[9]},
+{n:10,na:'经销商库存交接（渠道调整）',c:'库存',s:[10]},
+{n:11,na:'特约转经销商',c:'库存',s:[11]}
+]}
+];
+function imBoard(){
+var flat=[];var h='<h3 style="color:#c41e2a">四、库存管理</h3>';
+h+='<div style="margin:8px 0;font-size:15px">库存管理全部场景如下（按业务归类分组，统一全量展开），输入编号一次性查看该场景完整流程：</div>';
+for(var g=0;g<IM.length;g++){h+='<div style="margin:10px 0 4px;font-size:15px;color:#c41e2a;font-weight:bold">'+IM[g].g+'</div>';for(var x=0;x<IM[g].items.length;x++){var it=IM[g].items[x];flat.push(it);h+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+it.n+'\';send()">'+it.n+'. '+it.na+'</div>';}}
+h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看库存管理全部完整内容 | 输入新问题搜索其他板块</div>'+cnt('库存','库存');
+_lc='库存';_tp={sub:flat,isSub:true};am('a',h);return;
+}
 var RED=[{k:['预包装'],m:'<b style="color:#c41e2a">⚠️ 合规红线：预包装食品备案为开户前置必备资料，不可后补！</b>'},
 {k:['骑缝章'],m:'<b style="color:#c41e2a">⚠️ 合规红线：经销商账户开设申请书3页全套必须盖骑缝章！</b>'},
 {k:['签字按手印','按手印'],m:'<b style="color:#c41e2a">⚠️ 合规红线：所有开户附件必须盖公章、法人签字按手印！</b>'},
@@ -376,6 +405,7 @@ if(scnM2.length>0){var bs2=-1;for(var x=0;x<scnM2.length;x++){var ti2=sim(q,scnM
 var tpname=null;
 for(var x=0;x<TPL.length;x++){if(q.indexOf(TPL[x].id)>=0){tpname=TPL[x];break;}}
 if(!_tp&&!_bz&&!_gd&&tpname&&q.length<=8){
+if(tpname.id==='库存管理'){imBoard();return;}
 var tpsel=tpname;var ents0=IDX[tpsel.id]||[];
 if(ents0.length>0){var cc0=ents0[0]?ents0[0].c:null;for(var x2=1;x2<ents0.length;x2++){if(ents0[x2].c!==cc0){cc0=null;break;}}
 if(cc0&&K[cc0])_lc=cc0;else if(tpsel.id==='一码通办')_lc='一码通办';else if(tpsel.id==='其他事项')_lc='其他事项';else _lc=null;
@@ -551,6 +581,7 @@ if(parts.length>1){_gd=top[0].key;am('a','<div>'+parts.join('<hr style="margin:1
 // 单问题匹配：引导模式
 if(key&&K[key]){
 _lc=key;
+if(key==='库存'){imBoard();return;}
 if(key==='仓库'){
 var wmh='<h3 style="color:#c41e2a">'+K[key].t+'</h3>';
 wmh+='<div style="margin:8px 0;font-size:15px">仓库地址全部场景如下（统一全量展开），输入编号一次性查看该场景完整流程：</div>';
