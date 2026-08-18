@@ -601,7 +601,7 @@ var IDX={
 {n:8,na:'销售支持大区批量合同进度统计',kw:['大区进度','批量进度'],c:'合同',s:[11]},
 {n:9,na:'合同签署高频报错全套解决方案',kw:['报错','签署问题'],c:'合同',s:[13,14,15,16,17,18,19]},
 {n:9.1,na:'乙方银行账户开票信息报错',kw:['银行账户报错','开票信息'],c:'合同',s:[13]},
-{n:9.2,na:'签署后需用印审批人确认',kw:['用印审批','盖章后无法下一步','无法点击下一步','无法进入下一步','盖章后无法进入下一步'],c:'合同',s:[14]},
+{n:9.2,na:'签署后需用印审批人确认',kw:['用印审批','盖章后无法下一步','无法点击下一步','无法进入下一步','盖章后无法进入下一步','签署完还需要其他人审批','还需要其他人审批','其他人审批'],c:'合同',s:[14]},
 {n:9.3,na:'e签宝经办人信息错误更换',kw:['经办人不对','经办人错误','更换经办人'],c:'合同',s:[15]},
 {n:9.4,na:'合同作废后无法重新订立',kw:['作废无法重签','无法重新订立'],c:'合同',s:[16]},
 {n:9.5,na:'人脸识别校验失败解决办法',kw:['人脸识别失败','人脸识别','人机校验'],c:'合同',s:[17]},
@@ -761,6 +761,14 @@ _lc='合同';_tp={sub:flat,isSub:true};am('a',h);return;
 var BIZ={biz001:{c:'开户',s:[2]},biz002:{c:'开户',s:[3]},biz003:{c:'开户',s:[4]},biz004:{c:'变更',s:[1]},biz005:{c:'变更',s:[3]},biz006:{c:'变更',s:[4]},biz007:{c:'变更',s:[5]},biz008:{c:'实控人',s:[2]},biz009:{c:'实控人',s:[3]},biz010:{c:'实控人',s:[4]},biz011:{c:'二批',s:[1]},biz012:{c:'二批',s:[2]},biz013:{c:'二批',s:[3]},biz014:{c:'合同',s:[1]},biz015:{c:'合同',s:[2]},biz016:{c:'合同',s:[3]},biz017:{c:'合同',s:[25]},biz018:{c:'合同',s:[26]},biz019:{c:'合同',s:[27]},biz020:{c:'实控人',s:[0]},biz021:{c:'实控人',s:[0]}};
 var ERR={err001:{c:'合同',s:[13]},err002:{c:'合同',s:[14]},err004:{c:'合同',s:[15]},err005:{c:'合同',s:[16]},err006:{c:'合同',s:[17]},err007:{c:'合同',s:[18]},err008:{c:'合同',s:[19]},err009:{c:'合同',s:[20]},err010:{c:'合同',s:[21]}};
 var _bizHit=null;
+function faultMenu(){
+var its=CM[3].items;
+var h='<h3 style="color:#c41e2a">合同常见问题答疑</h3>';
+h+='<div style="margin:8px 0;font-size:15px">请直接描述您遇到的具体问题（如：收不到签署消息、人脸识别失败），即可直接获得解决方案；或从以下常见问题中选择：</div>';
+for(var x=0;x<its.length;x++){h+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+its[x].n+'\';send()">'+its[x].n+'. '+its[x].na+'</div>';}
+h+='<div style="margin-top:10px;font-size:14px;color:#888">输入完整问题描述可直接获取解决方案 | 输入新问题搜索其他板块</div>'+cnt('合同','合同');
+_lc='合同';_tp={sub:its,isSub:true};am('a',h);return;
+}
 function wmBoard(){
 var wmh='<h3 style="color:#c41e2a">五、仓库地址专项</h3>';
 wmh+='<div style="margin:8px 0;font-size:15px">仓库地址全部场景如下（统一全量展开），输入编号一次性查看该场景完整流程：</div>';
@@ -1069,15 +1077,15 @@ else if(/详细地址描述|省市区/.test(q))cls='重复';
 if(cls){var fh2=[];for(var x=0;x<idxhits.length;x++){var nn=idxhits[x].en.na;if(cls==='拼车'){if(nn.indexOf('拼车')>=0&&nn.indexOf('非拼车')<0)fh2.push(idxhits[x]);}else{if(nn.indexOf(cls)>=0)fh2.push(idxhits[x]);}}if(fh2.length>0)idxhits=fh2;}
 }
 var hd=scnHit?scnHit:(_bizHit?_bizHit:null);
-if(!hd&&idxhits.length===1&&q.length<20){hd=idxhits[0].en;}
-else if(!hd&&idxhits.length>1&&q.length<20){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}
+if(!hd&&idxhits.length===1&&q.length<40){hd=idxhits[0].en;}
+else if(!hd&&idxhits.length>1&&q.length<40){var mxx=0;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl>mxx)mxx=idxhits[x].mkl;}var topn=0,topi=-1;for(var x=0;x<idxhits.length;x++){if(idxhits[x].mkl===mxx){topn++;topi=x;}}
 var fault=/重复|报错|异常|失败|无法|收不到|选不到|作废|录错|找不到/.test(q);
 if(topn===1&&(mxx>=6||(fault&&mxx>=4)))hd=idxhits[topi].en;
 else if(fault){var bts=-1,bti=-1,btTie=false;for(var x=0;x<idxhits.length;x++){var ti=sim(q,idxhits[x].en.na);if(ti>bts){bts=ti;bti=x;btTie=false;}else if(ti===bts&&ti>0){btTie=true;}}if(!btTie&&bts>=0.55&&idxhits[bti].mkl===mxx)hd=idxhits[bti].en;}}
 if(hd&&K[hd.c]&&hd.s&&hd.s.length>0){var eh='<h3 style="color:#c41e2a">'+ct(K[hd.c].t)+'</h3>';for(var x=0;x<hd.s.length;x++){var sidx=hd.s[x];var sec=K[hd.c].s[sidx];if(!sec)continue;eh+='<div class="step">';if(sec.title)eh+='<h4>'+ctd(sec.title)+'</h4>';if(sec.img||sec.imgs){var srcs=[];if(sec.img)srcs.push(sec.img);if(sec.imgs)srcs=srcs.concat(sec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)eh+='<img src="'+src+'" alt="'+(sec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(sec.tx)eh+='<div class="tx">'+sec.tx+'</div>';if(sec.w)eh+='<div class="warn">'+sec.w+'</div>';eh+='</div>';}eh+='<div style="margin-top:12px;color:#888;font-size:14px">需要我补充：①对应附件填写模板 ②该流程常见报错 ③批量导入操作步骤？直接输入需求即可</div>'+cnt(q,hd.na);
 if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)eh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
 _lc=hd.c;am('a',eh);return;}
-if(!hd&&idxhits.length>1&&q.length<20){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
+if(!hd&&idxhits.length>1&&q.length<40){var ih='<h3 style="color:#c41e2a">找到以下相关条目，请确认：</h3>';for(var x=0;x<Math.min(idxhits.length,6);x++){ih+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+idxhits[x].en.na+'\';send()">'+(x+1)+'. '+idxhits[x].en.na+'</div>';}if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)ih+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}am('a',ih);return;}
 // 【歧义问句定向】同时含"开户"+"地址维护/仓库地址/新增地址"类关键词：地址诉求优先，一律归入仓库地址专项，严禁落入一批商开户板块
 if(!_tp&&!_bz&&!_gd&&/开户/.test(q)&&/(地址维护|仓库地址|新增地址|地址新增|地址导入|地址修改|地图选址|维护地址|开户地址|收货地址|提货地址|地址信息)/.test(q)){
 var i8=document.getElementById('inp');i8.value='仓库地址';setTimeout(function(){send();},50);return;
@@ -1114,7 +1122,7 @@ if(parts.length>1){_gd=top[0].key;am('a','<div>'+parts.join('<hr style="margin:1
 if(key&&K[key]){
 _lc=key;
 if(key==='库存'){imBoard();return;}
-if(key==='合同'){cmBoard();return;}
+if(key==='合同'){if(/报错|失败|无法|收不到|没收到|作废|录错|不对|签不了|认证|催办|下一步|卡在|签不上/.test(q)){faultMenu();return;}cmBoard();return;}
 if(key==='仓库'){wmBoard();return;}
 var e=K[key];var h='';
 if(e.intro)h+='<div style="background:#f0f7ff;padding:10px 14px;margin-bottom:12px;border-left:3px solid #1e88e5;font-size:16px">'+e.intro+'</div>';

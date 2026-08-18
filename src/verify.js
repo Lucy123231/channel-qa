@@ -686,6 +686,23 @@ reset();
 r = ask('6');
 check('索引ID 纯数字6→不触发故障索引err006', !r.includes('人脸识别'), r.slice(0, 200));
 
+// ===== 故障问题强制匹配：完整故障问句直达方案，禁止出目录菜单 =====
+r = ask('合同制定了，润酒购、经办人手机上都没收到签署消息怎么办');
+check('故障强制 完整收不到消息问句→直达催办方案', r.includes('催办') && r.includes('snowsign.crb.cn') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+r = ask('签署完还需要其他人审批');
+check('故障强制 签署完还需审批→直达审批人方案', r.includes('合同专用章审批人') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+r = ask('合同作废时无法重新订立、签署');
+check('故障强制 作废无法重签→直达作废方案', r.includes('确认作废') && !r.includes('合同板块全部业务'), r.slice(0, 300));
+
+r = ask('合同签署报错怎么办');
+check('故障强制 报错类→直达报错方案不给总菜单', !r.includes('合同板块全部业务') && (r.includes('报错') || r.includes('答疑')), r.slice(0, 300));
+
+reset();
+r = ask('合同怎么签');
+check('故障强制 模糊合同提问→仍出分组菜单', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立'), r.slice(0, 300));
+
 reset();
 r = ask('库存管理');
 r = ask('7');
