@@ -597,5 +597,18 @@ reset();
 r = ask('仓库地址');
 check('菜单排版 全部场景统一展开无99折叠', r.includes('场景（十三）') && !r.includes('查看其余'), r.slice(0, 400));
 
+// ===== 限定条件精准匹配：互斥分类词只留唯一条目 =====
+r = ask('地址申请新增（非拼车地址）');
+check('分类 非拼车→仅非拼车流程不弹候选', r.includes('非拼车') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
+r = ask('地址申请新增（拼车地址）');
+check('分类 拼车→仅拼车流程不弹候选', r.includes('拼车审批流') && !r.includes('找到以下相关条目'), r.slice(0, 300));
+
+r = ask('新增地址拼车');
+check('分类 新增地址+拼车→直连拼车不弹四选', r.includes('拼车审批流') && !r.includes('请选择地址业务'), r.slice(0, 300));
+
+r = ask('地址申请新增');
+check('分类 无分类词→弹拼车非拼车两条候选', r.includes('找到以下相关条目') && r.includes('非拼车') && r.includes('拼车'), r.slice(0, 300));
+
 console.log('\n===== 结果: ' + pass + ' PASS / ' + fail + ' FAIL =====');
 process.exit(fail ? 1 : 0);
