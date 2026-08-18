@@ -888,6 +888,23 @@ reset();
 r = askA('广州填写指引');
 check('细分直达 广州填写指引→直达广州条目', r.includes('广州电子签填写指引') && !r.includes('海南营销中心'), r.slice(0, 300));
 
+// ===== 实控人细分直达：问具体条目直接给该条目，不倒出整板块 =====
+reset();
+r = askA('实际控制人导入失联');
+check('细分直达 实际控制人导入→仅导入关联条目', r.includes('实际控制人导入关联') && !r.includes('证照') && !r.includes('照片导入') && !r.includes('关于这个板块'), r.slice(0, 300));
+
+reset();
+r = askA('证照批量导入');
+check('细分直达 证照批量导入→仅证照条目', r.includes('证照信息批量导入') && !r.includes('照片导入'), r.slice(0, 300));
+
+reset();
+r = askA('照片导入后匹配经销商');
+check('细分直达 照片导入后匹配→仅匹配条目', r.includes('匹配经销商') && !r.includes('证照信息批量导入') && !r.includes('模版填写注意事项'), r.slice(0, 300));
+
+reset();
+r = askA('模版填写注意事项');
+check('细分直达 模版注意事项→仅补充条目', r.includes('模版填写注意事项') && !r.includes('照片导入'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
