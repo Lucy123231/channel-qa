@@ -1,0 +1,49 @@
+name: 自动构建并测试
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kb/**'
+      - 'src/template.html'
+      - 'src/build.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装依赖
+        run: pip install Pillow pypinyin
+
+      - name: 构建网页
+        run: |
+          cd src
+          python build.py
+
+      - name: 回归测试（225项，失败则中止，不发布）
+        run: |
+          cd src
+          node verify.js
+
+      - name: 提交构建产物
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain index.html)" ]; then
+            git add index.html
+            git commit -m "自动构建 index.html [skip ci]"
+            git push
+          else
+            echo "index.html 无变化，无需提交"
+          fi
