@@ -202,13 +202,13 @@ var IDX={
 ]
 };
 var ATT=[
-{n:1,na:'附件1：经销商账户开设申请书（3页骑缝章）',kw:['申请书','骑缝章'],c:'开户',s:[5]},
+{n:1,na:'附件1：经销商账户开设申请书（有三页，需要盖骑缝章）',kw:['申请书','骑缝章'],c:'开户',s:[5]},
 {n:2,na:'附件2：营业执照',kw:['营业执照','执照'],c:'开户',s:[6]},
-{n:3,na:'附件3：法人/老板身份证',kw:['身份证','法人','老板'],c:'开户',s:[7]},
-{n:4,na:'附件4：预包装食品备案',kw:['预包装','食品备案','经营许可'],c:'开户',s:[8]},
+{n:3,na:'附件3：老板身份证/法人身份证',kw:['身份证','法人','老板'],c:'开户',s:[7]},
+{n:4,na:'附件4：仅销售预包装食品备案/食品经营许可证',kw:['预包装','食品备案','经营许可'],c:'开户',s:[8]},
 {n:5,na:'附件5：经销商开设分析报告',kw:['分析报告'],c:'开户',s:[11]},
 {n:6,na:'附件6：印章印模模板',kw:['印章','印模'],c:'开户',s:[12]},
-{n:7,na:'附件7：基本账户信息及银行卡',kw:['银行卡','对公账户'],c:'开户',s:[13]},
+{n:7,na:'附件7：基本账户信息及银行卡复印件',kw:['银行卡','对公账户'],c:'开户',s:[13]},
 {n:8,na:'附件8：客户基本资料登记表(旺诚)',kw:['登记表','旺诚'],c:'开户',s:[14]},
 {n:9,na:'附件9：实际经营人情况说明',kw:['经营人','实际经营人'],c:'开户',s:[15]},
 {n:10,na:'附件10：经办人承诺书',kw:['承诺书','经办人'],c:'开户',s:[16]}
@@ -649,7 +649,7 @@ var gk=typeof _gd==='object'?_gd.k:_gd;
 if(K[gk]){
   var n=parseInt(q);var sel=null;
   if(n===0){if(gk==='开户'){attBoard();_gd=null;return;}var fall=ba(K[gk]);am('a',fall);_gd=null;return;}
-  if(n===6&&typeof _gd==='object'&&K[gk].s.length>6&&(_gd.off===5||_gd.off===0)){var ee2=K[gk];var hh2='<h3 style="color:#c41e2a">'+ee2.t+' — 附件及补充说明</h3>';for(var i2=5;i2<ee2.s.length;i2++){var tt2=ct(ee2.s[i2].title);hh2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i2+1)+'\';send()">'+(i2-4)+'. '+tt2+'</div>';}hh2+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看对应附件 | 输入 <b>0</b> 查看附件清单（附件1-10）</div>';_gd={k:gk,off:5};am('a',hh2);return;}
+  if(n===6&&typeof _gd==='object'&&(_gd.off===5||_gd.off===0)){if(gk==='开户'){attBoard();_gd=null;return;}if(K[gk].s.length>6){var ee2=K[gk];var hh2='<h3 style="color:#c41e2a">'+ee2.t+' — 附件及补充说明</h3>';for(var i2=5;i2<ee2.s.length;i2++){var tt2=ct(ee2.s[i2].title);hh2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i2-4)+'\';send()">'+(i2-4)+'. '+tt2+'</div>';}hh2+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看对应附件 | 输入 <b>0</b> 查看附件清单（附件1-10）</div>';_gd={k:gk,off:5};am('a',hh2);return;}}
   if(typeof _gd==='object'&&_gd.off===5&&n>=1&&n<=K[gk].s.length-5){sel=n+4;}
   else if(typeof _gd==='object'&&_gd.off===0&&n>=1&&n<=Math.min(5,K[gk].s.length)){sel=n-1;}
   else if(typeof _gd==='string'&&n>=1&&n<=K[gk].s.length){sel=n-1;}
@@ -807,7 +807,7 @@ h+='<h3 style="color:#c41e2a">'+ct(e.t)+'</h3>';
 h+='<div style="margin:8px 0;font-size:15px">关于这个板块，您具体想了解哪部分？输入编号就行：</div>';
 var mx=e.s.length>6?5:e.s.length;
 for(var i=0;i<mx;i++){var tt=ct(e.s[i].title);h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
-if(e.s.length>6){h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'6\';send()">6. 查看其余'+(e.s.length-5)+'项（'+ct(e.s[5].title)+'等）</div>';}
+if(e.s.length>6){h+=key==='开户'?'<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'6\';send()">6. 查看附件清单（附件1-10）</div>':'<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'6\';send()">6. 查看其余'+(e.s.length-5)+'项（'+ct(e.s[5].title)+'等）</div>';}
 h+=key==='开户'?'<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看附件清单（附件1-10） | 输入新问题搜索其他板块</div>':'<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看全部完整内容 | 输入新问题搜索其他板块</div>';
 _gd={k:key,off:0};am('a',h);return;
 }
