@@ -83,7 +83,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // ===== 知识库（简版） =====
 __KB_PLACEHOLDER__;
 
-var _lc=null;var _gd=null;var _bz=null;var _tp=null;var _gp=null;
+var _lc=null;var _gd=null;var _bz=null;var _tp=null;var _gp=null;var _ab=null;
 var TPL=[
 {id:'一批商管理',k:['一批','开户','销户','注销','变更','交接','实控人','控制人','证照','户头','经销商'],sub:['开户','销户','变更','交接','实控人']},
 {id:'二批商管理',k:['二批','特约','二级','挂靠','批量导入','非一批'],sub:['二批','特约']},
@@ -323,6 +323,15 @@ _lc='合同';_tp={sub:flat,isSub:true};am('a',h);return;
 var BIZ={biz001:{c:'开户',s:[2]},biz002:{c:'开户',s:[3]},biz003:{c:'开户',s:[4]},biz004:{c:'变更',s:[1]},biz005:{c:'变更',s:[3]},biz006:{c:'变更',s:[4]},biz007:{c:'变更',s:[5]},biz008:{c:'实控人',s:[2]},biz009:{c:'实控人',s:[3]},biz010:{c:'实控人',s:[4]},biz011:{c:'二批',s:[1]},biz012:{c:'二批',s:[2]},biz013:{c:'二批',s:[3]},biz014:{c:'合同',s:[1]},biz015:{c:'合同',s:[2]},biz016:{c:'合同',s:[3]},biz017:{c:'合同',s:[25]},biz018:{c:'合同',s:[26]},biz019:{c:'合同',s:[27]},biz020:{c:'实控人',s:[0]},biz021:{c:'实控人',s:[0]}};
 var ERR={err001:{c:'合同',s:[13]},err002:{c:'合同',s:[14]},err004:{c:'合同',s:[15]},err005:{c:'合同',s:[16]},err006:{c:'合同',s:[17]},err007:{c:'合同',s:[18]},err008:{c:'合同',s:[19]},err009:{c:'合同',s:[20]},err010:{c:'合同',s:[21]}};
 var _bizHit=null;
+// 附件清单菜单：10个纯附件条目，仅输入0触发；菜单内输1-10直达附件，输0输出全部附件完整内容
+function attBoard(){
+_ab=1;_lc='开户';
+var h='<h3 style="color:#c41e2a">'+K['开户'].t+' — 附件及补充说明</h3>';
+h+='<div style="margin:8px 0;font-size:15px">附件清单（输入编号查看对应附件模板）：</div>';
+for(var x=0;x<ATT.length;x++){h+='<div style="padding:4px 0;font-size:14px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(x+1)+'\';send()">'+(x+1)+'. '+ATT[x].na+'</div>';}
+h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 0 查看全部附件 | 输入新问题搜索其他板块</div>'+cnt('附件','开户');
+am('a',h);return;
+}
 function faultMenu(){
 var its=CM[3].items;
 var h='<h3 style="color:#c41e2a">合同常见问题</h3>';
@@ -505,24 +514,34 @@ _gp=null;
 }
 if(!/^\d/.test(q))_gp=null;
 }
-// 纯数字双检：流程+附件并列展示
+// 【附件菜单状态】清单内输1-10直达附件、输0输出全部10个附件完整内容
+if(_ab){
+var gq3=q.replace(/[，。！？!?\s]+$/,'');
+if(/^\d+$/.test(gq3)){
+var an3=parseInt(gq3);
+if(an3===0){_ab=null;var ah='<h3 style="color:#c41e2a">'+K['开户'].t+' — 全部附件</h3>';for(var x=0;x<ATT.length;x++){var asec=K['开户'].s[ATT[x].s[0]];if(!asec)continue;ah+='<div class="step">';if(asec.title)ah+='<h4>'+cti(asec.title)+'</h4>';if(asec.img||asec.imgs){var srcs=[];if(asec.img)srcs.push(asec.img);if(asec.imgs)srcs=srcs.concat(asec.imgs);for(var si=0;si<srcs.length;si++){var src=gi(srcs[si]);if(src)ah+='<img src="'+src+'" alt="'+cti(asec.title||'')+'" onclick="this.requestFullscreen?this.requestFullscreen():(document.body.requestFullscreen&&document.body.requestFullscreen())" class="guide-screenshot">';}}if(asec.tx)ah+='<div class="tx">'+asec.tx+'</div>';if(asec.w)ah+='<div class="warn">'+asec.w+'</div>';ah+='</div>';}ah+='<div style="margin-top:12px;font-size:14px;color:#888">以上为附件1-附件10全部内容，输入新问题继续</div>'+cnt('附件','开户');am('a',ah);return;}
+if(an3>=1&&an3<=10){_ab=null;var inp3=document.getElementById('inp');inp3.value='附件'+an3;setTimeout(function(){send();},50);return;}
+am('a','请输入有效编号（1-10，输入0查看全部附件），或输入新问题重新搜索');return;
+}
+_ab=null;
+}
+// 纯数字直达：1-10优先匹配附件条目（禁止多选弹窗）；锁定开户时0→附件清单；锁定合同时11-26→合同条目、0→合同全部
 if(!_tp&&!_bz&&!_gd){var qn2=parseInt(q);
 if(isNaN(qn2)&&/^[一二三四五六七八九十]+$/.test(q)&&q.length<=2){var cn2={一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,十:10};qn2=cn2[q]||null;}
-// 【合同板块编号直达】已锁定合同时：数字0→全部完整内容；1-26→仅该编号条目（菜单编号优先，不弹冲突；限纯短数字，防"26年合同怎么签"类长句被parseInt劫持）
+if(qn2>=1&&qn2<=10&&q.length<=3){
+var atf3=null;for(var x=0;x<ATT.length;x++){if(ATT[x].n===qn2){atf3=ATT[x];break;}}
+if(atf3){var inp2=document.getElementById('inp');inp2.value='附件'+qn2;setTimeout(function(){send();},50);return;}
+}
+if(_lc==='开户'&&qn2===0&&q.length<=3){attBoard();return;}
 if(_lc==='合同'&&qn2===0&&q.length<=3){am('a',ba(K['合同'])+'<div style="margin-top:12px;font-size:14px;color:#888">以上为【'+K['合同'].t+'】全部完整内容，输入其他问题继续</div>'+cnt(q,'合同'));return;}
-if(_lc==='合同'&&qn2>=1&&qn2<=26&&q.length<=3){
+if(_lc==='合同'&&qn2>=11&&qn2<=26&&q.length<=3){
 var cme=CMF[qn2-1];
 if(cme){var c26h=re(cme);if(c26h===null){am('a','暂时无法获取该条目，请换一种说法重新提问');return;}
 var chh='<h3 style="color:#c41e2a">'+ct(K[cme.c].t)+' — '+ct(cme.na)+'</h3>'+c26h+'<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,cme.na);
 if(redHits.length>0){for(var rx=0;rx<redHits.length;rx++)chh+='<div style="background:#fff0f0;border-left:3px solid #c41e2a;padding:10px 14px;margin:8px 0;font-size:14px">'+redHits[rx]+'</div>';}
 am('a',chh);return;}
 }
-if(qn2>=1&&q.length<=3){
-var flw=[];for(var x=0;x<TPL.length;x++){var ent=IDX[TPL[x].id];if(!ent)continue;for(var y=0;y<ent.length;y++){if(ent[y].n===qn2){flw.push({tp:TPL[x].id,en:ent[y]});break;}}}
-var atf3=null;for(var x=0;x<ATT.length;x++){if(ATT[x].n===qn2){atf3=ATT[x];break;}}
-if(flw.length>0&&atf3){var dq='<h3 style="color:#c41e2a">数字'+qn2+'匹配到两类内容，请选择：</h3>';dq+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+flw[0].en.na+'\';send()">① 流程'+qn2+'：'+flw[0].en.na+'（'+flw[0].tp+'）</div>';dq+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'附件'+atf3.n+'\';send()">② '+atf3.na+'</div>';am('a',dq);return;}
-if(atf3&&flw.length===0){var inp2=document.getElementById('inp');inp2.value='附件'+qn2;setTimeout(function(){send();},50);return;}
-}}
+}
 // 【场景编号直达】明确携带"场景（X）/场景X"→ 精准定位该场景，直接输出完整流程，跳过菜单
 var scnHit=null;
 var scnM=/场景\s*[（(]?\s*([一二三四五六七八九十]+|\d+)\s*[）)]?/.exec(q);
@@ -629,8 +648,8 @@ if(_gd){
 var gk=typeof _gd==='object'?_gd.k:_gd;
 if(K[gk]){
   var n=parseInt(q);var sel=null;
-  if(n===0){var fall=ba(K[gk]);am('a',fall);_gd=null;return;}
-  if(n===6&&typeof _gd==='object'&&K[gk].s.length>6&&(_gd.off===5||_gd.off===0)){var ee2=K[gk];var hh2='<h3 style="color:#c41e2a">'+ee2.t+' — 附件及补充说明</h3>';for(var i2=5;i2<ee2.s.length;i2++){var tt2=ct(ee2.s[i2].title);hh2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i2+1)+'\';send()">'+(i2-4)+'. '+tt2+'</div>';}hh2+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看对应附件 | 输入 <b>0</b> 查看全部</div>';_gd={k:gk,off:5};am('a',hh2);return;}
+  if(n===0){if(gk==='开户'){attBoard();_gd=null;return;}var fall=ba(K[gk]);am('a',fall);_gd=null;return;}
+  if(n===6&&typeof _gd==='object'&&K[gk].s.length>6&&(_gd.off===5||_gd.off===0)){var ee2=K[gk];var hh2='<h3 style="color:#c41e2a">'+ee2.t+' — 附件及补充说明</h3>';for(var i2=5;i2<ee2.s.length;i2++){var tt2=ct(ee2.s[i2].title);hh2+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i2+1)+'\';send()">'+(i2-4)+'. '+tt2+'</div>';}hh2+='<div style="margin-top:10px;font-size:14px;color:#888">输入编号查看对应附件 | 输入 <b>0</b> 查看附件清单（附件1-10）</div>';_gd={k:gk,off:5};am('a',hh2);return;}
   if(typeof _gd==='object'&&_gd.off===5&&n>=1&&n<=K[gk].s.length-5){sel=n+4;}
   else if(typeof _gd==='object'&&_gd.off===0&&n>=1&&n<=Math.min(5,K[gk].s.length)){sel=n-1;}
   else if(typeof _gd==='string'&&n>=1&&n<=K[gk].s.length){sel=n-1;}
@@ -789,7 +808,7 @@ h+='<div style="margin:8px 0;font-size:15px">关于这个板块，您具体想�
 var mx=e.s.length>6?5:e.s.length;
 for(var i=0;i<mx;i++){var tt=ct(e.s[i].title);h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\''+(i+1)+'\';send()">'+(i+1)+'. '+tt+'</div>';}
 if(e.s.length>6){h+='<div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="document.getElementById(\'inp\').value=\'6\';send()">6. 查看其余'+(e.s.length-5)+'项（'+ct(e.s[5].title)+'等）</div>';}
-h+='<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看全部完整内容 | 输入新问题搜索其他板块</div>';
+h+=key==='开户'?'<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看附件清单（附件1-10） | 输入新问题搜索其他板块</div>':'<div style="margin-top:10px;font-size:14px;color:#888">输入 <b>0</b> 查看全部完整内容 | 输入新问题搜索其他板块</div>';
 _gd={k:key,off:0};am('a',h);return;
 }
 // 模糊容错层：错别字/同音字（编辑距离+拼音），前置精确层未命中才启用

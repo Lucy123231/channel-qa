@@ -45,7 +45,7 @@ function askA(q) {
   return captured.filter(x => x.t === 'a').map(x => x.c).join('\n===MSG===\n');
 }
 
-function reset() { _lc = null; _gd = null; _bz = null; _tp = null; _gp = null; }
+function reset() { _lc = null; _gd = null; _bz = null; _tp = null; _gp = null; _ab = null; }
 
 let pass = 0, fail = 0;
 function check(name, cond, detail) {
@@ -65,9 +65,9 @@ check('附件九→附件库', r.includes('实际经营人情况说明'), r.slic
 r = ask('附件2');
 check('附件2→营业执照', r.includes('营业执照'), r.slice(0, 120));
 
-// 4. 纯数字双检：9 同时展示流程与附件
+// 4. 纯数字直达：9 直接匹配附件9，禁止多选弹窗
 r = ask('9');
-check('纯数字9→双检弹窗', r.includes('匹配到两类内容'), r.slice(0, 120));
+check('纯数字9→附件9直达无弹窗', r.includes('实际经营人情况说明') && !r.includes('匹配到两类内容'), r.slice(0, 200));
 
 // 5. 一码通办：板块名直达（板块名导航路径）
 r = ask('一码通办');
@@ -350,7 +350,29 @@ check('上下文 显式板块词覆盖→合同整套', r.includes('签署') && 
 reset();
 r = ask('如何给一批商开户');
 r = ask('0');
-check('上下文 菜单输入0→开户整套(与泛化语句等价)', r.includes('根户头') && r.includes('经办人承诺书'), r.slice(0, 200));
+check('附件规则 开户菜单输入0→附件清单菜单', r.includes('附件清单') && r.includes('附件10：经办人承诺书') && !r.includes('根户头'), r.slice(0, 300));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('0');
+r = askA('3');
+check('附件规则 清单内输3→附件3直达', r.includes('身份证') && !r.includes('骑缝章'), r.slice(0, 300));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('0');
+r = askA('0');
+check('附件规则 清单内输0→附件1-10全部内容', r.includes('附件1') && r.includes('附件10') && r.includes('<img'), r.slice(0, 300));
+
+reset();
+r = ask('如何给一批商开户');
+r = ask('0');
+r = askA('11');
+check('附件规则 清单内越界→提示有效编号', r.includes('请输入有效编号'), r.slice(0, 200));
+
+reset();
+r = askA('6');
+check('附件规则 纯数字6→附件6印章印模直达无弹窗', r.includes('印章印模') && !r.includes('匹配到两类内容'), r.slice(0, 300));
 
 // ===== 编号精准匹配：菜单数字一一绑定条目，严禁泛语义/附件乱调 =====
 reset();
