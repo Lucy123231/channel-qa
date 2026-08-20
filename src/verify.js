@@ -941,6 +941,51 @@ reset();
 r = askA('模版填写注意事项');
 check('细分直达 模版注意事项→仅补充条目', r.includes('模版填写注意事项') && !r.includes('照片导入'), r.slice(0, 300));
 
+// ===== 口语化问句匹配：日常说法也能命中规范词库 =====
+reset();
+r = askA('开个户怎么弄');
+check('口语 开个户怎么弄→开户三选', r.includes('请选择开户类型') && !r.includes('渠道管理指南范围内'), r.slice(0, 300));
+
+reset();
+r = askA('怎么签合同');
+check('口语 怎么签合同→合同分组菜单', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立'), r.slice(0, 300));
+
+reset();
+r = askA('合同怎么弄');
+check('口语 合同怎么弄→合同分组菜单', r.includes('25年经销商合同订立') && r.includes('26年经销商合同订立'), r.slice(0, 300));
+
+reset();
+r = askA('这个户怎么开');
+check('口语 这个户怎么开→开户引导菜单', r.includes('关于这个板块') && r.includes('户头类型介绍'), r.slice(0, 300));
+
+reset();
+r = askA('地址怎么弄');
+check('口语 地址怎么弄→仓库地址专项', r.includes('仓库地址全部场景') && r.includes('模式的改变'), r.slice(0, 300));
+
+reset();
+r = askA('怎么盘货');
+check('口语 怎么盘货→盘库二选', r.includes('请选择您的身份') && r.includes('经销商人员'), r.slice(0, 300));
+
+reset();
+r = askA('奖励怎么拿');
+check('口语 奖励怎么拿→奖励会谈板块', r.includes('经销商奖励会谈') && !r.includes('渠道管理指南范围内'), r.slice(0, 300));
+
+reset();
+r = askA('送货地址怎么改');
+check('口语 送货地址→仓库地址专项', r.includes('模式的改变'), r.slice(0, 300));
+
+reset();
+r = askA('隐藏的仓库');
+check('口语 隐藏的仓库→隐藏库红线', r.includes('隐藏库'), r.slice(0, 300));
+
+reset();
+r = askA('库存对不上');
+check('口语 库存对不上→库存调平', r.includes('虚拟终端') || r.includes('调平'), r.slice(0, 300));
+
+reset();
+r = askA('注销经销商');
+check('口语 注销经销商→销户流程', r.includes('销户'), r.slice(0, 300));
+
 // ===== 全局条目边界隔离：单点查询严格单条目截断 =====
 reset();
 r = ask('如何给一批商开户');
