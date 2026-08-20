@@ -45,7 +45,7 @@ function askA(q) {
   return captured.filter(x => x.t === 'a').map(x => x.c).join('\n===MSG===\n');
 }
 
-function reset() { _lc = null; _gd = null; _bz = null; _tp = null; _gp = null; _ab = null; }
+function reset() { _lc = null; _gd = null; _bz = null; _tp = null; _gp = null; _ab = null; _yc = null; }
 
 let pass = 0, fail = 0;
 function check(name, cond, detail) {
@@ -742,7 +742,14 @@ check('故障强制 模糊合同提问→仍出分组菜单', r.includes('25年�
 
 // ===== 26年合同5子项强制隔离：单点查询仅输出命中的那一个子项（askA只验回复，防回显掩盖） =====
 r = askA('合同订立入口');
-check('26年合同 订立入口→仅入口内容', r.includes('合同订立入口') && !r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));
+check('订立入口 未指明年份→25/26双选', r.includes('请问您要查哪个年度') && r.includes('25年：合同订立入口与电子签填写指引') && r.includes('26年：26年合同订立入口') && !r.includes('合同内容填写'), r.slice(0, 300));
+
+r = askA('1');
+check('订立入口 选1→25年入口条目', r.includes('电子签填写指引') && r.includes('合同订立入口') && !r.includes('26年'), r.slice(0, 300));
+
+r = askA('合同订立入口');
+r = askA('2');
+check('订立入口 选2→26年入口条目', r.includes('26年合同订立入口') && !r.includes('25年') && !r.includes('合同内容填写'), r.slice(0, 300));
 
 r = askA('合同内容填写');
 check('26年合同 内容填写→仅填写内容', r.includes('合同内容填写') && !r.includes('附件上传') && !r.includes('提交审批'), r.slice(0, 300));

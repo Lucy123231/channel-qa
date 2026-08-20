@@ -83,7 +83,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // ===== 知识库（简版） =====
 __KB_PLACEHOLDER__;
 
-var _lc=null;var _gd=null;var _bz=null;var _tp=null;var _gp=null;var _ab=null;
+var _lc=null;var _gd=null;var _bz=null;var _tp=null;var _gp=null;var _ab=null;var _yc=null;
 var TPL=[
 {id:'一批商管理',k:['一批','开户','销户','注销','变更','交接','实控人','控制人','证照','户头','经销商'],sub:['开户','销户','变更','交接','实控人']},
 {id:'二批商管理',k:['二批','特约','二级','挂靠','批量导入','非一批'],sub:['二批','特约']},
@@ -525,6 +525,20 @@ am('a','请输入有效编号（1-10，输入0查看全部附件），或输入�
 }
 _ab=null;
 }
+// 【25/26年订立入口选择】1→25年入口条目；2→26年入口条目
+if(_yc){
+var gyq=q.replace(/[，。！？!?\s]+$/,'');
+if(/^\d+$/.test(gyq)){
+var ycn=parseInt(gyq);
+var ye=null;
+if(ycn===1)ye=CMF[0];
+else if(ycn===2)ye=CMF[3];
+if(ye){var yb=re(ye);if(yb===null){am('a','暂时无法获取该条目，请换一种说法重新提问');return;}
+_yc=null;_lc='合同';am('a','<h3 style="color:#c41e2a">'+ct(K[ye.c].t)+' — '+ct(ye.na)+'</h3>'+yb+'<div style="margin-top:12px;color:#888;font-size:14px">需要查看配套附件模板或截图指引吗？输入新问题继续</div>'+cnt(q,ye.na));return;}
+am('a','请输入1或2选择年度，或输入新问题重新搜索');return;
+}
+_yc=null;
+}
 // 纯数字直达：1-10优先匹配附件条目（禁止多选弹窗）；锁定开户时0→附件清单；锁定合同时11-26→合同条目、0→合同全部
 if(!_tp&&!_bz&&!_gd){var qn2=parseInt(q);
 if(isNaN(qn2)&&/^[一二三四五六七八九十]+$/.test(q)&&q.length<=2){var cn2={一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,十:10};qn2=cn2[q]||null;}
@@ -726,6 +740,12 @@ if(/25年|老合同/.test(q))idxhits=idxhits.filter(function(h){return h.en.na.i
 else if(/26年|新合同/.test(q))idxhits=idxhits.filter(function(h){return h.en.c==='合同'&&h.en.s.length>0&&h.en.s[0]>=4&&h.en.s[0]<=9;});
 }
 var hd=scnHit?scnHit:(_bizHit?_bizHit:null);
+// 【25/26年订立入口双选】"订立入口"两个年度都有：未指明年度→先选年度；带25年→直连25年入口条目
+if(!hd&&/订立入口/.test(q)&&!/(26年|新合同|海南|广州)/.test(q)){
+if(/25年|老合同/.test(q)){hd={c:'合同',s:[0,1],na:'合同订立入口与电子签填写指引'};}
+else{_yc=1;_lc='合同';
+am('a','<h3 style="color:#c41e2a">「订立入口」在25年合同和26年合同里都有</h3><div style="margin:8px 0;font-size:15px">请问您要查哪个年度的？</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'1\';send()">1. 25年：合同订立入口与电子签填写指引</div><div style="padding:5px 0;font-size:15px;cursor:pointer;color:#333" onclick="var e=document.getElementById(\'inp\');e.value=\'2\';send()">2. 26年：26年合同订立入口</div>'+cnt(q,'合同'));return;}
+}
 // 【26年合同5子项强制路由】点名子项→强制该子项专属条目，即使问句同时含"26年合同"也禁止整块5项拼接；25年/老合同/地区专项不劫持
 var ht26i=-1;
 for(var x=0;x<HT26KW.length;x++){for(var z=0;z<HT26KW[x].length;z++){if(q.indexOf(HT26KW[x][z])>=0){ht26i=x;break;}}if(ht26i>=0)break;}
