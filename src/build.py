@@ -5,6 +5,7 @@
 
 知识库在 ../kb/ 文件夹，模板在 src/ 同目录。
 改动 kb/ 或 src/template.html 并推送到 GitHub 后，GitHub Actions 会自动运行本脚本并发布网页。
+（2026-08-19 手动触发一次全新构建，用于确认线上版本。）
 """
 
 import json, os, re, base64, io
